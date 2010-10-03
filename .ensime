@@ -1,0 +1,11 @@
+;; This config was generated using ensime-config-gen. Feel free to customize its contents manually. 
+
+(
+
+:server-root "/home/bmc/lib/scala/ensime"
+
+:project-package "org.clapper.argot"
+
+:use-sbt t
+
+)
