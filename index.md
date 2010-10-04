@@ -29,7 +29,7 @@ self-update, and a source download will show up in the [GitHub repo][]
 properly, since it's still a work in progress.
 
 In fact, until then, you should consider Argot to be alpha code. It's working
-for me, but you *must* consider the possibility that it might:n
+for me, but you *must* consider the possibility that it might:
 
 * do a [fandango][] all over your program
 * generate random [bogons][] (of various [flavors][], [charmed][] or otherwise)
