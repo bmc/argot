@@ -25,12 +25,12 @@ a work in progress.
 In fact, until then, you should consider Argot to be in a #FAIL state. It
 may:
 
-* do a [fandago][] all over your program
+* do a [fandango][] all over your program
 * generate random [bogons][] (of various [flavors][], [charmed][] or otherwise)
 * [open your sluices at both ends][]
 * [eat your firstborn child][]
-* [cough and die][]; or
-* otherwise do the [Wrong Thing][].
+* [cough and die][];
+* or otherwise do the [Wrong Thing][].
 
 None of these things is especially likely, mind you, but you *have* been
 warned.)
