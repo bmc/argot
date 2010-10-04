@@ -39,7 +39,7 @@ may:
 * or otherwise do the [Wrong Thing][].
 
 None of these things is especially likely, mind you, but you *have* been
-warned.)
+warned.
 
 # More to come
 
