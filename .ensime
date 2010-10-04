@@ -2,7 +2,7 @@
 
 (
 
-:server-root "/home/bmc/lib/scala/ensime"
+:server-root "~/lib/scala/ensime"
 
 :project-package "org.clapper.argot"
 
