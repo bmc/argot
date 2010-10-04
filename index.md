@@ -28,8 +28,8 @@ self-update, and a source download will show up in the [GitHub repo][]
 *Downloads* tab. Until then, there's no guarantee that Argot will work
 properly, since it's still a work in progress.
 
-In fact, until then, you should consider Argot to be in a #FAIL state. It
-may:
+In fact, until then, you should consider Argot to be alpha code. It's working
+for me, but you *must* consider the possibility that it might:n
 
 * do a [fandango][] all over your program
 * generate random [bogons][] (of various [flavors][], [charmed][] or otherwise)
