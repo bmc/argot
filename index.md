@@ -1,5 +1,5 @@
 ---
-title: Argot--A command-line parser for Scala
+title: Argot, a command-line parser for Scala
 layout: withTOC
 ---
 
