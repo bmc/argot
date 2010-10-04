@@ -594,6 +594,9 @@ private object Conversions
 /**
  * Conversion functions that can be used to satisfy the implicit conversions
  * specified to the various specification functions in the `ArgotParser` class.
+ * If you import this namespace, you'll get a bunch of implicit conversion
+ * functions that the Scala compiler will automatically use, for the
+ * various definition functions in `ArgotParser`.
  */
 object ArgotConverters
 {
@@ -660,19 +663,36 @@ object ArgotConverters
  * multi-value options, single-value and multi-value parameters, typed value,
  * custom conversions (with suitable defaults), and extensibility.
  *
- * *More to come*
+ * Parameters must be defined in the order they are expected to appear
+ * on the command line.
+ *
+ * *More to come. For now, see the accompanying* `ArgotTest` *program*.
+ *
+ * @param programName  the name of the program, for the usage message
+ * @param compactUsage force a more compact usage message
+ * @param outputWidth  width of the output; used when wrapping the usage
+ *                     message
+ * @param preUsage     optional message to issue before the usage message
+ *                     (e.g., a copyright and/or version string)
+ * @param postUsage    optional message to issue after the usage message
  */
 class ArgotParser(programName: String,
-                  compactUsage: Boolean = false)
+                  compactUsage: Boolean = false,
+                  outputWidth: Int = 79,
+                  preUsage: Option[String] = None,
+                  postUsage: Option[String] = None)
 {
-    val shortNameMap = MutableMap.empty[Char, CommandLineOption[_]]
-    val longNameMap = MutableMap.empty[String, CommandLineOption[_]]
-    val allOptions = new LinkedHashMap[String, CommandLineOption[_]]
-    val nonFlags = new LinkedHashSet[NonFlagOption]
-    val flags = new LinkedHashSet[FlagOption[_]]
-    val parameters = new LinkedHashSet[Parameter[_]]
+    require(outputWidth > 0)
+
+    protected val shortNameMap = MutableMap.empty[Char, CommandLineOption[_]]
+    protected val longNameMap = MutableMap.empty[String, CommandLineOption[_]]
+    protected val allOptions = new LinkedHashMap[String, CommandLineOption[_]]
+    protected val nonFlags = new LinkedHashSet[NonFlagOption]
+    protected val flags = new LinkedHashSet[FlagOption[_]]
+    protected val parameters = new LinkedHashSet[Parameter[_]]
 
     /**
+     * Define an 
      * Each string in `names` can be a single character (thus "v" -> "-v")
      * or more than one character (thus "verbose" -> "--verbose").
      */
@@ -1019,7 +1039,7 @@ class ArgotParser(programName: String,
         parseNext(a, parameters.toList)
     }
 
-    def usageString(message: String = ""): String =
+    def usageString(message: Option[String] = None): String =
     {
         import grizzled.math.{util => MathUtil}
         import grizzled.string.WordWrapper
@@ -1053,9 +1073,9 @@ class ArgotParser(programName: String,
         val maxOptLen = mmax(lengths.toSeq: _*)
 
         val buf = new StringBuilder
-        if (message.length > 0)
-            buf.append(message + "\n\n")
-
+        val wrapper = new WordWrapper(wrapWidth=outputWidth)
+        message.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
+        preUsage.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
         buf.append("Usage: " + programName)
         if (allOptions.size > 0)
             buf.append(" [OPTIONS]")
@@ -1074,44 +1094,51 @@ class ArgotParser(programName: String,
             
         buf.append('\n')
 
+        def handleOneOption(key: String) =
+        {
+            if (! compactUsage)
+                buf.append("\n")
+
+            val opt = allOptions(key)
+            val sorted = opt.names.sortWith(_ < _)
+            for (name <- sorted.take(sorted.length - 1))
+                buf.append(optString(name, opt) + "\n")
+            val name = sorted.takeRight(1)(0)
+            val os = optString(name, opt)
+            val padding = (maxOptLen - os.length) + 1 // allow for space
+            val prefix = os + (" " * padding)
+            val wrapper = new WordWrapper(prefix=prefix,
+                                          wrapWidth=outputWidth)
+            val desc = opt match
+            {
+                case o: HasValue[_] =>
+                    if (o.supportsMultipleValues)
+                        o.description +
+                " (May be specified multiple times.)"
+                    else
+                        o.description
+
+                case _ =>
+                    opt.description
+                
+            }
+            buf.append(wrapper.wrap(desc))
+            buf.append("\n")
+        }
+
         if (allOptions.size > 0)
         {
             buf.append('\n')
-            buf.append("OPTIONS\n\n")
-            for (key <- allOptions.keySet.toList.sortWith(_ < _))
-            {
-                val opt = allOptions(key)
-                val sorted = opt.names.sortWith(_ < _)
-                for (name <- sorted.take(sorted.length - 1))
-                    buf.append(optString(name, opt) + "\n")
-                val name = sorted.takeRight(1)(0)
-                val os = optString(name, opt)
-                val padding = (maxOptLen - os.length) + 1 // allow for space
-                val prefix = os + (" " * padding)
-                val wrapper = new WordWrapper(prefix=prefix)
-                val desc = opt match
-                {
-                    case o: HasValue[_] =>
-                        if (o.supportsMultipleValues)
-                            o.description +
-                            " (May be specified multiple times.)"
-                        else
-                            o.description
-
-                    case _ =>
-                        opt.description
-                                  
-                }
-                buf.append(wrapper.wrap(desc))
-                buf.append("\n")
-                if (! compactUsage)
-                    buf.append("\n")
-            }
+            buf.append("OPTIONS\n")
+            allOptions.keySet.toList.sortWith(_ < _).foreach(handleOneOption)
         }
 
+        postUsage.foreach(s => buf.append(wrapper.wrap(s) + "\n"))
         buf.toString
     }
 
-    def usage(message: String = "") =
-        throw new ArgotUsageException(usageString(message))
+    def usage() = throw new ArgotUsageException(usageString())
+
+    def usage(message: String) =
+        throw new ArgotUsageException(usageString(Some(message)))
 }

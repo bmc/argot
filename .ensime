@@ -6,6 +6,11 @@
 
 :project-package "org.clapper.argot"
 
+:project-name "Argot"
+
 :use-sbt t
 
+:classpath ("lib_managed/scala_2.8.0" 
+            (concat (getenv "SCALA_HOME") "/lib/scala-compiler.jar")
+            (concat (getenv "SCALA_HOME") "/lib/scala-library.jar"))
 )

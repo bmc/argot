@@ -6,7 +6,11 @@ object ArgotTest
     {
         import ArgotConverters._
 
-        val parser = new ArgotParser("test")
+        val parser = new ArgotParser(
+            "test",
+            preUsage=Some("ArgotTest: Version 0.1. Copyright (c) " +
+                          "2010, Brian M. Clapper. Pithy quotes go here.")
+        )
         val iterations = parser.option[Int](List("i", "iterations"), "n",
                                             "Total iterations")
         val sleepTime = parser.option[Int](List("s", "sleep"), "milliseconds",
