@@ -25,8 +25,8 @@ object ArgotTest
             (onOff, opt) =>
 
             val currentValue = opt.value.getOrElse(0)
-            if (onOff) currentValue + 1 else currentValue - 1
-            math.min(0, currentValue)
+            val newValue = if (onOff) currentValue + 1 else currentValue - 1
+            if (newValue < 0) 0 else newValue
         }
 
         val noError = parser.flag[Boolean](List("n", "noerror"),
