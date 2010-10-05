@@ -18,7 +18,8 @@ object ArgotTest
                                            "blah blah blah-de-blah yadda " +
                                            "yadda yadda ya-ya ya blah blah " +
                                            "la-de frickin da")
-        val verbose = parser.flag(List("v", "verbose"), true,
+        val verbose = parser.flag(List("v", "verbose"),
+                                  List("q", "quiet"),
                                   "Enable verbose messages")
         val user = parser.multiOption[String](List("u", "user"), "username",
                                           "Name of user to receive " +

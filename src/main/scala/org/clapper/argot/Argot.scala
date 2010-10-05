@@ -336,7 +336,6 @@ extends CommandLineOption[T] with MultiValueArg[T] with NonFlagOption
  * @param parent      the parent parser instance that owns the option
  * @param namesOn     list of names (short or long) that toggle the value on
  * @param namesOff    list of names (short or long) that toggle the value off
- * @param default     default value
  * @param description textual description of the option
  * @param convert     a function that takes a boolean value and maps it to
  *                    the appropriate value to store as the option's value.
@@ -344,14 +343,13 @@ extends CommandLineOption[T] with MultiValueArg[T] with NonFlagOption
 class FlagOption[T](val parent: ArgotParser,
                     namesOn: List[String],
                     namesOff: List[String],
-                    default: T,
                     val description: String,
                     val convert: (Boolean, FlagOption[T]) => T)
 extends CommandLineOption[T]
 {
     val supportsMultipleValues = false
     val hasValue: Boolean = true
-    var value: T = default
+    var value: Option[T] = None
 
     private val shortNamesOnSet = namesOn.filter(_.length == 1).toSet
     private val shortNamesOffSet = namesOff.filter(_.length == 1).toSet
@@ -368,7 +366,7 @@ extends CommandLineOption[T]
      * The default version calls `convert()` with a `true`, and stores the
      * result in `value`.
      */
-    def set: Unit = value = convert(true, this)
+    def set: Unit = value = Some(convert(true, this))
 
     /**
      * Called when the option to unset (i.e., when one of the "off" names is
@@ -376,7 +374,7 @@ extends CommandLineOption[T]
      * The default version calls `convert()` with a `false` and stores the
      * result in `value`.
      */
-    def clear: Unit = value = convert(false, this)
+    def clear: Unit = value = Some(convert(false, this))
 
     /**
      * Set the value, based on whether the specified option name is an
@@ -392,7 +390,7 @@ extends CommandLineOption[T]
 
         name.length match
         {
-            case 1 => if (shortNamesOnSet contains names(0)) set else clear
+            case 1 => if (shortNamesOnSet contains name) set else clear
             case _ => if (longNamesOnSet contains name) set else clear
         }
     }
@@ -447,16 +445,16 @@ private[argot] trait Parameter[T]
 extends CommandLineArgument[T] with HasValue[T]
 {
     val convert: (String, Parameter[T]) => T
-    val placeholderName: String
+    val valueName: String
     val description: String
     val optional: Boolean
 
-    require (placeholderName.length > 0)
+    require (valueName.length > 0)
 
-    def name = placeholderName
+    def name = valueName
     def convertString(s: String): T = convert(s, this)
-    override def toString = "parameter " + placeholderName
-    protected def key = placeholderName
+    override def toString = "parameter " + valueName
+    protected def key = valueName
 }
 
 /**
@@ -464,19 +462,18 @@ extends CommandLineArgument[T] with HasValue[T]
  *
  * @tparam  the type of the converted parameter value
  *
- * @param parent            the parent parser instance that owns the parameter
- * @param placeholderName   the placeholder name for the parameter's value,
- *                          for the usage message
- * @param description       textual description of the parameter
- * @param optional          whether or not the parameter is optional. Only
- *                          one parameter may be optional, and it must be
- *                          the last one.
- * @param convert           a function that will convert a string value for
- *                          the parameter to an appropriate value of type `T`.
+ * @param parent       the parent parser instance that owns the parameter
+ * @param valueName    the placeholder name for the parameter's value,
+ *                     for the usage message
+ * @param description  textual description of the parameter
+ * @param optional     whether or not the parameter is optional. Only one
+ *                     parameter may be optional, and it must be last one
+ * @param convert      a function that will convert a string value for
+ *                     the parameter to an appropriate value of type `T`.
  */
 class SingleValueParameter[T](
     val parent: ArgotParser,
-    val placeholderName: String,
+    val valueName: String,
     val description: String,
     val optional: Boolean,
     val convert: (String, Parameter[T]) => T)
@@ -489,19 +486,18 @@ extends Parameter[T] with SingleValueArg[T]
  *
  * @tparam  the type of the converted parameter value
  *
- * @param parent            the parent parser instance that owns the parameter
- * @param placeholderName   the placeholder name for the parameter's value,
- *                          for the usage message
- * @param description       textual description of the parameter
- * @param optional          whether or not the parameter is optional. Only
- *                          one parameter may be optional, and it must be
- *                          the last one.
- * @param convert           a function that will convert a string value for
- *                          the parameter to an appropriate value of type `T`.
+ * @param parent       the parent parser instance that owns the parameter
+ * @param valueName    the placeholder name for the parameter's value,
+ *                     for the usage message
+ * @param description  textual description of the parameter
+ * @param optional     whether or not the parameter is optional. Only one
+ *                     parameter may be optional, and it must be the last one.
+ * @param convert      a function that will convert a string value for
+ *                     the parameter to an appropriate value of type `T`.
  */
 class SingleValueParameters[T](
     val parent: ArgotParser,
-    val placeholderName: String,
+    val valueName: String,
     val description: String,
     val optional: Boolean,
     val convert: (String, Parameter[T]) => T)
@@ -859,9 +855,19 @@ object ArgotConverters
  * options, what happens depends on the conversion function.
  *
  * <b>Positional Parameters</b>
- * 
- * Parameters must be defined in the order they are expected to appear
- * on the command line.
+ *
+ * Positional parameters are the parameters following options. They have the
+ * following characteristics.
+ *
+ * <ul>
+ * <li>Like options, they can be typed.
+ * <li>Unlike options, they must be defined in the order they are expected
+ *     to appear on the command line.
+ * <li>The final positional parameter, and only the final parameter,
+ *     can be permitted (by the calling program) to have multiple values.
+ * <li>Positional parameters can be optional, as long as all required
+ *     positional parameters come first.
+ * </ul>
  *
  * ''More to come. For now, see the accompanying `ArgotTest` program*''
  *
@@ -907,6 +913,9 @@ class ArgotParser(programName: String,
      *                    `ArgotConversionException` on conversion error.
      *                    For common types, the implicit functions in the
      *                    `ArgotConverters` module are often suitable.
+     *
+     * @return the `SingleValueOption` object that will contain the
+     *         parsed value, as an `Option[T]` in the `value` field.
      */
     def option[T](names: List[String], valueName: String, description: String)
                  (implicit convert: (String, SingleValueOption[T]) => T):
@@ -938,6 +947,9 @@ class ArgotParser(programName: String,
      *                    `ArgotConversionException` on conversion error.
      *                    For common types, the implicit functions in the
      *                    `ArgotConverters` module are often suitable.
+     *
+     * @return the `SingleValueOption` object that will contain the
+     *         parsed value, as an `Option[T]` in the `value` field.
      */
     def option[T](name: String, valueName: String, description: String)
                  (implicit convert: (String, SingleValueOption[T]) => T):
@@ -966,8 +978,8 @@ class ArgotParser(programName: String,
      *                    For common types, the implicit functions in the
      *                    `ArgotConverters` module are often suitable.
      *
-     * Each string in `names` can be a single character (thus "v" -> "-v")
-     * or more than one character (thus "verbose" -> "--verbose").
+     * @return the `MultiValueOption` object that will contain the
+     *         parsed value(s), as a `Seq[T]` in the `value` field.
      */
     def multiOption[T](names: List[String],
                        valueName: String,
@@ -1003,8 +1015,8 @@ class ArgotParser(programName: String,
      *                    For common types, the implicit functions in the
      *                    `ArgotConverters` module are often suitable.
      *
-     * Each string in `names` can be a single character (thus "v" -> "-v")
-     * or more than one character (thus "verbose" -> "--verbose").
+     * @return the `MultiValueOption` object that will contain the
+     *         parsed value(s), as a `Seq[T]` in the `value` field.
      */
     def multiOption[T](name: String, valueName: String, description: String)
                       (implicit convert: (String, MultiValueOption[T]) => T):
@@ -1047,23 +1059,23 @@ class ArgotParser(programName: String,
      *                    option. Each name can be a single
      *                    character (thus, "v" corresponds to "-v") or
      *                    multiple characters ("verbose" for "--verbose").
-     * @param valueName   a name to use for the associated value in the
-     *                    generated usage message
      * @param description a description for the option, for the usage message
      * @param convert     a function that will convert a boolean on/off value
      *                    to type `T`. The function should throw
      *                    `ArgotConversionException` on conversion error.
-     *                    For a boolean flagoption , the implicit functions in
+     *                    For a boolean flag option , the implicit functions in
      *                    the `ArgotConverters` module are often suitable.
+     *
+     * @return the `FlagOption` object that will contain the
+     *         parsed value, as an `Option[T]` in the `value` field.
      */
     def flag[T](namesOn: List[String],
                 namesOff: List[String],
-                default: T,
                 description: String)
                (implicit convert: (Boolean, FlagOption[T]) => T):
         FlagOption[T] =
     {
-        val opt = new FlagOption[T](this, namesOn, namesOff, default,
+        val opt = new FlagOption[T](this, namesOn, namesOff,
                                     description, convert)
         replaceOption(opt)
         flags += opt
@@ -1097,25 +1109,24 @@ class ArgotParser(programName: String,
      *            the `FlagOption` object's `value` field.
      *
      * @param namesOn     the names for the option that enable (turn on) the
-     *                    option. Each name can be a single
-     *                    character (thus, "v" corresponds to "-v") or
-     *                    multiple characters ("verbose" for "--verbose").
-     * @param valueName   a name to use for the associated value in the
-     *                    generated usage message
+     *                    option. Each name can be a single character (thus,
+     *                    "v" corresponds to "-v") or multiple characters
+     *                    ("verbose" for "--verbose").
      * @param description a description for the option, for the usage message
      * @param convert     a function that will convert a boolean on/off value
      *                    to type `T`. The function should throw
      *                    `ArgotConversionException` on conversion error.
-     *                    For a boolean flagoption , the implicit functions in
+     *                    For a boolean flag option , the implicit functions in
      *                    the `ArgotConverters` module are often suitable.
+     *
+     * @return the `FlagOption` object that will contain the
+     *         parsed value, as an `Option[T]` in the `value` field.
      */
-    def flag[T](namesOn: List[String],
-                default: T,
-                description: String)
+    def flag[T](namesOn: List[String], description: String)
                (implicit convert: (Boolean, FlagOption[T]) => T):
         FlagOption[T] =
     {
-        flag(namesOn, Nil, default, description)(convert)
+        flag(namesOn, Nil, description)(convert)
     }
 
     /**
@@ -1144,37 +1155,55 @@ class ArgotParser(programName: String,
      * @tparam T  the type of the option's value, which will be stored in
      *            the `FlagOption` object's `value` field.
      *
-     * @param nameOn      the name for the option that enables (turns on) the
-     *                    option. The name can be a single
-     *                    character (thus, "v" corresponds to "-v") or
-     *                    multiple characters ("verbose" for "--verbose").
-     * @param valueName   a name to use for the associated value in the
-     *                    generated usage message
+     * @param name        the name for the option that enables (turns on) the
+     *                    option. The name can be a single character (thus,
+     *                    "v" corresponds to "-v") or multiple characters
+     *                    ("verbose" for "--verbose").
      * @param description a description for the option, for the usage message
      * @param convert     a function that will convert a boolean on/off value
      *                    to type `T`. The function should throw
      *                    `ArgotConversionException` on conversion error.
-     *                    For a boolean flagoption , the implicit functions in
+     *                    For a boolean flag option , the implicit functions in
      *                    the `ArgotConverters` module are often suitable.
+     *
+     * @return the `FlagOption` object that will contain the
+     *         parsed value, as an `Option[T]` in the `value` field.
      */
     def flag[T](name: String, default: T, description: String)
                (implicit convert: (Boolean, FlagOption[T]) => T):
         FlagOption[T] =
     {
-        flag[T](List(name), default, description)(convert)
+        flag[T](List(name), description)(convert)
     }
 
     /**
-     * Define a positional parameter.
+     * Define a positional parameter that has a single value. Positional
+     * parameters are parsed from the command line in the order they are
+     * added to the `ArgotParser`. See the class documentation for complete
+     * details.
+     *
+     * @tparam  the type of the converted parameter value
+     *
+     * @param valueName    the placeholder name for the parameter's value,
+     *                     for the usage message
+     * @param description  textual description of the parameter
+     * @param optional     whether or not the parameter is optional. Only one
+     *                     parameter may be optional, and it must be the last
+     *                     one.
+     * @param convert      a function that will convert a string value for
+     *                     the parameter to an appropriate value of type `T`.
+     *                     The function should throw `ArgotConversionException`
+     *                     on conversion error.
+     *
+     * @return the `SingleValueParameter` object will contain the parsed
+     *         value (as an `Option[T]` in the `value` field).
      */
-    def parameter[T](placeholderName: String,
-                     description: String,
-                     optional: Boolean)
+    def parameter[T](valueName: String, description: String, optional: Boolean)
                     (implicit convert: (String, Parameter[T]) => T):
         SingleValueParameter[T] =
     {
         val param = new SingleValueParameter[T](this,
-                                                placeholderName,
+                                                valueName,
                                                 description,
                                                 optional,
                                                 convert)
@@ -1184,14 +1213,34 @@ class ArgotParser(programName: String,
         param
     }
 
-    def parameters[T](placeholderName: String,
-                      description: String,
-                      optional: Boolean)
+    /**
+     * Define a positional parameter that can occur multiple times. Only
+     * one such parameter can exist, and it must be the last parameter
+     * in the command line. See the class documentation for complete
+     * details.
+     *
+     * @tparam  the type of the converted parameter value
+     *
+     * @param valueName    the placeholder name for the parameter's value,
+     *                     for the usage message
+     * @param description  textual description of the parameter
+     * @param optional     whether or not the parameter is optional. Only one
+     *                     parameter may be optional, and it must be the last
+     *                     one.
+     * @param convert      a function that will convert a string value for
+     *                     the parameter to an appropriate value of type `T`.
+     *                     The function should throw `ArgotConversionException`
+     *                     on conversion error.
+     *
+     * @return the `SingleValueParameter` object will contain the parsed
+     *         values (as a `Seq[T]` in the `value` field).
+     */
+    def parameters[T](valueName: String, description: String, optional: Boolean)
                     (implicit convert: (String, Parameter[T]) => T):
         SingleValueParameters[T] =
     {
         val param = new SingleValueParameters[T](this,
-                                                 placeholderName,
+                                                 valueName,
                                                  description,
                                                  optional,
                                                  convert)
@@ -1201,6 +1250,17 @@ class ArgotParser(programName: String,
         param
     }
 
+    /**
+     * Parse the specified array of command-line arguments, according to the
+     * parser's specification. A successful parse sets the various value
+     * objects returned by the specification methods.
+     *
+     * @param args the command line parameters
+     *
+     * @throws ArgotUsageException  user error on the command line; the
+     *                              exception contains the usage message
+     * @throws ArgotException       some other kind of fatal error
+     */
     def parse(args: Array[String])
     {
         def paddedList(l: List[String], total: Int): List[String] =
@@ -1542,7 +1602,7 @@ class ArgotParser(programName: String,
                 throw new ArgotSpecificationError(
                     "Optional parameter \"" + parameters.last.name +
                     "\" cannot be followed by required parameter \"" +
-                    param.placeholderName + "\"")
+                    param.valueName + "\"")
         }
     }
 }
