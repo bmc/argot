@@ -147,6 +147,18 @@ API. An `ArgotParser` embodies a representation of the command line: its
 expected options and their value types, the expected positional parameters
 and their value types, the name of the program, and other values.
 
+Using Argot boils down to creating a command line specification and using it
+to parse a command line. To accomplish that goal you:
+
+* create an `ArgotParser` instance
+* call its `option()`, `multiOption()` and `flag()` methods, to create
+  specifications for the options
+* call its `parameter()` and `multiParameter()` methods to create
+  specifications for the position parameters
+* call its `parse()` method to parse the command line arguments.
+
+Each of these steps is described further, below.
+
 ## Supported Syntax
 
 `ArgotParser` supports GNU-style option parsing, with both long ("--")
@@ -155,32 +167,98 @@ The end of the options list may be signaled via a special "--" argument;
 this argument isn't required, but it's useful if subsequent positional
 parameters start with a "-".
 
+## The *cooltool* Example
+
+<div id="usage"/>
+
+The remainder of this usage section discusses how to build a command-line
+specification and parse it. We'll be creating the specification for a
+fictitious tool called "cooltool", with the following usage (as generated
+by Argot):
+
+    cooltool: Version 1.0
+
+    Usage: cooltool [OPTIONS] outputfile [input] ...
+
+    OPTIONS
+
+    -e emailaddr
+    --email emailaddr  Addresses to email results (May be specified multiple
+                       times.)
+
+    -i n
+    --iterations n     Total iterations
+
+    -n
+    --noerror          Do not abort on error.
+
+    -q
+    --quiet
+    -v
+    --verbose          Increment (-v, --verbose) or decrement (-q, --quiet) the
+                       verbosity level.
+
+    PARAMETERS
+
+    outputfile  Output file to which to write.
+
+    input       Input files to read. If not specified, use stdin. (May be specified
+                multiple times.)
+
+## Creating an `ArgotParser`
+
+The constructor for the `ArgotParser` class takes five parameters, four of
+which are optional:
+
+* `programName`: A required string, specifying the name of the program (since
+  the program name isn't available in the argument array).
+* `compactUsage`: A optional boolean indicating whether the generated usage
+  string should be compacted (i.e., stripped of extra newlines added for
+  readability) or not. Default: `false`
+* `outputWidth`: An integer that specifies the output width, in characters,
+  used for word-wrapping the generated usage string. Default: 79
+* `preUsage`: An `Option[String]`, specifying a message to precede the
+  usage block in the generated usage string. Often, this prefix contains
+  the utility name, version, and copyright. The string is wrapped on word
+  boundaries, just like the usage message. Default: `None`
+* `postUsage`: An `Option[String]`, specifying a message to follow the
+  usage block in the generated usage string. Often, this prefix contains
+  the utility name, version, and copyright. The string is wrapped on word
+  boundaries, just like the usage message. Default: `None`
+  
+For *cooltool*, our `ArgotParser` looks like this:
+
+    import org.clapper.argot._
+
+    val parser = new ArgotParser("cooltool", preUsage=Some("Version 1.0"))
+
+That line of code defines a parser with a prefix message, but no post-usage
+message, using the default output width and a non-compact usage string.
+
 ## Specifying the Options
 
 Options may be specified in any order.
 
-Options have one or more names. Single-character names are assumed to
-be preceded by a single hyphen ("-"); multicharacter names are assumed to
-be preceded by a double hyphen ("--"). Single character names can be
-combined, POSIX-style. For instance, assume that a program called "foo"
-takes the following options:
+Options have one or more names. Single-character names are assumed to be
+preceded by a single hyphen ("-"); multicharacter names are assumed to be
+preceded by a double hyphen ("--"). Single character names can be combined,
+POSIX-style.
 
-* "-f" or "--output" specifies an output file
-* "-v" or "--verbose" specifies that verbose output is required
-* "-n" or "--noerror" specifies that errors are to be ignored
+Given the [*cooltool* usage][], the following command lines are identical:
 
-Given those options, the following command lines are identical:
+    cooltool -v -n -i 10 out
+    cooltool --verbose --noerror --iterations 10 --output out
+    cooltool -nvi10 out
+    cooltool -nv -i10 out
 
-    foo -v -n -f out
-    foo --verbose --noerror --output out
-    foo -nvfout
-    foo -nvf out
+[*cooltool* usage]: #usage
 
 There are three kinds of options:
 
-* Single-value options
-* Multi-value options
-* Flag Options
+* *Single-value options* are options that take only one value.
+* *Multi-value options* are options that can take multiple values.
+* *Flag options* are options that take no values (i.e., the presence or
+  absence of the option itself *is* the value).
 
 Each type of is discussed further, below.
 
@@ -196,6 +274,85 @@ since that can be accomplished via the `Option` class's `getOrElse()`
 method.
 
 Single-value options are defined with the `option()` methods.
+
+For *cooltool*, there is one single-value option:
+
+    -i iterations
+    --iterations iterations
+
+To create this option, use the following code fragment:
+
+    import ArgotConversions._
+
+    val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                        "total iterations")
+
+There are several things to note here:
+
+1. The `option` method takes a type parameter. In this case, we've supplied
+   an `Int`, indicating that we want to convert the value to an `Int`.
+2. The valid names for the option are specified in the initial parameter, a
+   list. The single-character name, "i", corresponds to a "-i" option on the
+   command line. The multicharacter name, "iterations", corresponds to
+   "--iterations".
+
+<div id="conversions"/>
+### Introducting Automatic Conversions
+
+The actual definition of the `option` method is:
+
+    def option[T](names: List[String], valueName: String, description: String)
+                 (implicit convert: (String, SingleValueOption[T]) => T):
+        SingleValueOption[T] =
+
+Note the second parameter list, with the implicit `convert` parameter. This
+parameter specifies a conversion function that will convert the string
+value into the desired type (`Int` in our case). Argot has some pre-defined
+conversion functions for common types, in the
+`org.clapper.argot.ArgotConversions` module. If you pull the contents of
+that module into your namespace, then you don't have to specify a conversion
+function for common types. This import:
+
+    import ArgotConversions._
+    
+makes those built-in implicit conversion functions available.
+
+You *can* supply your own function, however. We could just as easily have
+defined `iterations` like this:
+
+    val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                        "total iterations")
+    {
+        (sValue, opt) =>
+        
+        try
+        {
+            sValue.toInt
+        }
+
+        catch
+        {
+            case _: NumberFormatException =>
+                throw new ArgotConversionException(
+                    "Option " + opt.name + ": \"" + sValue + "\" isn't " +
+                    "a valid number."
+                )
+        }
+    }
+
+That's essentially all the built-in `String`-to-`Int` conversion function
+does.
+
+All the option-specification and parameter-specification methods support
+implicit conversion functions.
+
+Some common reasons to supply your own conversion function include:
+
+* You want to convert the option to a type that isn't supported by the
+  standard Argot conversion functions.
+* You want to do some validation on the value.
+
+We'll see some examples of both of these cases in subsequent sections.
 
 ### Multi-value Options
 
