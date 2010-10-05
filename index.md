@@ -302,3 +302,4 @@ request. Along with any patch you send:
 [Maven]: http://maven.apache.org/
 [changelog]: CHANGELOG.html
 [Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[bmc@clapper.org]: mailto:bmc@clapper.org
