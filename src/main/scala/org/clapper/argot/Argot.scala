@@ -135,6 +135,12 @@ trait HasValue[T] extends CommandLineArgument[T]
     val hasValue: Boolean = true
 
     /**
+     * All options and values with parameters must have a placeholder name
+     * for the value, used in generating the usage message.
+     */
+    val valueName: String
+
+    /**
      * Whether or not the class supports multiple values (e.g., a sequence)
      * or just one.
      */
@@ -261,18 +267,6 @@ trait CommandLineOption[T] extends CommandLineArgument[T]
 }
 
 /**
- * A trait that's mixed into non-flag options.
- */
-trait NonFlagOption
-{
-    /**
-     * All non-flag options have to have a placeholder name for the value,
-     * used in generating the usage message.
-     */
-    val valueName: String
-}
-
-/**
  * Class for an option that takes a single value.
  *
  * @tparam  the type of the converted option value
@@ -290,7 +284,7 @@ class SingleValueOption[T](val parent: ArgotParser,
                            val valueName: String,
                            val description: String,
                            val convert: (String, SingleValueOption[T]) => T)
-extends CommandLineOption[T] with SingleValueArg[T] with NonFlagOption
+extends CommandLineOption[T] with SingleValueArg[T]
 {
     require ((names != Nil) && (! names.exists(_.length == 0)))
 
@@ -317,7 +311,7 @@ class MultiValueOption[T](val parent: ArgotParser,
                           val valueName: String,
                           val description: String,
                           val convert: (String, MultiValueOption[T]) => T)
-extends CommandLineOption[T] with MultiValueArg[T] with NonFlagOption
+extends CommandLineOption[T] with MultiValueArg[T]
 {
     require ((names != Nil) && (! names.exists(_.length == 0)))
 
@@ -445,7 +439,6 @@ private[argot] trait Parameter[T]
 extends CommandLineArgument[T] with HasValue[T]
 {
     val convert: (String, Parameter[T]) => T
-    val valueName: String
     val description: String
     val optional: Boolean
 
@@ -495,7 +488,7 @@ extends Parameter[T] with SingleValueArg[T]
  * @param convert      a function that will convert a string value for
  *                     the parameter to an appropriate value of type `T`.
  */
-class SingleValueParameters[T](
+class MultiValueParameter[T](
     val parent: ArgotParser,
     val valueName: String,
     val description: String,
@@ -892,7 +885,7 @@ class ArgotParser(programName: String,
     protected val shortNameMap = MutableMap.empty[Char, CommandLineOption[_]]
     protected val longNameMap = MutableMap.empty[String, CommandLineOption[_]]
     protected val allOptions = new LinkedHashMap[String, CommandLineOption[_]]
-    protected val nonFlags = new LinkedHashSet[NonFlagOption]
+    protected val nonFlags = new LinkedHashSet[HasValue[_]]
     protected val flags = new LinkedHashSet[FlagOption[_]]
     protected val parameters = new LinkedHashSet[Parameter[_]]
 
@@ -1232,18 +1225,20 @@ class ArgotParser(programName: String,
      *                     The function should throw `ArgotConversionException`
      *                     on conversion error.
      *
-     * @return the `SingleValueParameter` object will contain the parsed
+     * @return the `MultiValueParameter` object will contain the parsed
      *         values (as a `Seq[T]` in the `value` field).
      */
-    def parameters[T](valueName: String, description: String, optional: Boolean)
+    def multiParameter[T](valueName: String,
+                          description: String,
+                          optional: Boolean)
                     (implicit convert: (String, Parameter[T]) => T):
-        SingleValueParameters[T] =
+        MultiValueParameter[T] =
     {
-        val param = new SingleValueParameters[T](this,
-                                                 valueName,
-                                                 description,
-                                                 optional,
-                                                 convert)
+        val param = new MultiValueParameter[T](this,
+                                               valueName,
+                                               description,
+                                               optional,
+                                               convert)
         checkOptionalStatus(param, optional)
         checkForMultiParam(param)
         replaceParameter(param)
@@ -1419,6 +1414,8 @@ class ArgotParser(programName: String,
         import grizzled.math.{util => MathUtil}
         import grizzled.string.WordWrapper
 
+        val SPACES_BETWEEN = 2  // spaces between arg name and description
+
         def paramString(p: Parameter[_]): String =
             if (p.optional) "[" + p.name + "]" else p.name
 
@@ -1428,9 +1425,9 @@ class ArgotParser(programName: String,
 
             opt match
             {
-                case ov: SingleValueOption[_] =>
+                case ov: HasValue[_] =>
                     hyphen + name + " " + ov.valueName
-                case _                      =>
+                case _ =>
                     hyphen + name
             }
         }
@@ -1449,6 +1446,7 @@ class ArgotParser(programName: String,
 
         val buf = new StringBuilder
         val wrapper = new WordWrapper(wrapWidth=outputWidth)
+
         message.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
         preUsage.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
         buf.append("Usage: " + programName)
@@ -1461,8 +1459,8 @@ class ArgotParser(programName: String,
             buf.append(
                 p match
                 {
-                    case _: SingleValueParameter[_]  => paramString(p)
-                    case _: SingleValueParameters[_] => paramString(p) + " ..."
+                    case _: SingleValueParameter[_] => paramString(p)
+                    case _: MultiValueParameter[_]  => paramString(p) + " ..."
                 }
             )
         }
@@ -1480,7 +1478,7 @@ class ArgotParser(programName: String,
                 buf.append(optString(name, opt) + "\n")
             val name = sorted.takeRight(1)(0)
             val os = optString(name, opt)
-            val padding = (maxOptLen - os.length) + 1 // allow for space
+            val padding = (maxOptLen - os.length) + SPACES_BETWEEN
             val prefix = os + (" " * padding)
             val wrapper = new WordWrapper(prefix=prefix,
                                           wrapWidth=outputWidth)
@@ -1488,8 +1486,7 @@ class ArgotParser(programName: String,
             {
                 case o: HasValue[_] =>
                     if (o.supportsMultipleValues)
-                        o.description +
-                " (May be specified multiple times.)"
+                        o.description + " (May be specified multiple times.)"
                     else
                         o.description
 
@@ -1501,11 +1498,41 @@ class ArgotParser(programName: String,
             buf.append("\n")
         }
 
+        def handleOneParameter(p: Parameter[_], maxNameLen: Int) =
+        {
+            if (! compactUsage)
+                buf.append('\n')
+
+            val padding = (maxNameLen - p.name.length) + SPACES_BETWEEN
+            val prefix = p.name + (" " * padding)
+            val wrapper = new WordWrapper(prefix=prefix, wrapWidth=outputWidth)
+            val desc = p match
+            {
+                case o: HasValue[_] =>
+                    if (o.supportsMultipleValues)
+                        o.description + " (May be specified multiple times.)"
+                    else
+                        o.description
+
+                case _ =>
+                    p.description
+            }
+
+            buf.append(wrapper.wrap(desc))
+            buf.append('\n')
+        }
+
         if (allOptions.size > 0)
         {
-            buf.append('\n')
-            buf.append("OPTIONS\n")
+            buf.append("\nOPTIONS\n")
             allOptions.keySet.toList.sortWith(_ < _).foreach(handleOneOption)
+        }
+
+        if (parameters.size > 0)
+        {
+            buf.append("\nPARAMETERS\n")
+            val maxNameLen = mmax(parameters.map(_.name.length).toList: _*)
+            parameters.toList.foreach(handleOneParameter(_, maxNameLen))
         }
 
         postUsage.foreach(s => buf.append(wrapper.wrap(s) + "\n"))
@@ -1555,7 +1582,7 @@ class ArgotParser(programName: String,
                 case Nil =>
                     Nil
 
-                case (p: SingleValueParameters[_]) :: tail =>
+                case (p: MultiValueParameter[_]) :: tail =>
                     if (a.length == 0)
                         checkMissing(paramSpecs)
                     else
@@ -1582,7 +1609,7 @@ class ArgotParser(programName: String,
         {
             parameters last match
             {
-                case p: SingleValueParameters[_] =>
+                case p: MultiValueParameter[_] =>
                     throw new ArgotSpecificationError(
                         "Multi-parameter \"" + p.name + "\" must be the last " +
                         "parameter in the specification."
