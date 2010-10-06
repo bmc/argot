@@ -159,11 +159,11 @@ trait HasValue[T] extends CommandLineArgument[T]
     def convertString(s: String): T
 
     /**
-     * Store a converted value.
+     * Store the value.
      *
      * @param v  the value, of type `T`
      */
-    def storeValue(v: T): Unit
+    private[argot] def storeValue(v: T): Unit
 
     /**
      * Given a string value, convert the value to type `T` by calling
@@ -189,12 +189,18 @@ trait HasValue[T] extends CommandLineArgument[T]
  */
 trait SingleValueArg[T] extends HasValue[T]
 {
-    val supportsMultipleValues = false
-    var value: Option[T] = None
+    private var optValue: Option[T] = None
 
-    def get = value.get
-    def getOrElse(default: T) = value.getOrElse(default)
-    def storeValue(v: T): Unit = value = Some(v)
+    val supportsMultipleValues = false
+
+    /**
+     * Get the option's value.
+     *
+     * @return `Some(value)` if the value is set; `None` if not.
+     */
+    def value: Option[T] = optValue
+
+    private[argot] def storeValue(v: T) = optValue = Some(v)
 }
 
 /**
@@ -214,10 +220,16 @@ trait SingleValueArg[T] extends HasValue[T]
 trait MultiValueArg[T] extends HasValue[T]
 {
     val supportsMultipleValues = true
-    var value: Seq[T] = Seq.empty[T]
+    var optValue: Seq[T] = Seq.empty[T]
 
-    def get = value
-    def storeValue(v: T): Unit = value = value.toList ::: List(v)
+    /**
+     * Get the option's value(s).
+     *
+     * @return a sequence of option values, or `Nil` if none were present.
+     */
+    def value: Seq[T] = optValue
+
+    private[argot] def storeValue(v: T) = optValue = optValue.toList ::: List(v)
 }
 
 /**
@@ -914,6 +926,8 @@ class ArgotParser(programName: String,
                  (implicit convert: (String, SingleValueOption[T]) => T):
         SingleValueOption[T] =
     {
+        names.foreach(checkOptionName)
+
         val opt = new SingleValueOption[T](this, names, valueName, description,
                                          convert)
         replaceOption(opt)
@@ -980,6 +994,8 @@ class ArgotParser(programName: String,
                       (implicit convert: (String, MultiValueOption[T]) => T):
         MultiValueOption[T] =
     {
+        names.foreach(checkOptionName)
+
         val opt = new MultiValueOption[T](this, names,
                                           valueName, description, convert)
         replaceOption(opt)
@@ -1068,6 +1084,9 @@ class ArgotParser(programName: String,
                (implicit convert: (Boolean, FlagOption[T]) => T):
         FlagOption[T] =
     {
+        namesOn.foreach(checkOptionName)
+        namesOff.foreach(checkOptionName)
+
         val opt = new FlagOption[T](this, namesOn, namesOff,
                                     description, convert)
         replaceOption(opt)
@@ -1601,6 +1620,21 @@ class ArgotParser(programName: String,
         }
 
         parseNext(a, parameters.toList)
+    }
+
+    private def checkOptionName(name: String) =
+    {
+        name.toList match
+        {
+            case '-' :: tail =>
+                throw new ArgotSpecificationError(
+                    "Option name \"" + name + "\" must not start with \"-\"."
+                )
+            case Nil =>
+                throw new ArgotSpecificationError("Empty option name.")
+
+            case _ =>
+        }
     }
 
     private def checkForMultiParam(param: Parameter[_]) =
