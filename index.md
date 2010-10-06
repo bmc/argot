@@ -183,14 +183,19 @@ by Argot):
     OPTIONS
 
     -e emailaddr
-    --email emailaddr  Addresses to email results (May be specified multiple
-                       times.)
+    -e emailaddr
+    --email emailaddr  Address to receive emailed results (May be specified
+                       multiple times.)
 
     -i n
     --iterations n     Total iterations
 
     -n
     --noerror          Do not abort on error.
+
+    -u username
+    --user username    User to receive email. Email address is queried from
+                       database. (May be specified multiple times.)
 
     -q
     --quiet
@@ -265,15 +270,15 @@ Each type of is discussed further, below.
 ### Single-value Options
 
 A single-value option is one that takes a single value. The first
-occurrence of the option on the command line sets the value. Any
-subsequent occurrences replace the previously set values. The option's
-value is stored in a `Option[T]`. If the option isn't specified on the
-command line, its value will be `None`. Otherwise, it'll be set to
-`Some(value)`. There's no provision for assigning a default value,
-since that can be accomplished via the `Option` class's `getOrElse()`
-method.
+occurrence of the option on the command line sets the value. Any subsequent
+occurrences replace the previously set values.
 
-Single-value options are defined with the `option()` methods.
+Single-value options are defined with the `option()` methods, which return
+a typed instance of the `SingleValueOption` class. The `SingleValueOption`
+object contains a `value` field, of type `Option[T]`. If the option doesn't
+appear on the command line, `value` will be `None`. Otherwise, it'll be set
+to `Some(value)`. There's no provision for assigning a default value, since
+that can be accomplished via the `Option` class's `getOrElse()` method.
 
 For *cooltool*, there is one single-value option:
 
@@ -340,7 +345,7 @@ defined `iterations` like this:
         }
     }
 
-That's essentially all the built-in `String`-to-`Int` conversion function
+That's essentially what the built-in `String`-to-`Int` conversion function
 does.
 
 All the option-specification and parameter-specification methods support
@@ -356,14 +361,45 @@ We'll see some examples of both of these cases in subsequent sections.
 
 ### Multi-value Options
 
-A multi-value option is one that takes a single value, but can appear
-multiple times on the command line, with each occurrence adding its
-value to the list of already accumulated values for the option. The
-values are stored in a Scala sequence. Each occurrence of the option on
-the command line adds the associated value to the sequence. If the
-option never appears on the command line, its value will be an empty list.
+A multi-value option is one that takes a single value, but if it appears
+multiple times on the command line, each occurrence adds its value to the
+list of already accumulated values for the option. The values are stored in
+a Scala sequence. Each occurrence of the option on the command line adds
+the associated value to the sequence. If the option never appears on the
+command line, its value will be an empty list.
 
-Multi-value options are defined with the `multiOption()` methods.
+Multi-value options are defined with the `multiOption()` methods, which a
+typed instance of the `MultiValueOption` class. The `MultiValueOption`
+object contains a `value` field, of type `Seq[T]`. If the option doesn't
+appear on the command line, `value` will be `Nil`. Otherwise, it will
+contain all the values that were present for each invocation of the option
+on the command line. There's no provision for assigning a default value.
+
+For *cooltool*, there are two multi-value options: `--email` and `--user`.
+One takes a string and can use the default conversion function. The other
+takes an email address and supplies its own conversion function, to check
+the validity of the supplied parameter. The code for each is shown below:
+
+    val users = parser.multiOption[String](List("u", "user"), "username",
+                                           "User to receive email. Email " +
+                                           "address is queried from " +
+                                           "database.")
+
+    val email = parser.multiOption[String](List("e", "email"), "emailaddr",
+                                           "Address to receive emailed " +
+                                           "results.")
+    {
+        (s, opt) =>
+
+        val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
+        ValidAddress.findFirstIn(s) match
+        {
+            case None    => parser.usage("Bad email address \"" + s +
+                                         "\" for " + opt.name + " option.")
+            case Some(_) => s
+        }
+    }
+
 
 ### Flag Options
 
@@ -376,7 +412,33 @@ Flag options permit you to segregate the option names into *on* names and
 `true`, and the *off* names set the value to values. With typed flag
 options, what happens depends on the conversion function.
 
-### Positional Parameters
+*cooltool* has two flag options. The `--noerror` option is a simple boolean
+flag; specify `--noerror` (or `-n`), and the flag is set to `true`. Otherwise,
+the flag is unset. The verbosity flag option, however, is an integer. Specify
+`-v` or `--verbose`, and the verbosity level gets incremented; specify `-q`
+or `--quiet`, and the verbosity level gets decremented.
+
+The code for both options follows:
+
+    val noError = parser.flag[Boolean](List("n", "noerror"),
+                                       "Do not abort on error.")
+
+    val verbose = parser.flag[Int](List("v", "verbose"),
+                                   List("q", "quiet"),
+                                   "Increment (-v, --verbose) or " +
+                                   "decrement (-q, --quiet) the " +
+                                   "verbosity level.")
+    {
+        (onOff, opt) =>
+
+        import scala.math
+
+        val currentValue = opt.value.getOrElse(0)
+        val newValue = if (onOff) currentValue + 1 else currentValue - 1
+        math.max(0, newValue)
+    }
+
+## Positional Parameters
 
 Positional parameters are the parameters following options. They have the
 following characteristics.
@@ -389,29 +451,131 @@ following characteristics.
 * Positional parameters can be optional, as long as all required
   positional parameters come first.
 
+*cooltool* has two position parameters.
 
-*more coming*
+* `output` is a required string and comes first. Since it's a string, the
+  code can use the default conversion function.
+* `input` is optional and may be specified multiple times; it represents
+  input files to be read. We want to verify that each input file exists,
+  so the parameter type is `File` and a custom conversion function verifies
+  that each file exists.
 
-## Author
+Here's the code for each parameter:
 
-Brian M. Clapper, [bmc@clapper.org][]
+    val output = parser.parameter[String]("outputfile",
+                                          "Output file to which to write.",
+                                          false)
 
-## Copyright and License
+    val input = parser.multiParameter[File]("input",
+                                            "Input files to read. If not " +
+                                            "specified, use stdin.",
+                                            true)
+    {
+        (s, opt) =>
 
-The Grizzled Scala Library is copyright &copy; 2009-2010 Brian M. Clapper
-and is released under a [BSD License][].
+        val file = new File(s)
+        if (! file.exists)
+            parser.usage("Input file \"" + s + "\" does not exist.")
 
-## Patches
+        file
+    }
 
-I gladly accept patches from their original authors. Feel free to email
-patches to me or to fork the [GitHub repository][] and send me a pull
-request. Along with any patch you send:
+## Putting It All Together
 
-* Please state that the patch is your original work.
-* Please indicate that you license the work to the PROJECT project
-  under a [BSD License][].
+The entire main program for *cooltool* looks like this:
 
-[downloads area]: http://github.com/bmc/PROJECT/downloads
+    package org.clapper.argot
+    import java.io.File
+    import scala.math
+
+    object CoolTool
+    {
+        // Argument specifications
+
+        import ArgotConverters._
+
+        val parser = new ArgotParser(
+            "test",
+            preUsage=Some("ArgotTest: Version 0.1. Copyright (c) " +
+                          "2010, Brian M. Clapper. Pithy quotes go here.")
+        )
+
+        val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                            "Total iterations")
+        val verbose = parser.flag[Int](List("v", "verbose"),
+                                       List("q", "quiet"),
+                                       "Increment (-v, --verbose) or " +
+                                       "decrement (-q, --quiet) the " +
+                                       "verbosity level.")
+        {
+            (onOff, opt) =>
+
+            import scala.math
+
+            val currentValue = opt.value.getOrElse(0)
+            val newValue = if (onOff) currentValue + 1 else currentValue - 1
+            math.max(0, newValue)
+        }
+
+        val noError = parser.flag[Boolean](List("n", "noerror"),
+                                           "Do not abort on error.")
+        val users = parser.multiOption[String](List("u", "user"), "username",
+                                               "User to receive email. Email " +
+                                               "address is queried from " +
+                                               "database.")
+
+        val email = parser.multiOption[String](List("e", "email"), "emailaddr",
+                                               "Address to receive emailed " +
+                                               "results.")
+        {
+            (s, opt) =>
+
+            val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
+            ValidAddress.findFirstIn(s) match
+            {
+                case None    => parser.usage("Bad email address \"" + s +
+                                             "\" for " + opt.name + " option.")
+                case Some(_) => s
+            }
+        }
+
+        val output = parser.parameter[String]("outputfile",
+                                              "Output file to which to write.",
+                                              false)
+
+        val input = parser.multiParameter[File]("input",
+                                                "Input files to read. If not " +
+                                                "specified, use stdin.",
+                                                true)
+        {
+            (s, opt) =>
+
+            val file = new File(s)
+            if (! file.exists)
+                parser.usage("Input file \"" + s + "\" does not exist.")
+
+            file
+        }
+
+        // Main program
+
+        def main(args: Array[String])
+        {
+
+
+            try
+            {
+                parser.parse(args)
+                runCoolTool
+            }
+
+            catch
+            {
+                case e: ArgotUsageException => println(e.message)
+            }
+        }
+    }
+
 
 ## API Documentation
 
