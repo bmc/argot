@@ -80,6 +80,12 @@ trait CommandLineArgument[T]
     def name: String
 
     /**
+     * Resets the internal state of the argument to what it was right
+     * after construction, undoing the effects of any parse operation.
+     */
+    def reset(): Unit
+
+    /**
      * The standard `equals()` method.
      *
      * @param o  some other object
@@ -193,6 +199,8 @@ trait SingleValueArg[T] extends HasValue[T]
 
     val supportsMultipleValues = false
 
+    def reset() = optValue = None
+
     /**
      * Get the option's value.
      *
@@ -221,6 +229,8 @@ trait MultiValueArg[T] extends HasValue[T]
 {
     val supportsMultipleValues = true
     var optValue: Seq[T] = Seq.empty[T]
+
+    def reset() = optValue = Seq.empty[T]
 
     /**
      * Get the option's value(s).
@@ -355,8 +365,8 @@ extends CommandLineOption[T]
 {
     val supportsMultipleValues = false
     val hasValue: Boolean = true
-    var value: Option[T] = None
 
+    private var flagValue: Option[T] = None
     private val shortNamesOnSet = namesOn.filter(_.length == 1).toSet
     private val shortNamesOffSet = namesOff.filter(_.length == 1).toSet
     private val longNamesOnSet = namesOn.filter(_.length > 1).toSet
@@ -366,13 +376,19 @@ extends CommandLineOption[T]
 
     val names = namesOn ::: namesOff
 
+    def reset() = flagValue = None
+
+    def value = flagValue
+
+    private[argot] def value_(v: Option[T]): Unit = flagValue = v
+
     /**
      * Called when the option is set (i.e., when one of the "on" names is
      * seen on the command line). Subclasses may override this method.
      * The default version calls `convert()` with a `true`, and stores the
      * result in `value`.
      */
-    def set: Unit = value = Some(convert(true, this))
+    def set: Unit = flagValue = Some(convert(true, this))
 
     /**
      * Called when the option to unset (i.e., when one of the "off" names is
@@ -380,7 +396,7 @@ extends CommandLineOption[T]
      * The default version calls `convert()` with a `false` and stores the
      * result in `value`.
      */
-    def clear: Unit = value = Some(convert(false, this))
+    def clear: Unit = flagValue = Some(convert(false, this))
 
     /**
      * Set the value, based on whether the specified option name is an
@@ -809,6 +825,16 @@ class ArgotParser(programName: String,
     protected val nonFlags = new LinkedHashSet[HasValue[_]]
     protected val flags = new LinkedHashSet[FlagOption[_]]
     protected val parameters = new LinkedHashSet[Parameter[_]]
+
+    /**
+     * Resets the internal state of all contained options and parameters,
+     * undoing the effects of any parse operation.
+     */
+    def reset() =
+    {
+        allOptions.values.foreach(_.reset())
+        parameters.foreach(_.reset())
+    }
 
     /**
      * Define an option that takes a single value of type `T`.
