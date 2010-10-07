@@ -385,9 +385,9 @@ the validity of the supplied parameter. The code for each is shown below:
                                            "address is queried from " +
                                            "database.")
 
-    val email = parser.multiOption[String](List("e", "email"), "emailaddr",
-                                           "Address to receive emailed " +
-                                           "results.")
+    val emails = parser.multiOption[String](List("e", "email"), "emailaddr",
+                                            "Address to receive emailed " +
+                                            "results.")
     {
         (s, opt) =>
 
@@ -576,6 +576,22 @@ The entire main program for *cooltool* looks like this:
         }
     }
 
+## Resetting the Parser
+
+If you want to re-use the same `ArgotParser`, you must must reset of of
+its parameter and option values, clearing them; otherwise, they will retain
+the parsed values from the previous parse. The `ArgotParser` class provides
+a convenient way to reset everything:
+
+    val p = new ArgotParser(...)
+
+    ...
+
+    p.parse(args)
+
+    ...
+
+    p.reset()  // resets all internal state
 
 ## API Documentation
 
