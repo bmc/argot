@@ -1,0 +1,1016 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.clapper.argot.ArgotParser</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+          
+      <link href="../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="type">
+
+      <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.clapper">clapper</a>.<a href="package.html" class="extype" name="org.clapper.argot">argot</a></p>
+
+      <div id="definition">
+        <img src="../../../lib/class_big.png" />
+        <h1>ArgotParser</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ArgotParser</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"><div class="comment cmt"><p><code>ArgotParser</code> is a command-line parser, with support for single-value and
+multi-value options, single-value and multi-value parameters, typed value,
+custom conversions (with suitable defaults), and extensibility.</p><p>An <code>ArgotParser</code> embodies a representation of the command line: its
+expected options and their value types, the expected positional
+parameters and their value types, the name of the program, and other
+values.</p><p>For complete details, see the Argot web site (linked below).
+</p></div><div class="block">
+            go to: <a href="ArgotParser$.html">companion</a>
+          </div>
+            
+            
+            <div class="block"><ol>see also:
+                  <li><p><a href="http://bmc.github.com/argot/" target="argot">the Argot web site</a></p></li>
+                </ol></div>
+            
+          </div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="ancestors">
+                <span class="filtertype">Inherited</span>
+                <ol><li class="hideall">Hide All</li><li class="showall">Show all</li></ol>
+                <ol id="linearization"><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
+              </div>
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+        <div class="members" id="constructors">
+              <h3>Instance constructors</h3>
+              <ol><li visbl="pub" name="org.clapper.argot.ArgotParser#this">
+      <h4 class="signature">
+      <span class="kind">new</span>
+      <span class="symbol">
+        <span class="name">ArgotParser</span><span class="params">(<span name="programName">programName: <span class="extype" name="java.lang.String">String</span></span>, <span name="compactUsage">compactUsage: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="default">false</span></span>, <span name="outputWidth">outputWidth: <span class="extype" name="scala.Int">Int</span> = <span class="default">79</span></span>, <span name="preUsage">preUsage: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>] = <span class="default">scala.None</span></span>, <span name="postUsage">postUsage: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>] = <span class="default">scala.None</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>        
+        
+        
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.Any#!=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the receiver object is equivalent to the argument; <code>true</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef###">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef → Any
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#$asInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">$asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#$isInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">$isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#==">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.Any#==">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#allOptions">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">allOptions</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashMap">LinkedHashMap</span>[<span class="extype" name="java.lang.String">String</span>, org.clapper.argot.CommandLineOption[_]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.Any#asInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to cast the receiver object to be of type <code>T0</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to cast the receiver object to be of type <code>T0</code>.</p><p>Note that the success of a cast at runtime is modulo Scala's erasure semantics.  Therefore the expression<code>1.asInstanceOf[String]</code> will throw a <code>ClassCastException</code> at runtime, while the expression<code>List(1).asInstanceOf[List[String]]</code> will not.  In the latter example, because the type argument is erased as
+part of compilation it is not possible to check whether the contents of the list are of the requested typed.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the receiver object.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="scala.AnyRef#clone">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method creates and returns a copy of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method creates and returns a copy of the receiver object.</p><p>The default implementation of the <code>clone</code> method is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the receiver object.</p></dd></dl><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#eq">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to test whether the argument (<code>arg0</code>) is a reference to the
+receiver object (<code>this</code>).</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to test whether the argument (<code>arg0</code>) is a reference to the
+receiver object (<code>this</code>).</p><p>The <code>eq</code> method implements an [http://en.wikipedia.org/wiki/Equivalence_relation equivalence relation] on
+non-null instances of <code>AnyRef</code>:
+ * It is reflexive: for any non-null instance <code>x</code> of type <code>AnyRef</code>, <code>x.eq(x)</code> returns <code>true</code>.
+ * It is symmetric: for any non-null instances <code>x</code> and <code>y</code> of type <code>AnyRef</code>, <code>x.eq(y)</code> returns <code>true</code> if and
+   only if <code>y.eq(x)</code> returns <code>true</code>.
+ * It is transitive: for any non-null instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.eq(y)</code> returns <code>true</code>   and <code>y.eq(z)</code> returns <code>true</code>, then <code>x.eq(z)</code> returns <code>true</code>.</p><p>Additionally, the <code>eq</code> method has three other properties.
+ * It is consistent: for any non-null instances <code>x</code> and <code>y</code> of type <code>AnyRef</code>, multiple invocations of
+   <code>x.eq(y)</code> consistently returns <code>true</code> or consistently returns <code>false</code>.
+ * For any non-null instance <code>x</code> of type <code>AnyRef</code>, <code>x.eq(null)</code> and <code>null.eq(x)</code> returns <code>false</code>.
+ * <code>null.eq(null)</code> returns <code>true</code>.</p><p>When overriding the <code>equals</code> or <code>hashCode</code> methods, it is important to ensure that their behavior is
+consistent with reference equality.  Therefore, if two objects are references to each other (<code>o1 eq o2</code>), they
+should be equal to each other (<code>o1 == o2</code>) and they should hash to the same value (<code>o1.hashCode == o2.hashCode</code>).
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the argument is a reference to the receiver object; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#equals">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to compare the receiver object (<code>this</code>) with the argument object (<code>arg0</code>) for equivalence.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to compare the receiver object (<code>this</code>) with the argument object (<code>arg0</code>) for equivalence.</p><p>The default implementations of this method is an [http://en.wikipedia.org/wiki/Equivalence_relation equivalence
+relation]:
+ * It is reflexive: for any instance <code>x</code> of type <code>Any</code>, <code>x.equals(x)</code> should return <code>true</code>.
+ * It is symmetric: for any instances <code>x</code> and <code>y</code> of type <code>Any</code>, <code>x.equals(y)</code> should return <code>true</code> if and
+   only if <code>y.equals(x)</code> returns <code>true</code>.
+ * It is transitive: for any instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.equals(y)</code> returns <code>true</code> and
+   <code>y.equals(z)</code> returns <code>true</code>, then <code>x.equals(z)</code> should return <code>true</code>.</p><p>If you override this method, you should verify that your implementation remains an equivalence relation.
+Additionally, when overriding this method it is often necessary to override <code>hashCode</code> to ensure that objects
+that are &quot;equal&quot; (<code>o1.equals(o2)</code> returns <code>true</code>) hash to the same 
+scala.Int
+(<code>o1.hashCode.equals(o2.hashCode)</code>).
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="scala.AnyRef#finalize">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is called by the garbage collector on the receiver object when garbage collection determines that
+there are no more references to the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is called by the garbage collector on the receiver object when garbage collection determines that
+there are no more references to the object.</p><p>The details of when and if the <code>finalize</code> method are invoked, as well as the interaction between <code>finalize</code>and non-local returns and exceptions, are all platform dependent.</p></div><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#flag">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">flag</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="default">default: T</span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define a flag option.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define a flag option. Flag options take no value parameters.
+Instead, a flag option is simply present or absent. Typically, flag
+options are associated with boolean value, though Argot will permit
+you to associate them with any type you choose.</p><p>Flag options permit you to segregate the option names into <i>on</i>names and <i>off</i> names. With boolean flag options, the <i>on</i> names
+set the value to <code>true</code>, and the <i>off</i> names set the value to
+values. With typed flag options, what happens depends on the
+conversion function. Whatever the conversion function returns gets
+stored as the option's value.</p><p>Flag conversion functions receive a boolean parameter, indicating
+whether an <i>on</i> option was seen (<code>true</code>) or an <i>off</i> option was
+seen (<code>false</code>). The built-in conversion functions for boolean flags
+simply return the value of the boolean, which is then stored in the
+(Boolean) flag option's value. However, it's perfectly reasonable
+to have flag options with other types. For instance, one could easily
+define a &quot;Verbosity&quot; flag option of type <code>Int</code>, where each <i>on</i>option increments the verbosity level and each <i>off</i> option decrements
+the value.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which will be stored in
+           the <code>FlagOption</code> object's <code>value</code> field.
+</p></dd><dt class="param">name</dt><dd class="cmt"><p>the name for the option that enables (turns on) the
+                   option. The name can be a single character (thus,
+                   &quot;v&quot; corresponds to &quot;-v&quot;) or multiple characters
+                   (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a boolean on/off value
+                   to type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For a boolean flag option , the implicit functions in
+                   the <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>FlagOption</code> object that will contain the
+        parsed value, as an <code>Option[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#flag">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">flag</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="namesOn">namesOn: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define a flag option.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define a flag option. Flag options take no value parameters.
+Instead, a flag option is simply present or absent. Typically, flag
+options are associated with boolean value, though Argot will permit
+you to associate them with any type you choose.</p><p>Flag options permit you to segregate the option names into <i>on</i>names and <i>off</i> names. With boolean flag options, the <i>on</i> names
+set the value to <code>true</code>, and the <i>off</i> names set the value to
+values. With typed flag options, what happens depends on the
+conversion function. Whatever the conversion function returns gets
+stored as the option's value.</p><p>Flag conversion functions receive a boolean parameter, indicating
+whether an <i>on</i> option was seen (<code>true</code>) or an <i>off</i> option was
+seen (<code>false</code>). The built-in conversion functions for boolean flags
+simply return the value of the boolean, which is then stored in the
+(Boolean) flag option's value. However, it's perfectly reasonable
+to have flag options with other types. For instance, one could easily
+define a &quot;Verbosity&quot; flag option of type <code>Int</code>, where each <i>on</i>option increments the verbosity level and each <i>off</i> option decrements
+the value.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which will be stored in
+           the <code>FlagOption</code> object's <code>value</code> field.
+</p></dd><dt class="param">namesOn</dt><dd class="cmt"><p>the names for the option that enable (turn on) the
+                   option. Each name can be a single character (thus,
+                   &quot;v&quot; corresponds to &quot;-v&quot;) or multiple characters
+                   (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a boolean on/off value
+                   to type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For a boolean flag option , the implicit functions in
+                   the <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>FlagOption</code> object that will contain the
+        parsed value, as an <code>Option[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#flag">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">flag</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="namesOn">namesOn: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="namesOff">namesOff: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define a flag option.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define a flag option. Flag options take no value parameters.
+Instead, a flag option is simply present or absent. Typically, flag
+options are associated with boolean value, though Argot will permit
+you to associate them with any type you choose.</p><p>Flag options permit you to segregate the option names into <i>on</i>names and <i>off</i> names. With boolean flag options, the <i>on</i> names
+set the value to <code>true</code>, and the <i>off</i> names set the value to
+values. With typed flag options, what happens depends on the
+conversion function. Whatever the conversion function returns gets
+stored as the option's value.</p><p>Flag conversion functions receive a boolean parameter, indicating
+whether an <i>on</i> option was seen (<code>true</code>) or an <i>off</i> option was
+seen (<code>false</code>). The built-in conversion functions for boolean flags
+simply return the value of the boolean, which is then stored in the
+(Boolean) flag option's value. However, it's perfectly reasonable
+to have flag options with other types. For instance, one could easily
+define a &quot;Verbosity&quot; flag option of type <code>Int</code>, where each <i>on</i>option increments the verbosity level and each <i>off</i> option decrements
+the value.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which will be stored in
+           the <code>FlagOption</code> object's <code>value</code> field.
+</p></dd><dt class="param">namesOn</dt><dd class="cmt"><p>the names for the option that enable (turn on) the
+                   option. Each name can be a single
+                   character (thus, &quot;v&quot; corresponds to &quot;-v&quot;) or
+                   multiple characters (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">namesOff</dt><dd class="cmt"><p>the names for the option that disable (turn off) the
+                   option. Each name can be a single
+                   character (thus, &quot;v&quot; corresponds to &quot;-v&quot;) or
+                   multiple characters (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a boolean on/off value
+                   to type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For a boolean flag option , the implicit functions in
+                   the <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>FlagOption</code> object that will contain the
+        parsed value, as an <code>Option[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#flags">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">flags</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.FlagOption[_]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#getClass">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a representation that corresponds to the dynamic class of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a representation that corresponds to the dynamic class of the receiver object.</p><p>The nature of the representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation that corresponds to the dynamic class of the receiver object.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#hashCode">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a hash code value for the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a hash code value for the object.</p><p>The default hashing algorithm is platform dependent.</p><p>Note that it is allowed for two objects to have identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>) yet
+not be equal (<code>o1.equals(o2)</code> returns <code>false</code>).  A degenerate implementation could always return <code>0</code>.
+However, it is required that if two objects are equal (<code>o1.equals(o2)</code> returns <code>true</code>) that they have
+identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>).  Therefore, when overriding this method, be sure
+to verify that the behavior is consistent with the <code>equals</code> method.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the hash code value for the object.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.Any#isInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to test whether the dynamic type of the receiver object is <code>T0</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to test whether the dynamic type of the receiver object is <code>T0</code>.</p><p>Note that the test result of the test is modulo Scala's erasure semantics.  Therefore the expression<code>1.isInstanceOf[String]</code> will return <code>false</code>, while the expression <code>List(1).isInstanceOf[List[String]]</code> will
+return <code>true</code>.  In the latter example, because the type argument is erased as part of compilation it is not
+possible to check whether the contents of the list are of the requested typed.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is an instance of erasure of type <code>T0</code>; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#longNameMap">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">longNameMap</span><span class="result">: <span class="extype" name="scala.collection.mutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, org.clapper.argot.CommandLineOption[_]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#multiOption">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">multiOption</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define an option that takes a sequence of values of type <code>T</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define an option that takes a sequence of values of type <code>T</code>. Each
+invocation of the option on the command line contributes a new value
+to the sequence. This short-hand method provides only one option
+name, as opposed to a list of option names.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which added to the
+           the <code>MultiValueOption</code> object's <code>value</code> sequence field.
+</p></dd><dt class="param">name</dt><dd class="cmt"><p>the name for the option. The name can be a single
+                   character (thus, &quot;v&quot; corresponds to &quot;-v&quot;) or
+                   multiple characters (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">valueName</dt><dd class="cmt"><p>a name to use for the associated value in the
+                   generated usage message</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a string value into
+                   type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For common types, the implicit functions in the
+                   <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>MultiValueOption</code> object that will contain the
+        parsed value(s), as a <code>Seq[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#multiOption">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">multiOption</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="names">names: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define an option that takes a sequence of values of type <code>T</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define an option that takes a sequence of values of type <code>T</code>. Each
+invocation of the option on the command line contributes a new value
+to the sequence.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which added to the
+           the <code>MultiValueOption</code> object's <code>value</code> sequence field.
+</p></dd><dt class="param">names</dt><dd class="cmt"><p>the list of names for the option. Each name can be
+                   a single character (thus, &quot;v&quot; corresponds to &quot;-v&quot;) or
+                   multiple characters (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">valueName</dt><dd class="cmt"><p>a name to use for the associated value in the
+                   generated usage message</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a string value into
+                   type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For common types, the implicit functions in the
+                   <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>MultiValueOption</code> object that will contain the
+        parsed value(s), as a <code>Seq[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#multiParameter">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">multiParameter</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>, <span name="optional">optional: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="org.clapper.argot.Parameter">Parameter</span>[T]) ⇒ T</span>)</span><span class="result">: <a href="MultiValueParameter.html" class="extype" name="org.clapper.argot.MultiValueParameter">MultiValueParameter</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define a positional parameter that can occur multiple times.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define a positional parameter that can occur multiple times. Only
+one such parameter can exist, and it must be the last parameter
+in the command line. See the class documentation for complete
+details.
+</p></div><dl class="paramcmts block"><dt class="param">valueName</dt><dd class="cmt"><p>the placeholder name for the parameter's value,
+                    for the usage message</p></dd><dt class="param">description</dt><dd class="cmt"><p>textual description of the parameter</p></dd><dt class="param">optional</dt><dd class="cmt"><p>whether or not the parameter is optional. Only one
+                    parameter may be optional, and it must be the last
+                    one.</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a string value for
+                    the parameter to an appropriate value of type <code>T</code>.
+                    The function should throw <code>ArgotConversionException</code>                    on conversion error.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>MultiValueParameter</code> object will contain the parsed
+        values (as a <code>Seq[T]</code> in the <code>value</code> field).
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#ne">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the argument is not a reference to the receiver object; <code>true</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#nonFlags">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">nonFlags</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.HasValue[_]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#notify">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Wakes up a single thread that is waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up a single thread that is waiting on the receiver object's monitor.</p></div><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Wakes up all threads that are waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up all threads that are waiting on the receiver object's monitor.</p></div><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#option">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">option</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define an option that takes a single value of type <code>T</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define an option that takes a single value of type <code>T</code>. This short-hand
+method provides only one option name, as opposed to a list of option
+names.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which will be stored in
+           the <code>SingleValueOption</code> object's <code>value</code> field.
+</p></dd><dt class="param">name</dt><dd class="cmt"><p>the name for the option. The name can be a single
+                   character (thus, &quot;v&quot; corresponds to &quot;-v&quot;) or
+                   multiple characters (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">valueName</dt><dd class="cmt"><p>a name to use for the associated value in the
+                   generated usage message</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a string value into
+                   type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For common types, the implicit functions in the
+                   <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>SingleValueOption</code> object that will contain the
+        parsed value, as an <code>Option[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#option">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">option</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="names">names: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define an option that takes a single value of type <code>T</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define an option that takes a single value of type <code>T</code>.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>the type of the option's value, which will be stored in
+           the <code>SingleValueOption</code> object's <code>value</code> field.
+</p></dd><dt class="param">names</dt><dd class="cmt"><p>the list of names for the option. Each name can be
+                   a single character (thus, &quot;v&quot; corresponds to &quot;-v&quot;) or
+                   multiple characters (&quot;verbose&quot; for &quot;--verbose&quot;).</p></dd><dt class="param">valueName</dt><dd class="cmt"><p>a name to use for the associated value in the
+                   generated usage message</p></dd><dt class="param">description</dt><dd class="cmt"><p>a description for the option, for the usage message</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a string value into
+                   type <code>T</code>. The function should throw
+                   <code>ArgotConversionException</code> on conversion error.
+                   For common types, the implicit functions in the
+                   <code>ArgotConverters</code> module are often suitable.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>SingleValueOption</code> object that will contain the
+        parsed value, as an <code>Option[T]</code> in the <code>value</code> field.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#parameter">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parameter</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>, <span name="optional">optional: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="org.clapper.argot.Parameter">Parameter</span>[T]) ⇒ T</span>)</span><span class="result">: <a href="SingleValueParameter.html" class="extype" name="org.clapper.argot.SingleValueParameter">SingleValueParameter</a>[T]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Define a positional parameter that has a single value.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Define a positional parameter that has a single value. Positional
+parameters are parsed from the command line in the order they are
+added to the <code>ArgotParser</code>. See the class documentation for complete
+details.
+</p></div><dl class="paramcmts block"><dt class="param">valueName</dt><dd class="cmt"><p>the placeholder name for the parameter's value,
+                    for the usage message</p></dd><dt class="param">description</dt><dd class="cmt"><p>textual description of the parameter</p></dd><dt class="param">optional</dt><dd class="cmt"><p>whether or not the parameter is optional. Only one
+                    parameter may be optional, and it must be the last
+                    one.</p></dd><dt class="param">convert</dt><dd class="cmt"><p>a function that will convert a string value for
+                    the parameter to an appropriate value of type <code>T</code>.
+                    The function should throw <code>ArgotConversionException</code>                    on conversion error.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the <code>SingleValueParameter</code> object will contain the parsed
+        value (as an <code>Option[T]</code> in the <code>value</code> field).
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#parameters">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">parameters</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.Parameter[_]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#parse">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parse</span><span class="params">(<span name="args">args: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Parse the specified array of command-line arguments, according to the
+parser's specification.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Parse the specified array of command-line arguments, according to the
+parser's specification. A successful parse sets the various value
+objects returned by the specification methods.
+</p></div><dl class="paramcmts block"><dt class="param">args</dt><dd class="cmt"><p>the command line parameters
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#parseLongOpt">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parseLongOpt</span><span class="params">(<span name="a">a: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#shortNameMap">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">shortNameMap</span><span class="result">: <span class="extype" name="scala.collection.mutable.Map">Map</span>[<span class="extype" name="scala.Char">Char</span>, org.clapper.argot.CommandLineOption[_]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#synchronized">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#toString">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a string representation of the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a string representation of the object.</p><p>The default representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a string representation of the object.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#usage">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">usage</span><span class="params">(<span name="message">message: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Throws an <code>ArgotUsageException</code> containing the usage string.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Throws an <code>ArgotUsageException</code> containing the usage string.
+</p></div><dl class="paramcmts block"><dt class="param">message</dt><dd class="cmt"><p>optional message to prefix the usage string.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#usage">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">usage</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Throws an <code>ArgotUsageException</code> containing the usage string.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Throws an <code>ArgotUsageException</code> containing the usage string.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#usageString">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">usageString</span><span class="params">(<span name="message">message: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>] = <span class="default">scala.None</span></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Generate the usage string.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Generate the usage string. This string is automatically included in
+any thrown <code>ArgotUsageException</code>.
+</p></div><dl class="paramcmts block"><dt class="param">message</dt><dd class="cmt"><p>optional message to prefix the usage string.
+</p></dd><dt>returns</dt><dd class="cmt"><p>the usage string, wrapped appropriately.
+</p></dd></dl>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>
