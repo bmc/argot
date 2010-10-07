@@ -36,9 +36,9 @@ object ArgotTest
                                            "address is queried from " +
                                            "database.")
 
-    val email = parser.multiOption[String](List("e", "email"), "emailaddr",
-                                           "Address to receive emailed " +
-                                           "results.")
+    val emails = parser.multiOption[String](List("e", "email"), "emailaddr",
+                                            "Address to receive emailed " +
+                                            "results.")
     {
         (s, opt) =>
 
@@ -78,7 +78,8 @@ object ArgotTest
             println("----------")
             println("iterations=" + iterations.value)
             println("verbose=" + verbose.value)
-            println("email=" + email.value)
+            println("users=" + users.value)
+            println("emails=" + emails.value)
             println("output=" + output.value)
             println("input=" + input.value)
         }

@@ -783,98 +783,7 @@ object ArgotConverters
  * parameters and their value types, the name of the program, and other
  * values.
  *
- * <b>Supported Syntax</b>
- *
- * `ArgotParser` supports GNU-style option parsing, with both long ("--")
- * options and short ("-") options. Short options may be combined, POSIX-style.
- * The end of the options list may be signaled via a special "--" argument;
- * this argument isn't required, but it's useful if subsequent positional
- * parameters start with a "-".
- *
- * <b>Specifying the Options</b>
- *
- * Options may be specified in any order.
- *
- * Options have one or more names. Single-character names are assumed to
- * be preceded by a single hyphen ("-"); multicharacter names are assumed to
- * be preceded by a double hyphen ("--"). Single character names can be
- * combined, POSIX-style. For instance, assume that a program called "foo"
- * takes the following options:
- *
- * "-f" or "--output" specifies an output file
- * "-v" or "--verbose" specifies that verbose output is required
- * "-n" or "--noerror" specifies that errors are to be ignored
- *
- * Given those options, the following command lines are identical:
- *
- * {{{
- * foo -v -n -f out
- * foo --verbose --noerror --output out
- * foo -nvfout
- * foo -nvf out
- * }}}
- *
- * There are three kinds of options:
- *
- * <ul>
- * <li> Single-value options
- * <li> Multi-value options
- * <li> Flag Options
- * </ul>
- *
- * Each type of is discussed further, below.
- *
- * ''Single-value Options''
- *
- * A single-value option is one that takes a single value. The first
- * occurrence of the option on the command line sets the value. Any
- * subsequent occurrences replace the previously set values. The option's
- * value is stored in a `Option[T]`. If the option isn't specified on the
- * command line, its value will be `None`. Otherwise, it'll be set to
- * `Some(value)`. There's no provision for assigning a default value,
- * since that can be accomplished via the `Option` class's `getOrElse()`
- * method.
- *
- * Single-value options are defined with the `option()` methods.
- *
- * ''Multi-value Options''
- *
- * A multi-value option is one that takes a single value, but can appear
- * multiple times on the command line, with each occurrence adding its
- * value to the list of already accumulated values for the option. The
- * values are stored in a Scala sequence. Each occurrence of the option on
- * the command line adds the associated value to the sequence. If the
- * option never appears on the command line, its value will be an empty list.
- *
- * Multi-value options are defined with the `multiOption()` methods.
- *
- * ''Flag Options''
- *
- * Flag options take no values; they either appear or not. Typically, flag
- * options are associated with boolean value, though Argot will permit you
- * to associate them with any type you choose.
- *
- * Flag options permit you to segregate the option names into ''on'' names
- * and ''off'' names. With boolean flag options, the ''on'' names set the value
- * to `true`, and the ''off'' names set the value to values. With typed flag
- * options, what happens depends on the conversion function.
- *
- * <b>Positional Parameters</b>
- *
- * Positional parameters are the parameters following options. They have the
- * following characteristics.
- *
- * <ul>
- * <li>Like options, they can be typed.
- * <li>Unlike options, they must be defined in the order they are expected
- *     to appear on the command line.
- * <li>The final positional parameter, and only the final parameter,
- *     can be permitted (by the calling program) to have multiple values.
- * <li>Positional parameters can be optional, as long as all required
- *     positional parameters come first.
- * </ul>
- *
- * ''More to come. For now, see the accompanying `ArgotTest` program*''
+ * For complete details, see the Argot web site (linked below).
  *
  * @param programName  the name of the program, for the usage message
  * @param compactUsage force a more compact usage message
@@ -884,7 +793,7 @@ object ArgotConverters
  *                     (e.g., a copyright and/or version string)
  * @param postUsage    optional message to issue after the usage message
  *
- * @see http://bmc.github.com/argot
+ * @see <a href="http://bmc.github.com/argot/" target="argot">the Argot web site</a>
  */
 class ArgotParser(programName: String,
                   compactUsage: Boolean = false,
@@ -1277,149 +1186,9 @@ class ArgotParser(programName: String,
      */
     def parse(args: Array[String])
     {
-        def paddedList(l: List[String], total: Int): List[String] =
-        {
-            if (l.length >= total)
-                l
-            else
-                l ::: (1 to (total - l.length)).map(i => "").toList
-        }
-
-        def parseCompressedShortOpt(optString: String,
-                                    optName: String,
-                                    a: List[String]):
-            List[String] =
-        {
-            assert(optName.length > 1)
-            val (name, rest) = (optName take 1, optName drop 1)
-            assert(rest.length > 0)
-            val opt = shortNameMap.getOrElse(
-                name(0), usage("Unknown option: " + optString)
-            )
-
-            val result = opt match
-            {
-                case o: HasValue[_] =>
-                    if (rest.length == 0)
-                        usage("Option -" + name + " requires a value.")
-                    o.setFromString(rest)
-                    a drop 1
-
-                case o: FlagOption[_] =>
-                    // It's a flag. thus, the remainder of the option string
-                    // consists of the next set of options (e.g., -cvf)
-                    o.setByName(name)
-                    List("-" + rest) ::: (a drop 1)
-
-                case _ =>
-                    throw new ArgotException("(BUG) Found " + opt.getClass +
-                                             " in shortNameMap")
-            }
-
-            result
-        }
-
-        def parseRegularShortOpt(optString: String,
-                                 optName: String,
-                                 a: List[String]):
-            List[String] =
-        {
-            assert(optName.length == 1)
-            val opt = shortNameMap.getOrElse(
-                optName(0), usage("Unknown option: " + optString)
-            )
-
-            val a2 = a drop 1
-
-            val result = opt match
-            {
-                case o: HasValue[_] =>
-                    if (a2.length == 0)
-                        usage("Option " + optString + " requires a value.")
-                    o.setFromString(a2(0))
-                    a2 drop 1
-
-                case o: FlagOption[_] =>
-                    o.setByName(optName)
-                    a2
-
-                case _ =>
-                    throw new ArgotException("(BUG) Found " + opt.getClass +
-                                             " in longNameMap")
-            }
-
-            result
-        }
-
-        def parseShortOpt(a: List[String]): List[String] =
-        {
-            val optString = a.take(1)(0)
-            assert(optString startsWith "-")
-            val optName = optString drop 1
-
-            optName.length match
-            {
-                case 0 => usage("Missing option name in \"" + optString + "\"")
-                case 1 => parseRegularShortOpt(optString, optName, a)
-                case _ => parseCompressedShortOpt(optString, optName, a)
-            }
-        }
-
-        def parseLongOpt(a: List[String]): List[String] =
-        {
-            val optString = a.take(1)(0)
-            assert(optString startsWith "--")
-            val optName = optString drop 2
-            val opt = longNameMap.getOrElse(
-                optName, usage("Unknown option: " + optString)
-            )
-
-            val a2 = a drop 1
-
-            val result = opt match
-            {
-                case o: HasValue[_] =>
-                    if (a2.length == 0)
-                        usage("Option " + optString + " requires a value.")
-                    o.setFromString(a2(0))
-                    a2 drop 1
-
-                case o: FlagOption[_] =>
-                    o.setByName(optName)
-                    a2
-
-                case _ =>
-                    throw new ArgotException("(BUG) Found " + opt.getClass +
-                                             " in longNameMap")
-            }
-
-            result
-        }
-
-        @tailrec def doParse(a: List[String]): Unit =
-        {
-            a match
-            {
-                case Nil =>
-                    parseParams(Nil)
-
-                case "--" :: tail =>
-                    parseParams(tail)
-
-                case opt :: tail if (opt.startsWith("--")) =>
-                    doParse(parseLongOpt(a))
-
-                case opt :: tail if (opt(0) == '-') =>
-                    doParse(parseShortOpt(a))
-
-                case _ =>
-                    parseParams(a)
-            }
-        }
-
         try
         {
-            doParse(args.toList)
+            parseArgList(args.toList)
         }
 
         catch
@@ -1428,6 +1197,14 @@ class ArgotParser(programName: String,
         }
     }
 
+    /**
+     * Generate the usage string. This string is automatically included in
+     * any thrown `ArgotUsageException`.
+     *
+     * @param message  optional message to prefix the usage string.
+     *
+     * @return the usage string, wrapped appropriately.
+     */
     def usageString(message: Option[String] = None): String =
     {
         import grizzled.math.{util => MathUtil}
@@ -1453,17 +1230,21 @@ class ArgotParser(programName: String,
 
         val mmax = MathUtil.max _
 
-        val lengths =
-            for {opt <- allOptions.values
-                 name <- opt.names}
-            yield
-            {
-                optString(name, opt).length
-            }
+        // Calculate the maximum length of all the option strings.
 
-        val maxOptLen = mmax(lengths.toSeq: _*)
+        val maxOptLen = mmax(
+            {
+                for {opt <- allOptions.values
+                     name <- opt.names}
+                yield optString(name, opt).length
+            }.toSeq: _*
+        )
+
+        // Create the output buffer.
 
         val buf = new StringBuilder
+
+        // Build the usage line.
         val wrapper = new WordWrapper(wrapWidth=outputWidth)
 
         message.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
@@ -1485,6 +1266,8 @@ class ArgotParser(programName: String,
         }
             
         buf.append('\n')
+
+        // Build the option summary.
 
         def handleOneOption(key: String) =
         {
@@ -1558,10 +1341,28 @@ class ArgotParser(programName: String,
         buf.toString
     }
 
+    /**
+     * Throws an `ArgotUsageException` containing the usage string.
+     *
+     * @throws ArgotUsageException  unconditionally
+     */
     def usage() = throw new ArgotUsageException(usageString())
 
+    /**
+     * Throws an `ArgotUsageException` containing the usage string.
+     *
+     * @param message  optional message to prefix the usage string.
+     *
+     * @throws ArgotUsageException  unconditionally
+     */
     def usage(message: String) =
         throw new ArgotUsageException(usageString(Some(message)))
+
+    /*
+      -----------------------------------------------------------------------
+                              Private Methods
+      -----------------------------------------------------------------------
+    */
 
     private def replaceOption(opt: CommandLineOption[_])
     {
@@ -1620,6 +1421,146 @@ class ArgotParser(programName: String,
         }
 
         parseNext(a, parameters.toList)
+    }
+
+    private def paddedList(l: List[String], total: Int): List[String] =
+    {
+        if (l.length >= total)
+            l
+        else
+            l ::: (1 to (total - l.length)).map(i => "").toList
+    }
+
+    private def parseCompressedShortOpt(optString: String,
+                                        optName: String,
+                                        a: List[String]):
+        List[String] =
+    {
+        assert(optName.length > 1)
+        val (name, rest) = (optName take 1, optName drop 1)
+            assert(rest.length > 0)
+        val opt = shortNameMap.getOrElse(
+            name(0), usage("Unknown option: " + optString)
+        )
+
+        val result = opt match
+        {
+            case o: HasValue[_] =>
+                if (rest.length == 0)
+                    usage("Option -" + name + " requires a value.")
+                o.setFromString(rest)
+                a drop 1
+
+            case o: FlagOption[_] =>
+                // It's a flag. thus, the remainder of the option string
+                // consists of the next set of options (e.g., -cvf)
+                o.setByName(name)
+                List("-" + rest) ::: (a drop 1)
+
+            case _ =>
+                throw new ArgotException("(BUG) Found " + opt.getClass +
+                                         " in shortNameMap")
+        }
+
+        result
+    }
+
+    private def parseRegularShortOpt(optString: String,
+                                     optName: String,
+                                     a: List[String]):
+        List[String] =
+    {
+        assert(optName.length == 1)
+        val opt = shortNameMap.getOrElse(
+            optName(0), usage("Unknown option: " + optString)
+        )
+
+        val a2 = a drop 1
+
+        val result = opt match
+        {
+            case o: HasValue[_] =>
+                if (a2.length == 0)
+                    usage("Option " + optString + " requires a value.")
+                o.setFromString(a2(0))
+                a2 drop 1
+
+            case o: FlagOption[_] =>
+                o.setByName(optName)
+                a2
+
+            case _ =>
+                throw new ArgotException("(BUG) Found " + opt.getClass +
+                                         " in longNameMap")
+        }
+
+        result
+    }
+
+    private def parseShortOpt(a: List[String]): List[String] =
+    {
+        val optString = a.take(1)(0)
+        assert(optString startsWith "-")
+        val optName = optString drop 1
+
+        optName.length match
+        {
+            case 0 => usage("Missing option name in \"" + optString + "\"")
+            case 1 => parseRegularShortOpt(optString, optName, a)
+            case _ => parseCompressedShortOpt(optString, optName, a)
+        }
+    }
+
+    def parseLongOpt(a: List[String]): List[String] =
+    {
+        val optString = a.take(1)(0)
+        assert(optString startsWith "--")
+        val optName = optString drop 2
+        val opt = longNameMap.getOrElse(
+            optName, usage("Unknown option: " + optString)
+        )
+
+        val a2 = a drop 1
+
+        val result = opt match
+        {
+            case o: HasValue[_] =>
+                if (a2.length == 0)
+                    usage("Option " + optString + " requires a value.")
+                o.setFromString(a2(0))
+                a2 drop 1
+
+            case o: FlagOption[_] =>
+                o.setByName(optName)
+                a2
+
+            case _ =>
+                throw new ArgotException("(BUG) Found " + opt.getClass +
+                                         " in longNameMap")
+        }
+
+        result
+    }
+
+    @tailrec private def parseArgList(a: List[String]): Unit =
+    {
+        a match
+        {
+            case Nil =>
+                parseParams(Nil)
+
+            case "--" :: tail =>
+                parseParams(tail)
+
+            case opt :: tail if (opt.startsWith("--")) =>
+                parseArgList(parseLongOpt(a))
+
+            case opt :: tail if (opt(0) == '-') =>
+                parseArgList(parseShortOpt(a))
+
+            case _ =>
+                parseParams(a)
+        }
     }
 
     private def checkOptionName(name: String) =

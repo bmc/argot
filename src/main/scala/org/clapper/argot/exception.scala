@@ -35,6 +35,9 @@
   ---------------------------------------------------------------------------
 */
 
+/**
+ * Argot is a command-line argument parsing API for Scala.
+ */
 package org.clapper.argot
 
 /**
@@ -96,8 +99,8 @@ class ArgotUsageException(message: String)
 extends ArgotException(message, None)
 
 /**
- * Thrown to indicate the Argot could not convert a command line parameter to
- * the desired runtime type.
+ * Thrown to indicate that Argot could not convert a command line parameter
+ * to the desired type.
  *
  * @param message  exception message
  */
@@ -105,7 +108,7 @@ class ArgotConversionException(message: String)
 extends ArgotException(message, None)
 
 /**
- * Thrown to indicate the Argot encountered a problem in the caller's
+ * Thrown to indicate that Argot encountered a problem in the caller's
  * argument specification. This exception can be interpreted as a bug in
  * the caller's program.
  *
