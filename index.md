@@ -16,40 +16,6 @@ Argot is a command-line parser library for [Scala][], supporting:
 * automatic parameter conversion (i.e., values with non-string types,
   with automatic conversion)
 * the ability to supply your own conversion functions
-* extensibility
-
-# WARNING, WARNING, DANGER, DANGER!
-
-**Argot is still under development.** It's up here on GitHub because... well,
-dammit, I needed a place to check it in, and it might as well be here.
-
-When Argot is released, a release tag will magically appear, this page will
-self-update, and a source download will show up in the [GitHub repository][]
-*Downloads* tab. Until then, there's no guarantee that Argot will work
-properly, since it's still a work in progress.
-
-In fact, until then, you should consider Argot to be alpha code. It's working
-for me, but you *must* consider the possibility that it might:
-
-* do a [fandango][] all over your program
-* generate random [bogons][] (of various [flavors][], [charmed][] or otherwise)
-* [open your sluices at both ends][]
-* [eat your firstborn child][]
-* [cough and die][];
-* or otherwise do the [Wrong Thing][].
-
-None of these things is especially likely, mind you, but you *have* been
-warned.
-
-[fandango]: http://catb.org/jargon/html/F/fandango-on-core.html
-[bogons]: http://catb.org/jargon/html/B/bogon.html
-[charmed]: http://en.wikipedia.org/wiki/Charm_quark
-[flavors]: http://en.wikipedia.org/wiki/Flavour_(particle_physics)
-[open your sluices at both ends]: http://www.phespirit.info/montypython/australian_table_wines.htm
-[eat your firstborn child]: http://www.facebook.com/pages/I-will-eat-your-firstborn-child/285767234279
-[cough and die]: http://catb.org/jargon/html/C/cough-and-die.html
-[Wrong Thing]: http://catb.org/jargon/html/W/Wrong-Thing.html
-
 
 # Installation
 
@@ -97,11 +63,11 @@ directory):
 
 **NOTES:**
 
-1. The first doubled percent is *not* a typo. It tells SBT to treat
-   Argot as a cross-built library and automatically inserts the Scala
-   version you're using into the artifact ID. It will *only* work if you
-   are building with Scala 2.8.0. See the [SBT cross-building][] page for
-   details.
+1. The first doubled percent is *not* a typo. It tells SBT to treat Argot
+   as a cross-built library and automatically inserts the Scala version
+   you're using into the artifact ID. It will *only* work if you are
+   building with Scala 2.8.0 or Scala 2.8.1.RC2. See the
+   [SBT cross-building][] page for details.
 
 # Building from Source
 
@@ -161,11 +127,15 @@ Each of these steps is described further, below.
 
 ## Supported Syntax
 
-`ArgotParser` supports GNU-style option parsing, with both long ("--")
-options and short ("-") options. Short options may be combined, POSIX-style.
-The end of the options list may be signaled via a special "--" argument;
-this argument isn't required, but it's useful if subsequent positional
-parameters start with a "-".
+`ArgotParser` supports:
+
+* GNU-style long options ("--option value"), though it does *not* support
+  the use of "=". That is, "--option=value" is *not* supported.
+* POSIX-style short options ("-o value")
+* The ability to combine short arguments ("-ovalue", "-xcf foo", etc.)
+* The quasi-standard "--" argument to denote the end of the options list.
+  (This argument isn't required, but it's useful if subsequent positional
+  parameters start with a "-".)
 
 ## The *cooltool* Example
 
@@ -210,7 +180,7 @@ by Argot):
     input       Input files to read. If not specified, use stdin. (May be specified
                 multiple times.)
 
-## Creating an `ArgotParser`
+## Creating the Parser
 
 The constructor for the `ArgotParser` class takes five parameters, four of
 which are optional:
