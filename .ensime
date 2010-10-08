@@ -10,7 +10,6 @@
 
 :use-sbt t
 
-:classpath ("lib_managed/scala_2.8.0" 
-            (concat (getenv "SCALA_HOME") "/lib/scala-compiler.jar")
-            (concat (getenv "SCALA_HOME") "/lib/scala-library.jar"))
+:classpath "lib_managed/scala_2.8.0/compile/grizzled-scala_2.8.0-1.0.2.jar"
+
 )

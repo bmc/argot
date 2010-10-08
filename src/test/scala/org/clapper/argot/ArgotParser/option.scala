@@ -40,22 +40,21 @@ import org.clapper.argot._
 /**
  * Tests the grizzled.io functions.
  */
-class ArgotTest extends FunSuite
+class ArgotOptionTest extends FunSuite
 {
     import ArgotConverters._
 
-    test("flag option success")
+    test("single-value option success")
     {
         val parser = new ArgotParser("test")
-        val flag = parser.flag[Boolean](List("y", "on"), List("n", "off"),
-                                        "Do something")
+        val flag = parser.option[String](List("s", "something"), "something",
+                                         "Some value")
 
         val data = List(
-            (true,  Array("-y")),
-            (true,  Array("--on")),
-            (false, Array("-n")),
-            (false, Array("--off")),
-            (true, Array("-y", "-n", "--on"))
+            (Some("something"),  Array("-s", "something")),
+            (Some("foo"),        Array("--something", "foo")),
+            (None,               Array.empty[String]),
+            (Some("bar"),        Array("-s", "foo", "-s", "bar"))
          )
 
         for ((expected, args) <- data)
@@ -64,28 +63,33 @@ class ArgotTest extends FunSuite
             parser.parse(args)
             expect(expected, args.mkString("[", ", ", "]") + " -> " + expected)
             {
-                flag.value.get
+                flag.value
             }
         }
     }
 
-    test("flag option failure")
+    test("single-value option failure")
     {
         val parser = new ArgotParser("test")
-        val flag = parser.flag[Boolean](List("y", "on"), List("n", "off"),
-                                        "Do something")
+        val flag = parser.option[String](List("s", "something"), "something",
+                                         "Some value")
 
-        intercept[ArgotUsageException]
+        val data = List(Array("-f"),
+                        Array("-s"))
+
+        for (args <- data)
         {
-            parser.parse(Array("-f"))
+            intercept[ArgotUsageException]
+            {
+                parser.parse(args)
+            }
         }
     }
-
+/*
     test("integer flag")
     {
         val parser = new ArgotParser("test")
-
-        val flag = parser.flag[Int](List("on"), List("off"), "a toggle")
+        val flag = parser.flag[Int](List("y", "on"), List("n", "off"), "toggle")
         {
             (onOff, opt) =>
 
@@ -97,8 +101,10 @@ class ArgotTest extends FunSuite
         }
 
         val data = List(
-            (Some(3), Array("--on", "--on", "--on")),
-            (None, Array.empty[String])
+            (Some(3),  Array("--on", "--on", "--on")),
+            (None,     Array.empty[String]),
+            (Some(0),  Array("-y", "-y", "-n", "-n", "-n", "-n")),
+            (Some(1),  Array("-y", "-y", "-y", "-n", "-n"))
         )
 
         for ((expected, args) <- data)
@@ -111,4 +117,40 @@ class ArgotTest extends FunSuite
             }
         }
     }
+
+    test("custom type flag")
+    {
+        class MyFlag(val counter: Int)
+
+        val parser = new ArgotParser("test")
+        val flag = parser.flag[MyFlag](List("y"), List("n"), "a toggle")
+        {
+            (onOff, opt) =>
+
+            import scala.math
+
+            val currentValue = opt.value.getOrElse(new MyFlag(0))
+            val newValue = if (onOff) currentValue.counter + 1
+                           else currentValue.counter - 1
+
+            new MyFlag(math.max(0, newValue))
+        }
+
+        val data = List(
+            (Some(3),  Array("-y", "-y", "-y")),
+            (None,     Array.empty[String]),
+            (Some(0),  Array("-y", "-y", "-n", "-n", "-n", "-n"))
+        )
+
+        for ((expected, args) <- data)
+        {
+            parser.reset()
+            parser.parse(args)
+            expect(expected, args.mkString("[", ", ", "]") + " -> " + expected)
+            {
+                flag.value.map(_.counter)
+            }
+        }
+    }
+*/
 }
