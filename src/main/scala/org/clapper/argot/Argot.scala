@@ -1210,11 +1210,24 @@ class ArgotParser(programName: String,
      *                              exception contains the usage message
      * @throws ArgotException       some other kind of fatal error
      */
-    def parse(args: Array[String])
+    def parse(args: Array[String]): Unit = parse(args.toList)
+
+    /**
+     * Parse the specified array of command-line arguments, according to the
+     * parser's specification. A successful parse sets the various value
+     * objects returned by the specification methods.
+     *
+     * @param args the command line parameters
+     *
+     * @throws ArgotUsageException  user error on the command line; the
+     *                              exception contains the usage message
+     * @throws ArgotException       some other kind of fatal error
+     */
+    def parse(args: List[String]): Unit =
     {
         try
         {
-            parseArgList(args.toList)
+            parseArgList(args)
         }
 
         catch

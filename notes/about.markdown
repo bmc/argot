@@ -9,9 +9,9 @@
 * automatic parameter conversion (i.e., values with non-string types,
   with automatic conversion)
 * the ability to supply your own conversion functions
-* extensibility
 
-For more information, see the [Argot home page][].
+You can find complete details, including usage information, on the
+[Argot home page][].
 
 [Argot]: http://bmc.github.com/argot/
 [Argot home page]: http://bmc.github.com/argot/

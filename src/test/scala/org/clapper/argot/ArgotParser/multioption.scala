@@ -40,21 +40,22 @@ import org.clapper.argot._
 /**
  * Tests the grizzled.io functions.
  */
-class ArgotOptionTest extends FunSuite
+class ArgotMultiOptionTest extends FunSuite
 {
     import ArgotConverters._
 
-    test("single-value option success")
+    test("multi-value option success")
     {
         val parser = new ArgotParser("test")
-        val opt = parser.option[String](List("s", "something"), "something",
-                                        "Some value")
+        val opt = parser.multiOption[String](
+            List("s", "something"), "something", "Some value"
+        )
 
         val data = List(
-            (Some("something"),  Array("-s", "something")),
-            (Some("foo"),        Array("--something", "foo")),
-            (None,               Array.empty[String]),
-            (Some("bar"),        Array("-s", "foo", "-s", "bar"))
+            (Seq("something"),  Array("-s", "something")),
+            (Seq("foo"),        Array("--something", "foo")),
+            (Nil,               Array.empty[String]),
+            (Seq("foo", "bar"), Array("-s", "foo", "-s", "bar"))
          )
 
         for ((expected, args) <- data)
@@ -68,11 +69,12 @@ class ArgotOptionTest extends FunSuite
         }
     }
 
-    test("single-value option failure")
+    test("multi-value option failure")
     {
         val parser = new ArgotParser("test")
-        val opt = parser.option[String](List("s", "something"), "something",
-                                        "Some value")
+        val opt = parser.multiOption[String](
+            List("s", "something"), "something", "Some value"
+        )
 
         val data = List(Array("-f"),
                         Array("-s"))
@@ -86,16 +88,16 @@ class ArgotOptionTest extends FunSuite
         }
     }
 
-    test("integer option")
+    test("integer multi-option")
     {
         val parser = new ArgotParser("test")
-        val opt = parser.option[Int]("i", "someint", "integer")
+        val opt = parser.multiOption[Int]("i", "someint", "integer")
 
         val data = List(
-            (Some(3),  Array("-i", "3")),
-            (None,     Array.empty[String]),
-            (Some(0),  Array("-i", "3", "-i", "0")),
-            (Some(1),  Array("-i", "1", "-i", "10", "-i", "1"))
+            (Seq(3),        Array("-i", "3")),
+            (Nil,           Array.empty[String]),
+            (Seq(3, 0),     Array("-i", "3", "-i", "0")),
+            (Seq(1, 10, 1), Array("-i", "1", "-i", "10", "-i", "1"))
         )
 
         for ((expected, args) <- data)
@@ -109,12 +111,12 @@ class ArgotOptionTest extends FunSuite
         }
     }
 
-    test("custom type option")
+    test("custom type multi-option")
     {
         class Foo(val i: Int)
 
         val parser = new ArgotParser("test")
-        val opt = parser.option[Foo]("i", "n", "some number")
+        val opt = parser.multiOption[Foo]("i", "n", "some number")
         {
             (s, opt) =>
 
@@ -122,10 +124,10 @@ class ArgotOptionTest extends FunSuite
         }
 
         val data = List(
-            (Some(3),  Array("-i", "3")),
-            (None,     Array.empty[String]),
-            (Some(0),  Array("-i", "3", "-i", "0")),
-            (Some(1),  Array("-i", "1", "-i", "10", "-i", "1"))
+            (List(3),         Array("-i", "3")),
+            (Nil,             Array.empty[String]),
+            (List(3, 0),      Array("-i", "3", "-i", "0")),
+            (List(1, 10, 1),  Array("-i", "1", "-i", "10", "-i", "1"))
         )
 
         for ((expected, args) <- data)
