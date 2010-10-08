@@ -139,8 +139,6 @@ Each of these steps is described further, below.
 
 ## The *cooltool* Example
 
-<div id="usage"/>
-
 The remainder of this usage section discusses how to build a command-line
 specification and parse it. We'll be creating the specification for a
 fictitious tool called "cooltool", with the following usage (as generated
@@ -271,7 +269,6 @@ There are several things to note here:
    command line. The multicharacter name, "iterations", corresponds to
    "--iterations".
 
-<div id="conversions"/>
 ### Introducting Automatic Conversions
 
 The actual definition of the `option` method is:
