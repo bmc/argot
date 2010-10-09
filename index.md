@@ -567,6 +567,26 @@ In addition, you can generate your own version with:
 
     sbt doc
 
+# Similar Work
+
+There are other Scala- and Java-based argument parsers available, among them:
+
+* James Strachan's [scopt][] (Scala)
+* [jopt-simple][] (Java)
+* [parse-cmd][] (Java and Scala; hasn't been updated since July, 2009)
+* Cédric Beust's annotation-driven [JCommander][] (Java)
+* [JewelCli][], another annotation-driven API (Java)
+
+[scopt]: http://github.com/jstrachan/scopt
+[jopt-simple]: http://jopt-simple.sourceforge.net/
+[parse-cmd]: http://code.google.com/p/parse-cmd/
+[JewelCli]: http://jewelcli.sourceforge.net/usage.html
+[JCommander]: http://beust.com/jcommander/
+
+This [Stack Overflow article][] on the topic is also worth reading.
+
+[Stack Overflow article]: http://stackoverflow.com/questions/2315912/scala-best-way-to-parse-command-line-parameters-cli
+
 # Author
 
 [Brian M. Clapper][]
