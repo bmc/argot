@@ -1,8 +1,3 @@
----
-title: License for Argot
-layout: default
----
-
 This software is released under a BSD license, adapted from
 <http://opensource.org/licenses/bsd-license.php>
 
