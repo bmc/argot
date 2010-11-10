@@ -2,16 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>Scaladoc for org.clapper.argot.ArgotParser</title>
+          <title>org.clapper.argot.ArgotParser</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		      <script type="text/javascript" src="../../../lib/jquery.js"></script>
           
       <link href="../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
     
         </head>
-        <body class="type">
+        <body class="type" onload="windowTitle();">
 
       <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.clapper">clapper</a>.<a href="package.html" class="extype" name="org.clapper.argot">argot</a></p>
 
@@ -23,7 +24,10 @@
       <h4 class="signature" id="signature">
       <span class="kind">class</span>
       <span class="symbol">
-        <span class="name">ArgotParser</span><span class="result"> extends AnyRef</span>
+        <span class="name">ArgotParser</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
       </span>
       </h4>
       <div class="fullcomment" id="comment"><div class="comment cmt"><p><code>ArgotParser</code> is a command-line parser, with support for single-value and
@@ -34,51 +38,79 @@ parameters and their value types, the name of the program, and other
 values.</p><p>For complete details, see the Argot web site (linked below).
 </p></div><div class="block">
             go to: <a href="ArgotParser$.html">companion</a>
+          </div><div class="block">
+            linear super types: AnyRef, <span class="extype" name="scala.Any">Any</span>
           </div>
             
             
             <div class="block"><ol>see also:
                   <li><p><a href="http://bmc.github.com/argot/" target="argot">the Argot web site</a></p></li>
                 </ol></div>
-            
           </div>
-      
+
       <div id="template">
 
         <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          <div id="order">
+                <span class="filtertype">Ordering</span>
+                <ol><li class="alpha in">Alphabetic</li><li class="inherit out">By inheritance</li></ol>
+              </div>
           <div id="ancestors">
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall">Hide All</li><li class="showall">Show all</li></ol>
-                <ol id="linearization"><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
+                <ol id="linearization"><li class="in" name="org.clapper.argot.ArgotParser">ArgotParser</li><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
               </div>
           <div id="visbl">
-            <span class="filtertype">Visibility</span>
-            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
-          </div>
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+            </div>
+          <div id="impl">
+              <span class="filtertype">Impl.</span>
+              <ol><li class="concrete in">Concrete</li><li class="abstract in">Abstract</li></ol>
+            </div>
         </div>
-        
+
         <div class="members" id="constructors">
               <h3>Instance constructors</h3>
-              <ol><li visbl="pub" name="org.clapper.argot.ArgotParser#this">
+              <ol><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#this">
+      <a id="this:ArgotParser"></a>
       <h4 class="signature">
       <span class="kind">new</span>
       <span class="symbol">
-        <span class="name">ArgotParser</span><span class="params">(<span name="programName">programName: <span class="extype" name="java.lang.String">String</span></span>, <span name="compactUsage">compactUsage: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="default">false</span></span>, <span name="outputWidth">outputWidth: <span class="extype" name="scala.Int">Int</span> = <span class="default">79</span></span>, <span name="preUsage">preUsage: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>] = <span class="default">scala.None</span></span>, <span name="postUsage">postUsage: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>] = <span class="default">scala.None</span></span>)</span>
+        <span class="name">ArgotParser</span>
+        
+        <span class="params">(<span name="programName">programName: String</span>, <span name="compactUsage">compactUsage: <span class="extype" name="scala.Boolean">Boolean</span> =<span class="symbol"></span></span>, <span name="outputWidth">outputWidth: <span class="extype" name="scala.Int">Int</span> =<span class="symbol"></span></span>, <span name="preUsage">preUsage: <span class="extype" name="scala.Option">Option</span>[String] =<span class="symbol"></span></span>, <span name="postUsage">postUsage: <span class="extype" name="scala.Option">Option</span>[String] =<span class="symbol"></span></span>)</span>
+        
       </span>
       </h4>
       
+            <p class="shortcomment cmt"></p>
+            <div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">programName</dt><dd class="cmt"><p>the name of the program, for the usage message</p></dd><dt class="param">compactUsage</dt><dd class="cmt"><p>force a more compact usage message</p></dd><dt class="param">outputWidth</dt><dd class="cmt"><p>width of the output; used when wrapping the usage
+                    message</p></dd><dt class="param">preUsage</dt><dd class="cmt"><p>optional message to issue before the usage message
+                    (e.g., a copyright and/or version string)</p></dd><dt class="param">postUsage</dt><dd class="cmt"><p>optional message to issue after the usage message
+</p></dd></dl>
+            
+            
+            
+          </div>
+          
     </li></ol>
-            </div>        
+            </div>
+
         
-        
-        
-        <div class="members" id="values">
+
+        <div class="values members" id="values">
               <h3>Value Members</h3>
-              <ol><li visbl="pub" name="scala.AnyRef#!=">
+              <ol><li visbl="pub" data-isabs="false" name="scala.AnyRef#!=">
+      <a id="!=(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">!=</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -89,11 +121,15 @@ values.</p><p>For complete details, see the Argot web site (linked below).
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.Any#!=">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#!=">
+      <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">!=</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -107,14 +143,17 @@ values.</p><p>For complete details, see the Argot web site (linked below).
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef###">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef###">
+      <a id="##():Int"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">##</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
       
@@ -125,11 +164,15 @@ values.</p><p>For complete details, see the Argot web site (linked below).
           definition classes: AnyRef → Any
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#$asInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#$asInstanceOf">
+      <a id="$asInstanceOf[T0]():T0"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">$asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: T0</span>
+        <span class="name">$asInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        <span class="params">()</span>
+        <span class="result">: T0</span>
       </span>
       </h4>
       
@@ -140,11 +183,15 @@ values.</p><p>For complete details, see the Argot web site (linked below).
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#$isInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#$isInstanceOf">
+      <a id="$isInstanceOf[T0]():Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">$isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">$isInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -155,11 +202,15 @@ values.</p><p>For complete details, see the Argot web site (linked below).
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#==">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#==">
+      <a id="==(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">==</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -173,14 +224,17 @@ values.</p><p>For complete details, see the Argot web site (linked below).
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.Any#==">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#==">
+      <a id="==(Any):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">==</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -194,14 +248,17 @@ values.</p><p>For complete details, see the Argot web site (linked below).
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#allOptions">
+    </li><li visbl="prt" data-isabs="false" name="org.clapper.argot.ArgotParser#allOptions">
+      <a id="allOptions:LinkedHashMap[String, org.clapper.argot.CommandLineOption[_]]"></a>
       <h4 class="signature">
       <span class="kind">val</span>
       <span class="symbol">
-        <span class="name">allOptions</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashMap">LinkedHashMap</span>[<span class="extype" name="java.lang.String">String</span>, org.clapper.argot.CommandLineOption[_]]</span>
+        <span class="name">allOptions</span>
+        
+        
+        <span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashMap">LinkedHashMap</span>[String, org.clapper.argot.CommandLineOption[_]]</span>
       </span>
       </h4>
       
@@ -210,11 +267,15 @@ values.</p><p>For complete details, see the Argot web site (linked below).
           attributes: protected 
         </div></div>
           
-    </li><li visbl="pub" name="scala.Any#asInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#asInstanceOf">
+      <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+        <span class="name">asInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        
+        <span class="result">: T0</span>
       </span>
       </h4>
       
@@ -229,14 +290,17 @@ part of compilation it is not possible to check whether the contents of the list
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="scala.AnyRef#clone">
+    </li><li visbl="prt" data-isabs="false" name="scala.AnyRef#clone">
+      <a id="clone():AnyRef"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+        <span class="name">clone</span>
+        
+        <span class="params">()</span>
+        <span class="result">: AnyRef</span>
       </span>
       </h4>
       
@@ -250,14 +314,17 @@ part of compilation it is not possible to check whether the contents of the list
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#eq">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#eq">
+      <a id="eq(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -284,14 +351,17 @@ should be equal to each other (<code>o1 == o2</code>) and they should hash to th
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#equals">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#equals">
+      <a id="equals(Any):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -313,14 +383,17 @@ scala.Int
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="scala.AnyRef#finalize">
+    </li><li visbl="prt" data-isabs="false" name="scala.AnyRef#finalize">
+      <a id="finalize():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -335,14 +408,17 @@ there are no more references to the object.</p><p>The details of when and if the
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#flag">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#flag">
+      <a id="flag[T](String,T,String)((Boolean, FlagOption[T]) ⇒ T):FlagOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">flag</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="default">default: T</span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
+        <span class="name">flag</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="name">name: String</span>, <span name="default">default: T</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
       </span>
       </h4>
       
@@ -378,14 +454,17 @@ the value.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#flag">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#flag">
+      <a id="flag[T](List[String],String)((Boolean, FlagOption[T]) ⇒ T):FlagOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">flag</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="namesOn">namesOn: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
+        <span class="name">flag</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="namesOn">namesOn: List[String]</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
       </span>
       </h4>
       
@@ -421,14 +500,17 @@ the value.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#flag">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#flag">
+      <a id="flag[T](List[String],List[String],String)((Boolean, FlagOption[T]) ⇒ T):FlagOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">flag</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="namesOn">namesOn: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="namesOff">namesOff: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
+        <span class="name">flag</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="namesOn">namesOn: List[String]</span>, <span name="namesOff">namesOff: List[String]</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="scala.Boolean">Boolean</span>, <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[T]</span>
       </span>
       </h4>
       
@@ -467,14 +549,17 @@ the value.
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#flags">
+    </li><li visbl="prt" data-isabs="false" name="org.clapper.argot.ArgotParser#flags">
+      <a id="flags:LinkedHashSet[org.clapper.argot.FlagOption[_]]"></a>
       <h4 class="signature">
       <span class="kind">val</span>
       <span class="symbol">
-        <span class="name">flags</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.FlagOption[_]]</span>
+        <span class="name">flags</span>
+        
+        
+        <span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.FlagOption[_]]</span>
       </span>
       </h4>
       
@@ -483,11 +568,15 @@ the value.
           attributes: protected 
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#getClass">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#getClass">
+      <a id="getClass():java.lang.Class[_]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+        <span class="name">getClass</span>
+        
+        <span class="params">()</span>
+        <span class="result">: java.lang.Class[_]</span>
       </span>
       </h4>
       
@@ -501,14 +590,17 @@ the value.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#hashCode">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#hashCode">
+      <a id="hashCode():Int"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">hashCode</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
       
@@ -524,14 +616,17 @@ to verify that the behavior is consistent with the <code>equals</code> method.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.Any#isInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#isInstanceOf">
+      <a id="isInstanceOf[T0]:Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -547,14 +642,17 @@ possible to check whether the contents of the list are of the requested typed.
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#longNameMap">
+    </li><li visbl="prt" data-isabs="false" name="org.clapper.argot.ArgotParser#longNameMap">
+      <a id="longNameMap:Map[String, org.clapper.argot.CommandLineOption[_]]"></a>
       <h4 class="signature">
       <span class="kind">val</span>
       <span class="symbol">
-        <span class="name">longNameMap</span><span class="result">: <span class="extype" name="scala.collection.mutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, org.clapper.argot.CommandLineOption[_]]</span>
+        <span class="name">longNameMap</span>
+        
+        
+        <span class="result">: <span class="extype" name="scala.collection.mutable.Map">Map</span>[String, org.clapper.argot.CommandLineOption[_]]</span>
       </span>
       </h4>
       
@@ -563,11 +661,15 @@ possible to check whether the contents of the list are of the requested typed.
           attributes: protected 
         </div></div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#multiOption">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#multiOption">
+      <a id="multiOption[T](String,String,String)((String, MultiValueOption[T]) ⇒ T):MultiValueOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">multiOption</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>
+        <span class="name">multiOption</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="name">name: String</span>, <span name="valueName">valueName: String</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (String, <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>
       </span>
       </h4>
       
@@ -592,14 +694,17 @@ name, as opposed to a list of option names.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#multiOption">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#multiOption">
+      <a id="multiOption[T](List[String],String,String)((String, MultiValueOption[T]) ⇒ T):MultiValueOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">multiOption</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="names">names: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>
+        <span class="name">multiOption</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="names">names: List[String]</span>, <span name="valueName">valueName: String</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (String, <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>
       </span>
       </h4>
       
@@ -623,14 +728,17 @@ to the sequence.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#multiParameter">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#multiParameter">
+      <a id="multiParameter[T](String,String,Boolean)((String, Parameter[T]) ⇒ T):MultiValueParameter[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">multiParameter</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>, <span name="optional">optional: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="org.clapper.argot.Parameter">Parameter</span>[T]) ⇒ T</span>)</span><span class="result">: <a href="MultiValueParameter.html" class="extype" name="org.clapper.argot.MultiValueParameter">MultiValueParameter</a>[T]</span>
+        <span class="name">multiParameter</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="valueName">valueName: String</span>, <span name="description">description: String</span>, <span name="optional">optional: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (String, <span class="extype" name="org.clapper.argot.Parameter">Parameter</span>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="MultiValueParameter.html" class="extype" name="org.clapper.argot.MultiValueParameter">MultiValueParameter</a>[T]</span>
       </span>
       </h4>
       
@@ -651,14 +759,17 @@ details.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#ne">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#ne">
+      <a id="ne(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -672,14 +783,17 @@ details.
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#nonFlags">
+    </li><li visbl="prt" data-isabs="false" name="org.clapper.argot.ArgotParser#nonFlags">
+      <a id="nonFlags:LinkedHashSet[org.clapper.argot.HasValue[_]]"></a>
       <h4 class="signature">
       <span class="kind">val</span>
       <span class="symbol">
-        <span class="name">nonFlags</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.HasValue[_]]</span>
+        <span class="name">nonFlags</span>
+        
+        
+        <span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.HasValue[_]]</span>
       </span>
       </h4>
       
@@ -688,11 +802,15 @@ details.
           attributes: protected 
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#notify">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#notify">
+      <a id="notify():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -705,14 +823,17 @@ details.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#notifyAll">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#notifyAll">
+      <a id="notifyAll():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -725,14 +846,17 @@ details.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#option">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#option">
+      <a id="option[T](String,String,String)((String, SingleValueOption[T]) ⇒ T):SingleValueOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">option</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]</span>
+        <span class="name">option</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="name">name: String</span>, <span name="valueName">valueName: String</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (String, <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]</span>
       </span>
       </h4>
       
@@ -756,14 +880,17 @@ names.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#option">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#option">
+      <a id="option[T](List[String],String,String)((String, SingleValueOption[T]) ⇒ T):SingleValueOption[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">option</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="names">names: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>, <span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]) ⇒ T</span>)</span><span class="result">: <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]</span>
+        <span class="name">option</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="names">names: List[String]</span>, <span name="valueName">valueName: String</span>, <span name="description">description: String</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (String, <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="SingleValueOption.html" class="extype" name="org.clapper.argot.SingleValueOption">SingleValueOption</a>[T]</span>
       </span>
       </h4>
       
@@ -785,14 +912,17 @@ names.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#parameter">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#parameter">
+      <a id="parameter[T](String,String,Boolean)((String, Parameter[T]) ⇒ T):SingleValueParameter[T]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">parameter</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="valueName">valueName: <span class="extype" name="java.lang.String">String</span></span>, <span name="description">description: <span class="extype" name="java.lang.String">String</span></span>, <span name="optional">optional: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="org.clapper.argot.Parameter">Parameter</span>[T]) ⇒ T</span>)</span><span class="result">: <a href="SingleValueParameter.html" class="extype" name="org.clapper.argot.SingleValueParameter">SingleValueParameter</a>[T]</span>
+        <span class="name">parameter</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="valueName">valueName: String</span>, <span name="description">description: String</span>, <span name="optional">optional: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="convert">convert: (String, <span class="extype" name="org.clapper.argot.Parameter">Parameter</span>[T]) ⇒ T</span>)</span>
+        <span class="result">: <a href="SingleValueParameter.html" class="extype" name="org.clapper.argot.SingleValueParameter">SingleValueParameter</a>[T]</span>
       </span>
       </h4>
       
@@ -813,14 +943,17 @@ details.
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#parameters">
+    </li><li visbl="prt" data-isabs="false" name="org.clapper.argot.ArgotParser#parameters">
+      <a id="parameters:LinkedHashSet[org.clapper.argot.Parameter[_]]"></a>
       <h4 class="signature">
       <span class="kind">val</span>
       <span class="symbol">
-        <span class="name">parameters</span><span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.Parameter[_]]</span>
+        <span class="name">parameters</span>
+        
+        
+        <span class="result">: <span class="extype" name="scala.collection.mutable.LinkedHashSet">LinkedHashSet</span>[org.clapper.argot.Parameter[_]]</span>
       </span>
       </h4>
       
@@ -829,11 +962,15 @@ details.
           attributes: protected 
         </div></div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#parse">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#parse">
+      <a id="parse(List[String]):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">parse</span><span class="params">(<span name="args">args: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">parse</span>
+        
+        <span class="params">(<span name="args">args: List[String]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -847,22 +984,75 @@ objects returned by the specification methods.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#parseLongOpt">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#parse">
+      <a id="parse(Array[String]):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">parseLongOpt</span><span class="params">(<span name="a">a: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+        <span class="name">parse</span>
+        
+        <span class="params">(<span name="args">args: <span class="extype" name="scala.Array">Array</span>[String]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
-    </li><li visbl="prt" name="org.clapper.argot.ArgotParser#shortNameMap">
+            <p class="shortcomment cmt">Parse the specified array of command-line arguments, according to the
+parser's specification.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Parse the specified array of command-line arguments, according to the
+parser's specification. A successful parse sets the various value
+objects returned by the specification methods.
+</p></div><dl class="paramcmts block"><dt class="param">args</dt><dd class="cmt"><p>the command line parameters
+</p></dd></dl>
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#parseLongOpt">
+      <a id="parseLongOpt(List[String]):List[String]"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parseLongOpt</span>
+        
+        <span class="params">(<span name="a">a: List[String]</span>)</span>
+        <span class="result">: List[String]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#reset">
+      <a id="reset():Unit"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">reset</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Resets the internal state of all contained options and parameters,
+undoing the effects of any parse operation.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Resets the internal state of all contained options and parameters,
+undoing the effects of any parse operation.
+</p></div>
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" data-isabs="false" name="org.clapper.argot.ArgotParser#shortNameMap">
+      <a id="shortNameMap:Map[Char, org.clapper.argot.CommandLineOption[_]]"></a>
       <h4 class="signature">
       <span class="kind">val</span>
       <span class="symbol">
-        <span class="name">shortNameMap</span><span class="result">: <span class="extype" name="scala.collection.mutable.Map">Map</span>[<span class="extype" name="scala.Char">Char</span>, org.clapper.argot.CommandLineOption[_]]</span>
+        <span class="name">shortNameMap</span>
+        
+        
+        <span class="result">: <span class="extype" name="scala.collection.mutable.Map">Map</span>[<span class="extype" name="scala.Char">Char</span>, org.clapper.argot.CommandLineOption[_]]</span>
       </span>
       </h4>
       
@@ -871,11 +1061,15 @@ objects returned by the specification methods.
           attributes: protected 
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#synchronized">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#synchronized">
+      <a id="synchronized[T0](T0):T0"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: T0</span>)</span><span class="result">: T0</span>
+        <span class="name">synchronized</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        <span class="params">(<span name="arg0">arg0: T0</span>)</span>
+        <span class="result">: T0</span>
       </span>
       </h4>
       
@@ -886,11 +1080,15 @@ objects returned by the specification methods.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#toString">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#toString">
+      <a id="toString():String"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4>
       
@@ -902,14 +1100,17 @@ objects returned by the specification methods.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#usage">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#usage">
+      <a id="usage(String):Nothing"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">usage</span><span class="params">(<span name="message">message: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
+        <span class="name">usage</span>
+        
+        <span class="params">(<span name="message">message: String</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
       </span>
       </h4>
       
@@ -920,14 +1121,17 @@ objects returned by the specification methods.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#usage">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#usage">
+      <a id="usage():Nothing"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">usage</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
+        <span class="name">usage</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Nothing">Nothing</span></span>
       </span>
       </h4>
       
@@ -937,14 +1141,17 @@ objects returned by the specification methods.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotParser#usageString">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser#usageString">
+      <a id="usageString(Option[String]):String"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">usageString</span><span class="params">(<span name="message">message: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>] = <span class="default">scala.None</span></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">usageString</span>
+        
+        <span class="params">(<span name="message">message: <span class="extype" name="scala.Option">Option</span>[String] =<span class="symbol">None</span></span>)</span>
+        <span class="result">: String</span>
       </span>
       </h4>
       
@@ -957,14 +1164,17 @@ any thrown <code>ArgotUsageException</code>.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#wait">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#wait">
+      <a id="wait():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -975,11 +1185,15 @@ any thrown <code>ArgotUsageException</code>.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#wait">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#wait">
+      <a id="wait(Long,Int):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -990,11 +1204,15 @@ any thrown <code>ArgotUsageException</code>.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#wait">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#wait">
+      <a id="wait(Long):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -1007,7 +1225,13 @@ any thrown <code>ArgotUsageException</code>.
           
     </li></ol>
             </div>
-                
+
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from AnyRef</h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+
       </div>
       
       <div id="tooltip"></div>

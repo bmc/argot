@@ -2,16 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>Scaladoc for org.clapper.argot.ArgotConverters</title>
+          <title>org.clapper.argot.ArgotConverters</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		      <script type="text/javascript" src="../../../lib/jquery.js"></script>
           
       <link href="../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
     
         </head>
-        <body class="value">
+        <body class="value" onload="windowTitle();">
 
       <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.clapper">clapper</a>.<a href="package.html" class="extype" name="org.clapper.argot">argot</a></p>
 
@@ -23,7 +24,10 @@
       <h4 class="signature" id="signature">
       <span class="kind">object</span>
       <span class="symbol">
-        <span class="name">ArgotConverters</span><span class="result"> extends AnyRef</span>
+        <span class="name">ArgotConverters</span>
+        
+        
+        <span class="result"> extends AnyRef</span>
       </span>
       </h4>
       <div class="fullcomment" id="comment"><div class="comment cmt"><p>Conversion functions that can be used to satisfy the implicit conversions
@@ -33,38 +37,52 @@ functions that the Scala compiler will automatically use, for the
 various definition functions in <code>ArgotParser</code>.</p><p>The conversion functions all take the <code>CommandLineArgument</code> for which the
 value applies. This serves two purposes. First, it provides more information
 for error messages. Second, it makes the conversion functions less ambiguous.
-</p></div>
-            
+</p></div><div class="block">
+            linear super types: AnyRef, <span class="extype" name="scala.Any">Any</span>
+          </div>
             
             
             
           </div>
-      
+
       <div id="template">
 
         <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          <div id="order">
+                <span class="filtertype">Ordering</span>
+                <ol><li class="alpha in">Alphabetic</li><li class="inherit out">By inheritance</li></ol>
+              </div>
           <div id="ancestors">
                 <span class="filtertype">Inherited</span>
                 <ol><li class="hideall">Hide All</li><li class="showall">Show all</li></ol>
-                <ol id="linearization"><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
+                <ol id="linearization"><li class="in" name="org.clapper.argot.ArgotConverters">ArgotConverters</li><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
               </div>
           <div id="visbl">
-            <span class="filtertype">Visibility</span>
-            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
-          </div>
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+            </div>
+          <div id="impl">
+              <span class="filtertype">Impl.</span>
+              <ol><li class="concrete in">Concrete</li><li class="abstract in">Abstract</li></ol>
+            </div>
         </div>
+
         
-                
+
         
-        
-        
-        <div class="members" id="values">
+
+        <div class="values members" id="values">
               <h3>Value Members</h3>
-              <ol><li visbl="pub" name="scala.AnyRef#!=">
+              <ol><li visbl="pub" data-isabs="false" name="scala.AnyRef#!=">
+      <a id="!=(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">!=</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -75,11 +93,15 @@ for error messages. Second, it makes the conversion functions less ambiguous.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.Any#!=">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#!=">
+      <a id="!=(Any):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">!=</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -93,14 +115,17 @@ for error messages. Second, it makes the conversion functions less ambiguous.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef###">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef###">
+      <a id="##():Int"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">##</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
       
@@ -111,11 +136,15 @@ for error messages. Second, it makes the conversion functions less ambiguous.
           definition classes: AnyRef → Any
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#$asInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#$asInstanceOf">
+      <a id="$asInstanceOf[T0]():T0"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">$asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: T0</span>
+        <span class="name">$asInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        <span class="params">()</span>
+        <span class="result">: T0</span>
       </span>
       </h4>
       
@@ -126,11 +155,15 @@ for error messages. Second, it makes the conversion functions less ambiguous.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#$isInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#$isInstanceOf">
+      <a id="$isInstanceOf[T0]():Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">$isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">$isInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -141,11 +174,15 @@ for error messages. Second, it makes the conversion functions less ambiguous.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#==">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#==">
+      <a id="==(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">==</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -159,14 +196,17 @@ for error messages. Second, it makes the conversion functions less ambiguous.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.Any#==">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#==">
+      <a id="==(Any):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">==</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -180,14 +220,17 @@ for error messages. Second, it makes the conversion functions less ambiguous.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.Any#asInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#asInstanceOf">
+      <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+        <span class="name">asInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        
+        <span class="result">: T0</span>
       </span>
       </h4>
       
@@ -202,14 +245,17 @@ part of compilation it is not possible to check whether the contents of the list
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="scala.AnyRef#clone">
+    </li><li visbl="prt" data-isabs="false" name="scala.AnyRef#clone">
+      <a id="clone():AnyRef"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+        <span class="name">clone</span>
+        
+        <span class="params">()</span>
+        <span class="result">: AnyRef</span>
       </span>
       </h4>
       
@@ -223,14 +269,17 @@ part of compilation it is not possible to check whether the contents of the list
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertByte">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertByte">
+      <a id="convertByte(String,CommandLineArgument[Byte]):Byte"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertByte</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Byte">Byte</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Byte">Byte</span></span>
+        <span class="name">convertByte</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Byte">Byte</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Byte">Byte</span></span>
       </span>
       </h4>
       
@@ -246,14 +295,17 @@ will cause an error, as will a value that is outside the range
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertChar">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertChar">
+      <a id="convertChar(String,CommandLineArgument[Char]):Char"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertChar</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Char">Char</span></span>
+        <span class="name">convertChar</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Char">Char</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Char">Char</span></span>
       </span>
       </h4>
       
@@ -268,14 +320,17 @@ is longer than one character in length will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertDouble">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertDouble">
+      <a id="convertDouble(String,CommandLineArgument[Double]):Double"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertDouble</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">convertDouble</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Double">Double</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4>
       
@@ -290,14 +345,17 @@ will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertFlag">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertFlag">
+      <a id="convertFlag[Boolean](Boolean,FlagOption[Boolean]):Boolean"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertFlag</span><span class="tparams">[<span name="Boolean">Boolean</span>]</span><span class="params">(<span name="onOff">onOff: Boolean</span>, <span name="opt">opt: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[Boolean]</span>)</span><span class="result">: Boolean</span>
+        <span class="name">convertFlag</span>
+        <span class="tparams">[<span name="Boolean">Boolean</span>]</span>
+        <span class="params">(<span name="onOff">onOff: Boolean</span>, <span name="opt">opt: <a href="FlagOption.html" class="extype" name="org.clapper.argot.FlagOption">FlagOption</a>[Boolean]</span>)</span>
+        <span class="result">: Boolean</span>
       </span>
       </h4>
       
@@ -311,14 +369,17 @@ no-op that exists to satisfy the implicit parameter for the<code>ArgotParser.fla
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertFloat">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertFloat">
+      <a id="convertFloat(String,CommandLineArgument[Float]):Float"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertFloat</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Float">Float</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Float">Float</span></span>
+        <span class="name">convertFloat</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Float">Float</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Float">Float</span></span>
       </span>
       </h4>
       
@@ -333,14 +394,17 @@ will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertInt">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertInt">
+      <a id="convertInt(String,CommandLineArgument[Int]):Int"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertInt</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">convertInt</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Int">Int</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
       
@@ -355,14 +419,17 @@ will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertLong">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertLong">
+      <a id="convertLong(String,CommandLineArgument[Long]):Long"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertLong</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Long">Long</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Long">Long</span></span>
+        <span class="name">convertLong</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Long">Long</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Long">Long</span></span>
       </span>
       </h4>
       
@@ -377,14 +444,17 @@ will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertSeq">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertSeq">
+      <a id="convertSeq[T](String,MultiValueOption[T])((String, String) ⇒ T):Seq[T]"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertSeq</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="parse">parse: (<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="java.lang.String">String</span>) ⇒ T</span>)</span><span class="result">: <span class="extype" name="scala.collection.Seq">Seq</span>[T]</span>
+        <span class="name">convertSeq</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="MultiValueOption.html" class="extype" name="org.clapper.argot.MultiValueOption">MultiValueOption</a>[T]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="parse">parse: (String, String) ⇒ T</span>)</span>
+        <span class="result">: Seq[T]</span>
       </span>
       </h4>
       
@@ -409,14 +479,17 @@ a delimiter.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertShort">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertShort">
+      <a id="convertShort(String,CommandLineArgument[Short]):Short"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertShort</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Short">Short</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Short">Short</span></span>
+        <span class="name">convertShort</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="scala.Short">Short</span>]</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Short">Short</span></span>
       </span>
       </h4>
       
@@ -431,14 +504,17 @@ will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="org.clapper.argot.ArgotConverters#convertString">
+    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters#convertString">
+      <a id="convertString(String,CommandLineArgument[String]):String"></a>
       <h4 class="signature">
       <span class="kind">implicit def</span>
       <span class="symbol">
-        <span class="name">convertString</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[<span class="extype" name="java.lang.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">convertString</span>
+        
+        <span class="params">(<span name="s">s: String</span>, <span name="opt">opt: <a href="CommandLineArgument.html" class="extype" name="org.clapper.argot.CommandLineArgument">CommandLineArgument</a>[String]</span>)</span>
+        <span class="result">: String</span>
       </span>
       </h4>
       
@@ -452,14 +528,17 @@ will cause an error.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#eq">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#eq">
+      <a id="eq(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -486,14 +565,17 @@ should be equal to each other (<code>o1 == o2</code>) and they should hash to th
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#equals">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#equals">
+      <a id="equals(Any):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -515,14 +597,17 @@ scala.Int
             
             
             
-            
           </div>
           
-    </li><li visbl="prt" name="scala.AnyRef#finalize">
+    </li><li visbl="prt" data-isabs="false" name="scala.AnyRef#finalize">
+      <a id="finalize():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -537,14 +622,17 @@ there are no more references to the object.</p><p>The details of when and if the
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#getClass">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#getClass">
+      <a id="getClass():java.lang.Class[_]"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+        <span class="name">getClass</span>
+        
+        <span class="params">()</span>
+        <span class="result">: java.lang.Class[_]</span>
       </span>
       </h4>
       
@@ -558,14 +646,17 @@ there are no more references to the object.</p><p>The details of when and if the
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#hashCode">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#hashCode">
+      <a id="hashCode():Int"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">hashCode</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4>
       
@@ -581,14 +672,17 @@ to verify that the behavior is consistent with the <code>equals</code> method.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.Any#isInstanceOf">
+    </li><li visbl="pub" data-isabs="false" name="scala.Any#isInstanceOf">
+      <a id="isInstanceOf[T0]:Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -604,14 +698,17 @@ possible to check whether the contents of the list are of the requested typed.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#ne">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#ne">
+      <a id="ne(AnyRef):Boolean"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span>
+        
+        <span class="params">(<span name="arg0">arg0: AnyRef</span>)</span>
+        <span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4>
       
@@ -625,14 +722,17 @@ possible to check whether the contents of the list are of the requested typed.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#notify">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#notify">
+      <a id="notify():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -645,14 +745,17 @@ possible to check whether the contents of the list are of the requested typed.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#notifyAll">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#notifyAll">
+      <a id="notifyAll():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -665,14 +768,17 @@ possible to check whether the contents of the list are of the requested typed.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#synchronized">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#synchronized">
+      <a id="synchronized[T0](T0):T0"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: T0</span>)</span><span class="result">: T0</span>
+        <span class="name">synchronized</span>
+        <span class="tparams">[<span name="T0">T0</span>]</span>
+        <span class="params">(<span name="arg0">arg0: T0</span>)</span>
+        <span class="result">: T0</span>
       </span>
       </h4>
       
@@ -683,11 +789,15 @@ possible to check whether the contents of the list are of the requested typed.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#toString">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#toString">
+      <a id="toString():String"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4>
       
@@ -699,14 +809,17 @@ possible to check whether the contents of the list are of the requested typed.
             
             
             
-            
           </div>
           
-    </li><li visbl="pub" name="scala.AnyRef#wait">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#wait">
+      <a id="wait():Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span>
+        
+        <span class="params">()</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -717,11 +830,15 @@ possible to check whether the contents of the list are of the requested typed.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#wait">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#wait">
+      <a id="wait(Long,Int):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -732,11 +849,15 @@ possible to check whether the contents of the list are of the requested typed.
           definition classes: AnyRef
         </div></div>
           
-    </li><li visbl="pub" name="scala.AnyRef#wait">
+    </li><li visbl="pub" data-isabs="false" name="scala.AnyRef#wait">
+      <a id="wait(Long):Unit"></a>
       <h4 class="signature">
       <span class="kind">def</span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span>
+        
+        <span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span>
+        <span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4>
       
@@ -749,7 +870,13 @@ possible to check whether the contents of the list are of the requested typed.
           
     </li></ol>
             </div>
-                
+
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from AnyRef</h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+
       </div>
       
       <div id="tooltip"></div>
