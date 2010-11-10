@@ -26,7 +26,7 @@ extends DefaultProject(info) with posterous.Publish
         "http://nexus.scala-tools.org/content/repositories/snapshots/"
 
     val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0.2"
+    val grizzled = "org.clapper" %% "grizzled-scala" % "1.0.3"
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing
