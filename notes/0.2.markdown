@@ -1,0 +1,5 @@
+* Upgraded [Grizzled Scala][] dependency to version 1.0.3.
+* Now compiles against [Scala][] 2.8.1, as well as 2.8.0.
+
+[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Scala]: http://www.scala-lang.org/
