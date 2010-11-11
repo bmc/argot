@@ -1,0 +1,14 @@
+* Addressed [Issue #1][]:
+
+  1. In the usage display, options are now sorted so that the POSIX-style
+     single-character option names always precede any longer GNU-style
+     synonyms.
+  2. The `Argot` constructor now supports an `sortOptions` parameter, which
+     defaults to `true`. If set to `true`, the options in the usage output
+     are sorted lexically. If set to `false`, the options are displayed in
+     the order they were specified in the code.
+
+Upgraded [Grizzled Scala][] dependency to version 1.0.3.
+* Now compiles against [Scala][] 2.8.1, as well as 2.8.0.
+
+[Issue #1]: https://github.com/bmc/argot/issues#issue/1

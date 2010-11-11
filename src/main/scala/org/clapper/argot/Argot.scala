@@ -808,6 +808,9 @@ object ArgotConverters
  * @param preUsage     optional message to issue before the usage message
  *                     (e.g., a copyright and/or version string)
  * @param postUsage    optional message to issue after the usage message
+ * @param sortUsage    If `true` (the default), the options are sorted
+ *                     alphabetically in the usage output. If `false`, they
+ *                     are displayed in the order they were created.
  *
  * @see <a href="http://bmc.github.com/argot/" target="argot">the Argot web site</a>
  */
@@ -815,7 +818,8 @@ class ArgotParser(programName: String,
                   compactUsage: Boolean = false,
                   outputWidth: Int = 79,
                   preUsage: Option[String] = None,
-                  postUsage: Option[String] = None)
+                  postUsage: Option[String] = None,
+                  sortUsage: Boolean = true)
 {
     require(outputWidth > 0)
 
@@ -1314,7 +1318,12 @@ class ArgotParser(programName: String,
                 buf.append("\n")
 
             val opt = allOptions(key)
-            val sorted = opt.names.sortWith(_ < _)
+
+            // Ensure that the short names always appear before the long
+            // names.
+
+            val sorted = opt.names.filter(_.length == 1).sortWith(_ < _) :::
+                         opt.names.filter(_.length > 1).sortWith(_ < _)
             for (name <- sorted.take(sorted.length - 1))
                 buf.append(optString(name, opt) + "\n")
             val name = sorted.takeRight(1)(0)
@@ -1366,7 +1375,13 @@ class ArgotParser(programName: String,
         if (allOptions.size > 0)
         {
             buf.append("\nOPTIONS\n")
-            allOptions.keySet.toList.sortWith(_ < _).foreach(handleOneOption)
+            val optionKeys =
+                if (sortUsage)
+                    allOptions.keySet.toList.sortWith(_ < _)
+                else
+                    allOptions.keySet.toList
+
+            optionKeys.foreach(handleOneOption)
         }
 
         if (parameters.size > 0)
