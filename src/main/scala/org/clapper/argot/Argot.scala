@@ -812,7 +812,7 @@ object ArgotConverters
  *                     alphabetically in the usage output. If `false`, they
  *                     are displayed in the order they were created.
  *
- * @see <a href="http://bmc.github.com/argot/" target="argot">the Argot web site</a>
+ * @see <a href="http://software.clapper.org/argot/" target="argot">the Argot web site</a>
  */
 class ArgotParser(programName: String,
                   compactUsage: Boolean = false,
