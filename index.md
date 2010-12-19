@@ -627,5 +627,5 @@ request. Along with any patch you send:
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
 [Maven]: http://maven.apache.org/
 [changelog]: CHANGELOG.html
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [bmc@clapper.org]: mailto:bmc@clapper.org
