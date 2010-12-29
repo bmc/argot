@@ -257,7 +257,7 @@ For *cooltool*, there is one single-value option:
 
 To create this option, use the following code fragment:
 
-    import ArgotConversions._
+    import ArgotConverters._
 
     val iterations = parser.option[Int](List("i", "iterations"), "n",
                                         "total iterations")
@@ -271,7 +271,7 @@ There are several things to note here:
    command line. The multicharacter name, "iterations", corresponds to
    "--iterations".
 
-### Introducting Automatic Conversions
+### Introducing Automatic Conversions
 
 The actual definition of the `option` method is:
 
@@ -283,11 +283,11 @@ Note the second parameter list, with the implicit `convert` parameter. This
 parameter specifies a conversion function that will convert the string
 value into the desired type (`Int` in our case). Argot has some pre-defined
 conversion functions for common types, in the
-`org.clapper.argot.ArgotConversions` module. If you pull the contents of
+`org.clapper.argot.ArgotConverters` module. If you pull the contents of
 that module into your namespace, then you don't have to specify a conversion
 function for common types. This import:
 
-    import ArgotConversions._
+    import ArgotConverters._
     
 makes those built-in implicit conversion functions available.
 
