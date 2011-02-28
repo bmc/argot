@@ -526,12 +526,15 @@ The entire main program for *cooltool* looks like this:
             file
         }
 
-        // Main program
+        // The guts of the program (omitted here)
+        def runCoolTool =
+        {
+            ...
+        }
 
+        // Main program
         def main(args: Array[String])
         {
-
-
             try
             {
                 parser.parse(args)
