@@ -14,5 +14,5 @@ You can find complete details, including usage information, on the
 [Argot home page][].
 
 [Argot]: http://bmc.github.com/argot/
-[Argot home page]: http://bmc.github.com/argot/
+[Argot home page]: http://software.clapper.org/argot/
 [Scala]: http://www.scala-lang.org/
