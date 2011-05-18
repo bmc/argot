@@ -572,6 +572,8 @@ In addition, you can generate your own version with:
 
     sbt doc
 
+The change log is [here][changelog].
+
 # Similar Work
 
 There are other Scala- and Java-based argument parsers available, among them:
@@ -604,7 +606,7 @@ changes, and send me a pull request.
 
 # Copyright and License
 
-Argot is copyright &copy; 2010 Brian M. Clapper and is released under a
+Argot is copyright &copy; 2010-2011 Brian M. Clapper and is released under a
 [BSD License][].
 
 # Patches
