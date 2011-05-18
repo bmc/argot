@@ -576,14 +576,17 @@ The change log is [here][changelog].
 
 # Similar Work
 
-There are other Scala- and Java-based argument parsers available, among them:
+There are other Scala- and Java-based argument parsers available. While this
+list is by no means exhaustive, here are some examples:
 
 * James Strachan's [scopt][] (Scala)
+* [optional][] (Scala)
 * [jopt-simple][] (Java)
 * [parse-cmd][] (Java and Scala; hasn't been updated since July, 2009)
 * Cédric Beust's annotation-driven [JCommander][] (Java)
 * [JewelCli][], another annotation-driven API (Java)
 
+[optional]: https://github.com/alexy/optional
 [scopt]: http://github.com/jstrachan/scopt
 [jopt-simple]: http://jopt-simple.sourceforge.net/
 [parse-cmd]: http://code.google.com/p/parse-cmd/
