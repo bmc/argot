@@ -1,0 +1,4 @@
+* Updated [posterous-sbt][] to version 0.1.7.
+
+[posterous-sbt]: https://github.com/n8han/posterous-sbt
+[SBT]: http://code.google.com/p/simple-build-tool/
