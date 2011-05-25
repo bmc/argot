@@ -574,10 +574,10 @@ The entire main program for *cooltool* looks like this:
 
 ## Resetting the Parser
 
-If you want to re-use the same `ArgotParser`, you must must reset of of
-its parameter and option values, clearing them; otherwise, they will retain
-the parsed values from the previous parse. The `ArgotParser` class provides
-a convenient way to reset everything:
+If you want to re-use the same `ArgotParser`, you must reset its parameter
+and option values, clearing them; otherwise, they will retain the parsed
+values from the previous parse. The `ArgotParser` class provides a
+convenient way to reset everything:
 
     val p = new ArgotParser(...)
 
