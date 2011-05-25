@@ -122,7 +122,7 @@ to parse a command line. To accomplish that goal you:
 * call its `option()`, `multiOption()` and `flag()` methods, to create
   specifications for the options
 * call its `parameter()` and `multiParameter()` methods to create
-  specifications for the position parameters
+  specifications for the positional parameters
 * call its `parse()` method to parse the command line arguments.
 
 Each of these steps is described further, below.
@@ -197,8 +197,7 @@ which are optional:
   the utility name, version, and copyright. The string is wrapped on word
   boundaries, just like the usage message. Default: `None`
 * `postUsage`: An `Option[String]`, specifying a message to follow the
-  usage block in the generated usage string. Often, this prefix contains
-  the utility name, version, and copyright. The string is wrapped on word
+  usage block in the generated usage string. The string is wrapped on word
   boundaries, just like the usage message. Default: `None`
   
 For *cooltool*, our `ArgotParser` looks like this:
@@ -215,8 +214,8 @@ message, using the default output width and a non-compact usage string.
 Options may be specified in any order.
 
 Options have one or more names. Single-character names are assumed to be
-preceded by a single hyphen ("-"); multicharacter names are assumed to be
-preceded by a double hyphen ("--"). Single character names can be combined,
+preceded by a single hyphen (`-`); multicharacter names are assumed to be
+preceded by a double hyphen (`--`). Single character names can be combined,
 POSIX-style.
 
 Given the [*cooltool* usage][], the following command lines are identical:
@@ -267,9 +266,9 @@ There are several things to note here:
 1. The `option` method takes a type parameter. In this case, we've supplied
    an `Int`, indicating that we want to convert the value to an `Int`.
 2. The valid names for the option are specified in the initial parameter, a
-   list. The single-character name, "i", corresponds to a "-i" option on the
+   list. The single-character name, "i", corresponds to a `-i` option on the
    command line. The multicharacter name, "iterations", corresponds to
-   "--iterations".
+   `--iterations`.
 
 ### Introducing Automatic Conversions
 
@@ -313,9 +312,34 @@ defined `iterations` like this:
                 )
         }
     }
+    
+We could also have used an implicit function:
 
-That's essentially what the built-in `String`-to-`Int` conversion function
-does.
+    implicit def convertIterations(sValue: String, opt: CommandLineArgument[File]): Int =
+    {
+        try
+        {
+            sValue.toInt
+        }
+
+        catch
+        {
+            case _: NumberFormatException =>
+                throw new ArgotConversionException(
+                    "Option " + opt.name + ": \"" + sValue + "\" isn't " +
+                    "a valid number."
+                )
+        }
+    }
+
+    val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                        "total iterations")
+
+Defining the conversion function as an `implicit` is useful if you want to
+use the same conversion function with multiple parameters.
+
+The built-in Argot  `String`-to-`Int` conversion function looks pretty much
+like the `convertIterations()` function, above.
 
 All the option-specification and parameter-specification methods support
 implicit conversion functions.
@@ -349,14 +373,14 @@ One takes a string and can use the default conversion function. The other
 takes an email address and supplies its own conversion function, to check
 the validity of the supplied parameter. The code for each is shown below:
 
-    val users = parser.multiOption[String](List("u", "user"), "username",
-                                           "User to receive email. Email " +
-                                           "address is queried from " +
-                                           "database.")
+    val users = parser.multiOption[String](
+        List("u", "user"), "username",
+        "User to receive email. Email"address is queried from database."
+    )
 
-    val emails = parser.multiOption[String](List("e", "email"), "emailaddr",
-                                            "Address to receive emailed " +
-                                            "results.")
+    val emails = parser.multiOption[String](
+        List("e", "email"), "emailaddr", "Address to receive emailed results."
+    )
     {
         (s, opt) =>
 
@@ -372,9 +396,9 @@ the validity of the supplied parameter. The code for each is shown below:
 
 ### Flag Options
 
-Flag options take no values; they either appear or not. Typically, flag
-options are associated with boolean value, though Argot will permit you
-to associate them with any type you choose.
+Flag options take no values; they either appear on the command line, or
+they don't. Typically, flag options are associated with boolean value,
+though Argot will permit you to associate them with any type you choose.
 
 Flag options permit you to segregate the option names into *on* names and
 *off* names. With boolean flag options, the *on* names set the value to
