@@ -30,7 +30,7 @@ If you're using [Maven][], you can simply tell Maven to get Argot from the
 
 * Group ID: `clapper.org`
 * Artifact ID: `argot_2.9.0`
-* Version: `0.3.1`
+* Version: `0.3.3`
 * Type: `jar`
 * Repository: `http://scala-tools.org/repo-releases`
 
@@ -47,29 +47,33 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>argot_2.9.0</artifactId>
-      <version>0.3.1</version>
+      <version>0.3.3</version>
     </dependency>
 
-Version 0.3.1 is available for Scala 2.9.0, Scala 2.8.1 and Scala 2.8.0.
+Version 0.3.3 is available for Scala 2.9.0-1, Scala 2.9.0, Scala 2.8.1 and
+Scala 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
 
 ## Using with SBT
 
-If you're using [SBT][] to build your code, place the following line in
-your project file (i.e., the Scala file in your `project/build/`
-directory):
+#### 0.7.x
 
-    val argot = "org.clapper" %% "argot" % "0.3.1"
+If you're using [SBT][] 0.7.x to compile your code, you can place the
+following line in your project file (i.e., the Scala file in your
+`project/build/` directory):
 
-**NOTES:**
+    val argot = "org.clapper" %% "argot" % "0.3.3"
 
-1. The first doubled percent is *not* a typo. It tells SBT to treat Argot
-   as a cross-built library and automatically inserts the Scala version
-   you're using into the artifact ID. It will *only* work if you are
-   building with Scala 2.8.0 or Scala 2.8.1. See the
-   [SBT cross-building][] page for details.
+#### 0.10.x
+
+If you're using [SBT][] 0.10.x to compile your code, you can use the
+following line in your `build.sbt` file (for Quick Configuration). If
+you're using an SBT 0.10.x Full Configuration, you're obviously smart
+enough to figure out what to do, on your own.
+
+    libraryDependencies += "org.clapper" %% "argot" % "0.3.3"
 
 # Building from Source
 
@@ -82,18 +86,13 @@ clone the repository, run this command:
 
 ## Build Requirements
 
-Building the Argot library requires [SBT][]. Install SBT, as described
-at the SBT web site.
+Building the Argot library requires [SBT][] 0.10.1 (or better). Install
+SBT, as described at the SBT web site.
 
 ## Building Argot
 
 Assuming you have an `sbt` shell script (or .BAT file, for *\[shudder\]*
-Windows), first run:
-
-    sbt update
-
-That command will pull down the external jars on which the Argot
-library depends. After that step, build the library with:
+Windows), run:
 
     sbt compile test package
 
