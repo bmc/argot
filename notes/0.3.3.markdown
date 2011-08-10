@@ -1,0 +1,4 @@
+* Now builds against Scala 2.9.0.1, as well as Scala 2.9.0, 2.8.1 and 2.8.0.
+* Converted to build with [SBT][] 0.10.1
+
+[SBT]: http://code.google.com/p/simple-build-tool/
