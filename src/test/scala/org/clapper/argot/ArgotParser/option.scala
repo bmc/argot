@@ -9,14 +9,14 @@
   modification, are permitted provided that the following conditions are
   met:
 
-  * Redistributions of source code must retain the above copyright notice,
+   * Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
 
-  * Redistributions in binary form must reproduce the above copyright
+   * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
 
-  * Neither the names "clapper.org", "Scalasti", nor the names of its
+   * Neither the names "clapper.org", "Scalasti", nor the names of its
     contributors may be used to endorse or promote products derived from
     this software without specific prior written permission.
 
@@ -37,105 +37,90 @@
 import org.scalatest.FunSuite
 import org.clapper.argot._
 
-/**
- * Tests the grizzled.io functions.
- */
-class ArgotOptionTest extends FunSuite
-{
-    import ArgotConverters._
+/** Tests the grizzled.io functions.
+  */
+class ArgotOptionTest extends FunSuite {
+  import ArgotConverters._
 
-    test("single-value option success")
-    {
-        val parser = new ArgotParser("test")
-        val opt = parser.option[String](List("s", "something"), "something",
-                                        "Some value")
+  test("single-value option success") {
+    val parser = new ArgotParser("test")
+    val opt = parser.option[String](List("s", "something"), "something",
+                                    "Some value")
 
-        val data = List(
-            (Some("something"),  Array("-s", "something")),
-            (Some("foo"),        Array("--something", "foo")),
-            (None,               Array.empty[String]),
-            (Some("bar"),        Array("-s", "foo", "-s", "bar"))
-         )
+    val data = List(
+      (Some("something"),  Array("-s", "something")),
+      (Some("foo"),        Array("--something", "foo")),
+      (None,               Array.empty[String]),
+      (Some("bar"),        Array("-s", "foo", "-s", "bar"))
+    )
 
-        for ((expected, args) <- data)
-        {
-            parser.reset()
-            parser.parse(args)
-            expect(expected, args.mkString("[", ", ", "]") + " -> " + expected)
-            {
-                opt.value
-            }
-        }
+    for ((expected, args) <- data) {
+      parser.reset()
+      parser.parse(args)
+      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+        opt.value
+      }
+    }
+  }
+
+  test("single-value option failure") {
+    val parser = new ArgotParser("test")
+    val opt = parser.option[String](List("s", "something"), "something",
+                                    "Some value")
+
+    val data = List(Array("-f"),
+                    Array("-s"))
+
+    for (args <- data) {
+      intercept[ArgotUsageException] {
+        parser.parse(args)
+      }
+    }
+  }
+
+  test("integer option") {
+    val parser = new ArgotParser("test")
+    val opt = parser.option[Int]("i", "someint", "integer")
+
+    val data = List(
+      (Some(3),  Array("-i", "3")),
+      (None,     Array.empty[String]),
+      (Some(0),  Array("-i", "3", "-i", "0")),
+      (Some(1),  Array("-i", "1", "-i", "10", "-i", "1"))
+    )
+
+    for ((expected, args) <- data) {
+      parser.reset()
+      parser.parse(args)
+      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+        opt.value
+      }
+    }
+  }
+
+  test("custom type option") {
+    class Foo(val i: Int)
+
+    val parser = new ArgotParser("test")
+    val opt = parser.option[Foo]("i", "n", "some number") {
+      (s, opt) =>
+
+        new Foo(s.toInt)
     }
 
-    test("single-value option failure")
-    {
-        val parser = new ArgotParser("test")
-        val opt = parser.option[String](List("s", "something"), "something",
-                                        "Some value")
+    val data = List(
+      (Some(3),  Array("-i", "3")),
+      (None,     Array.empty[String]),
+      (Some(0),  Array("-i", "3", "-i", "0")),
+      (Some(1),  Array("-i", "1", "-i", "10", "-i", "1"))
+    )
 
-        val data = List(Array("-f"),
-                        Array("-s"))
-
-        for (args <- data)
-        {
-            intercept[ArgotUsageException]
-            {
-                parser.parse(args)
-            }
-        }
+    for ((expected, args) <- data) {
+      parser.reset()
+      parser.parse(args)
+      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+        opt.value.map(_.i)
+      }
     }
-
-    test("integer option")
-    {
-        val parser = new ArgotParser("test")
-        val opt = parser.option[Int]("i", "someint", "integer")
-
-        val data = List(
-            (Some(3),  Array("-i", "3")),
-            (None,     Array.empty[String]),
-            (Some(0),  Array("-i", "3", "-i", "0")),
-            (Some(1),  Array("-i", "1", "-i", "10", "-i", "1"))
-        )
-
-        for ((expected, args) <- data)
-        {
-            parser.reset()
-            parser.parse(args)
-            expect(expected, args.mkString("[", ", ", "]") + " -> " + expected)
-            {
-                opt.value
-            }
-        }
-    }
-
-    test("custom type option")
-    {
-        class Foo(val i: Int)
-
-        val parser = new ArgotParser("test")
-        val opt = parser.option[Foo]("i", "n", "some number")
-        {
-            (s, opt) =>
-
-            new Foo(s.toInt)
-        }
-
-        val data = List(
-            (Some(3),  Array("-i", "3")),
-            (None,     Array.empty[String]),
-            (Some(0),  Array("-i", "3", "-i", "0")),
-            (Some(1),  Array("-i", "1", "-i", "10", "-i", "1"))
-        )
-
-        for ((expected, args) <- data)
-        {
-            parser.reset()
-            parser.parse(args)
-            expect(expected, args.mkString("[", ", ", "]") + " -> " + expected)
-            {
-                opt.value.map(_.i)
-            }
-        }
-    }
+  }
 }
