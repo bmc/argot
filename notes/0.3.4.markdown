@@ -1,0 +1,3 @@
+* Converted code to conform with standard Scala coding style.
+
+[SBT]: http://code.google.com/p/simple-build-tool/
