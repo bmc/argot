@@ -3,6 +3,18 @@ title: "Change Log: Argot, a command-line parser for Scala"
 layout: default
 ---
 
+Version 0.3.5:
+
+* Now builds for [Scala][] 2.9.1, as well as 2.9.0-1, 2.9.0, 2.8.1, and 2.8.0.
+
+[Scala]: http://www.scala-lang.org/
+
+Version 0.3.4:
+
+* Converted code to conform with standard Scala coding style.
+
+[SBT]: http://code.google.com/p/simple-build-tool/
+
 Version 0.3.3:
 
 * Now builds against Scala 2.9.0.1, as well as Scala 2.9.0, 2.8.1 and 2.8.0.
