@@ -29,8 +29,8 @@ If you're using [Maven][], you can simply tell Maven to get Argot from the
 [Scala Tools Maven repository][]. The relevant pieces of information are:
 
 * Group ID: `clapper.org`
-* Artifact ID: `argot_2.9.0`
-* Version: `0.3.3`
+* Artifact ID: `argot_2.9.1`
+* Version: `0.3.4`
 * Type: `jar`
 * Repository: `http://scala-tools.org/repo-releases`
 
@@ -47,11 +47,10 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>argot_2.9.0</artifactId>
-      <version>0.3.3</version>
+      <version>0.3.4</version>
     </dependency>
 
-Version 0.3.3 is available for Scala 2.9.0-1, Scala 2.9.0, Scala 2.8.1 and
-Scala 2.8.0.
+Version 0.3.5 is available for Scala 2.9.1, 2.9.0-1,2.9.0, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -64,7 +63,7 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val argot = "org.clapper" %% "argot" % "0.3.3"
+    val argot = "org.clapper" %% "argot" % "0.3.4"
 
 #### 0.10.x
 
@@ -73,7 +72,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.10.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "0.3.3"
+    libraryDependencies += "org.clapper" %% "argot" % "0.3.4"
 
 # Building from Source
 

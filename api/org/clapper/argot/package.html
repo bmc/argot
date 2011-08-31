@@ -5,32 +5,31 @@
           <title>org.clapper.argot</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
-      <link href="../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
       <script type="text/javascript" src="../../../lib/jquery.js"></script>
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
     
         </head>
-        <body class="value" onload="windowTitle();">
-
-      <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.clapper">clapper</a></p>
-
+        <body class="value">
       <div id="definition">
         <img src="../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../package.html">org</a>.<a name="org.clapper" class="extype" href="../package.html">clapper</a></p>
         <h1>argot</h1>
       </div>
 
       <h4 class="signature" id="signature">
       <span class="kind">package</span>
-      <span class="symbol">
+      <span class="symbol"> 
         <span class="name">argot</span>
-        
         
         
       </span>
       </h4>
-      <div class="fullcomment" id="comment"></div>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
 
       <div id="template">
 
@@ -40,11 +39,7 @@
           
           <div id="visbl">
               <span class="filtertype">Visibility</span>
-              <ol><li class="public in">Public</li><li class="all out">All</li></ol>
-            </div>
-          <div id="impl">
-              <span class="filtertype">Impl.</span>
-              <ol><li class="concrete in">Concrete</li><li class="abstract in">Abstract</li></ol>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
             </div>
         </div>
 
@@ -52,225 +47,214 @@
 
         <div class="types members" id="types">
               <h3>Type Members</h3>
-              <ol><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConversionException">
+              <ol><li visbl="pub" name="org.clapper.argot.ArgotConversionException" data-isabs="false">
       <a id="ArgotConversionException:ArgotConversionException"></a>
-      <h4 class="signature"><a href="ArgotConversionException.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">ArgotConversionException</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotConversionException.html"><span class="name">ArgotConversionException</span></a>
         
         <span class="result"> extends ArgotException</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Thrown to indicate that Argot could not convert a command line parameter
 to the desired type.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotException">
+    </li><li visbl="pub" name="org.clapper.argot.ArgotException" data-isabs="false">
       <a id="ArgotException:ArgotException"></a>
-      <h4 class="signature"><a href="ArgotException.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">ArgotException</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotException.html"><span class="name">ArgotException</span></a>
         
         <span class="result"> extends Exception</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Base Argot exception class.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotParser">
+    </li><li visbl="pub" name="org.clapper.argot.ArgotParser" data-isabs="false">
       <a id="ArgotParser:ArgotParser"></a>
-      <h4 class="signature"><a href="ArgotParser.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">ArgotParser</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotParser.html"><span class="name">ArgotParser</span></a>
         
         <span class="result"> extends AnyRef</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt"><code>ArgotParser</code> is a command-line parser, with support for single-value and
 multi-value options, single-value and multi-value parameters, typed value,
 custom conversions (with suitable defaults), and extensibility.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotSpecificationError">
+    </li><li visbl="pub" name="org.clapper.argot.ArgotSpecificationError" data-isabs="false">
       <a id="ArgotSpecificationError:ArgotSpecificationError"></a>
-      <h4 class="signature"><a href="ArgotSpecificationError.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">ArgotSpecificationError</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotSpecificationError.html"><span class="name">ArgotSpecificationError</span></a>
         
         <span class="result"> extends ArgotException</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Thrown to indicate that Argot encountered a problem in the caller's
 argument specification.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotUsageException">
+    </li><li visbl="pub" name="org.clapper.argot.ArgotUsageException" data-isabs="false">
       <a id="ArgotUsageException:ArgotUsageException"></a>
-      <h4 class="signature"><a href="ArgotUsageException.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">ArgotUsageException</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotUsageException.html"><span class="name">ArgotUsageException</span></a>
         
         <span class="result"> extends ArgotException</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Thrown to indicate usage errors.</p>
-    </li><li visbl="pub" data-isabs="true" name="org.clapper.argot.CommandLineArgument">
+    </li><li visbl="pub" name="org.clapper.argot.CommandLineArgument" data-isabs="true">
       <a id="CommandLineArgument:CommandLineArgument[T]"></a>
-      <h4 class="signature"><a href="CommandLineArgument.html">
+      <h4 class="signature">
       <span class="kind">trait</span>
-      <span class="symbol">
-        <span class="name">CommandLineArgument</span>
+      <span class="symbol"> 
+        <a href="CommandLineArgument.html"><span class="name">CommandLineArgument</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends AnyRef</span>
       </span>
-      </a></h4>
-      <p class="comment cmt">Base trait for all option and parameter classes, <code>CommandLineArgument</code>contains comment methods and values.</p>
-    </li><li visbl="pub" data-isabs="true" name="org.clapper.argot.CommandLineOption">
+      </h4>
+      <p class="comment cmt">Base trait for all option and parameter classes, <code>CommandLineArgument</code>
+contains comment methods and values.</p>
+    </li><li visbl="pub" name="org.clapper.argot.CommandLineOption" data-isabs="true">
       <a id="CommandLineOption:CommandLineOption[T]"></a>
-      <h4 class="signature"><a href="CommandLineOption.html">
+      <h4 class="signature">
       <span class="kind">trait</span>
-      <span class="symbol">
-        <span class="name">CommandLineOption</span>
+      <span class="symbol"> 
+        <a href="CommandLineOption.html"><span class="name">CommandLineOption</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends CommandLineArgument[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt"><code>CommandLineOption</code> is the base trait for all option classes.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.FlagOption">
+    </li><li visbl="pub" name="org.clapper.argot.FlagOption" data-isabs="false">
       <a id="FlagOption:FlagOption[T]"></a>
-      <h4 class="signature"><a href="FlagOption.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">FlagOption</span>
+      <span class="symbol"> 
+        <a href="FlagOption.html"><span class="name">FlagOption</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends CommandLineOption[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Class for a flag.</p>
-    </li><li visbl="pub" data-isabs="true" name="org.clapper.argot.HasValue">
+    </li><li visbl="pub" name="org.clapper.argot.HasValue" data-isabs="true">
       <a id="HasValue:HasValue[T]"></a>
-      <h4 class="signature"><a href="HasValue.html">
+      <h4 class="signature">
       <span class="kind">trait</span>
-      <span class="symbol">
-        <span class="name">HasValue</span>
+      <span class="symbol"> 
+        <a href="HasValue.html"><span class="name">HasValue</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends CommandLineArgument[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">The <code>HasValue</code> trait is mixed into option and parameter classes that
 support one or mor associated values of type <code>T</code>.</p>
-    </li><li visbl="pub" data-isabs="true" name="org.clapper.argot.MultiValueArg">
+    </li><li visbl="pub" name="org.clapper.argot.MultiValueArg" data-isabs="true">
       <a id="MultiValueArg:MultiValueArg[T]"></a>
-      <h4 class="signature"><a href="MultiValueArg.html">
+      <h4 class="signature">
       <span class="kind">trait</span>
-      <span class="symbol">
-        <span class="name">MultiValueArg</span>
+      <span class="symbol"> 
+        <a href="MultiValueArg.html"><span class="name">MultiValueArg</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends HasValue[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt"><code>MultiValueArg</code> is a refinement of the <code>HasValue</code> trait, specifically
-for arguments (options or parameters) that take multiple values of type<code>T</code>.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.MultiValueOption">
+for arguments (options or parameters) that take multiple values of type
+<code>T</code>.</p>
+    </li><li visbl="pub" name="org.clapper.argot.MultiValueOption" data-isabs="false">
       <a id="MultiValueOption:MultiValueOption[T]"></a>
-      <h4 class="signature"><a href="MultiValueOption.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">MultiValueOption</span>
+      <span class="symbol"> 
+        <a href="MultiValueOption.html"><span class="name">MultiValueOption</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends CommandLineOption[T] with MultiValueArg[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Class for an option that takes a multiple values.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.MultiValueParameter">
+    </li><li visbl="pub" name="org.clapper.argot.MultiValueParameter" data-isabs="false">
       <a id="MultiValueParameter:MultiValueParameter[T]"></a>
-      <h4 class="signature"><a href="MultiValueParameter.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">MultiValueParameter</span>
+      <span class="symbol"> 
+        <a href="MultiValueParameter.html"><span class="name">MultiValueParameter</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends Parameter[T] with MultiValueArg[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Class for a non-option parameter that takes a multiple values.</p>
-    </li><li visbl="pub" data-isabs="true" name="org.clapper.argot.SingleValueArg">
+    </li><li visbl="pub" name="org.clapper.argot.SingleValueArg" data-isabs="true">
       <a id="SingleValueArg:SingleValueArg[T]"></a>
-      <h4 class="signature"><a href="SingleValueArg.html">
+      <h4 class="signature">
       <span class="kind">trait</span>
-      <span class="symbol">
-        <span class="name">SingleValueArg</span>
+      <span class="symbol"> 
+        <a href="SingleValueArg.html"><span class="name">SingleValueArg</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends HasValue[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt"><code>SingleValueArg</code> is a refinement of the <code>HasValue</code> trait, specifically
 for arguments (options or parameters) that take only a single value.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.SingleValueOption">
+    </li><li visbl="pub" name="org.clapper.argot.SingleValueOption" data-isabs="false">
       <a id="SingleValueOption:SingleValueOption[T]"></a>
-      <h4 class="signature"><a href="SingleValueOption.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">SingleValueOption</span>
+      <span class="symbol"> 
+        <a href="SingleValueOption.html"><span class="name">SingleValueOption</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends CommandLineOption[T] with SingleValueArg[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Class for an option that takes a single value.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.SingleValueParameter">
+    </li><li visbl="pub" name="org.clapper.argot.SingleValueParameter" data-isabs="false">
       <a id="SingleValueParameter:SingleValueParameter[T]"></a>
-      <h4 class="signature"><a href="SingleValueParameter.html">
+      <h4 class="signature">
       <span class="kind">class</span>
-      <span class="symbol">
-        <span class="name">SingleValueParameter</span>
+      <span class="symbol"> 
+        <a href="SingleValueParameter.html"><span class="name">SingleValueParameter</span></a>
         <span class="tparams">[<span name="T">T</span>]</span>
-        
         <span class="result"> extends Parameter[T] with SingleValueArg[T]</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Class for a non-option parameter that takes a single value.</p>
     </li></ol>
             </div>
+        
+        
 
         <div class="values members" id="values">
               <h3>Value Members</h3>
-              <ol><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotConverters">
+              <ol><li visbl="pub" name="org.clapper.argot.ArgotConverters" data-isabs="false">
       <a id="ArgotConverters:ArgotConverters"></a>
-      <h4 class="signature"><a href="ArgotConverters$.html">
+      <h4 class="signature">
       <span class="kind">object</span>
-      <span class="symbol">
-        <span class="name">ArgotConverters</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotConverters$.html"><span class="name">ArgotConverters</span></a>
         
         <span class="result"> extends AnyRef</span>
       </span>
-      </a></h4>
+      </h4>
       <p class="comment cmt">Conversion functions that can be used to satisfy the implicit conversions
 specified to the various specification functions in the <code>ArgotParser</code> class.</p>
-    </li><li visbl="pub" data-isabs="false" name="org.clapper.argot.ArgotTest">
+    </li><li visbl="pub" name="org.clapper.argot.ArgotTest" data-isabs="false">
       <a id="ArgotTest:ArgotTest"></a>
-      <h4 class="signature"><a href="ArgotTest$.html">
+      <h4 class="signature">
       <span class="kind">object</span>
-      <span class="symbol">
-        <span class="name">ArgotTest</span>
-        
+      <span class="symbol"> 
+        <a href="ArgotTest$.html"><span class="name">ArgotTest</span></a>
         
         <span class="result"> extends AnyRef</span>
       </span>
-      </a></h4>
+      </h4>
       
     </li></ol>
             </div>
+
+        
 
         
 
