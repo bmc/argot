@@ -292,42 +292,34 @@ You *can* supply your own function, however. We could just as easily have
 defined `iterations` like this:
 
     val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                        "total iterations")
-    {
-        (sValue, opt) =>
+                                        "total iterations") {
+      (sValue, opt) =>
         
-        try
-        {
-            sValue.toInt
-        }
+      try {
+        sValue.toInt
+      }
 
-        catch
-        {
-            case _: NumberFormatException =>
-                throw new ArgotConversionException(
-                    "Option " + opt.name + ": \"" + sValue + "\" isn't " +
-                    "a valid number."
-                )
-        }
+      catch {
+        case _: NumberFormatException =>
+          throw new ArgotConversionException(
+            "Option " + opt.name + ": \"" + sValue + "\" isn't a number."
+          )
+      }
     }
     
 We could also have used an implicit function:
 
-    implicit def convertIterations(sValue: String, opt: CommandLineArgument[File]): Int =
-    {
-        try
-        {
-            sValue.toInt
-        }
+    implicit def convertIterations(sValue: String, opt: CommandLineArgument[File]): Int = {
+      try {
+        sValue.toInt
+      }
 
-        catch
-        {
-            case _: NumberFormatException =>
-                throw new ArgotConversionException(
-                    "Option " + opt.name + ": \"" + sValue + "\" isn't " +
-                    "a valid number."
-                )
-        }
+      catch {
+        case _: NumberFormatException =>
+          throw new ArgotConversionException(
+            "Option " + opt.name + ": \"" + sValue + "\" isn't a number"
+          )
+      }
     }
 
     val iterations = parser.option[Int](List("i", "iterations"), "n",
@@ -378,17 +370,15 @@ the validity of the supplied parameter. The code for each is shown below:
 
     val emails = parser.multiOption[String](
         List("e", "email"), "emailaddr", "Address to receive emailed results."
-    )
-    {
-        (s, opt) =>
+    ) {
+      (s, opt) =>
 
-        val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
-        ValidAddress.findFirstIn(s) match
-        {
-            case None    => parser.usage("Bad email address \"" + s +
-                                         "\" for " + opt.name + " option.")
-            case Some(_) => s
-        }
+       val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
+       ValidAddress.findFirstIn(s) match {
+        case None    => parser.usage("Bad email address \"" + s +
+                                     "\" for " + opt.name + " option.")
+        case Some(_) => s
+      }
     }
 
 
@@ -418,15 +408,14 @@ The code for both options follows:
                                    List("q", "quiet"),
                                    "Increment (-v, --verbose) or " +
                                    "decrement (-q, --quiet) the " +
-                                   "verbosity level.")
-    {
-        (onOff, opt) =>
+                                   "verbosity level.") {
+      (onOff, opt) =>
 
-        import scala.math
+      import scala.math
 
-        val currentValue = opt.value.getOrElse(0)
-        val newValue = if (onOff) currentValue + 1 else currentValue - 1
-        math.max(0, newValue)
+      val currentValue = opt.value.getOrElse(0)
+      val newValue = if (onOff) currentValue + 1 else currentValue - 1
+      math.max(0, newValue)
     }
 
 ## Positional Parameters
@@ -460,15 +449,14 @@ Here's the code for each parameter:
     val input = parser.multiParameter[File]("input",
                                             "Input files to read. If not " +
                                             "specified, use stdin.",
-                                            true)
-    {
-        (s, opt) =>
+                                            true) {
+      (s, opt) =>
 
-        val file = new File(s)
-        if (! file.exists)
-            parser.usage("Input file \"" + s + "\" does not exist.")
+      val file = new File(s)
+      if (! file.exists)
+          parser.usage("Input file \"" + s + "\" does not exist.")
 
-        file
+      file
     }
 
 ## Putting It All Together
@@ -479,95 +467,86 @@ The entire main program for *cooltool* looks like this:
     import java.io.File
     import scala.math
 
-    object CoolTool
-    {
-        // Argument specifications
+    object CoolTool {
+      // Argument specifications
 
-        import ArgotConverters._
+      import ArgotConverters._
 
-        val parser = new ArgotParser(
-            "test",
-            preUsage=Some("ArgotTest: Version 0.1. Copyright (c) " +
-                          "2010, Brian M. Clapper. Pithy quotes go here.")
-        )
+      val parser = new ArgotParser(
+          "test",
+          preUsage=Some("ArgotTest: Version 0.1. Copyright (c) " +
+                        "2010, Brian M. Clapper. Pithy quotes go here.")
+      )
 
-        val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                            "Total iterations")
-        val verbose = parser.flag[Int](List("v", "verbose"),
-                                       List("q", "quiet"),
-                                       "Increment (-v, --verbose) or " +
-                                       "decrement (-q, --quiet) the " +
-                                       "verbosity level.")
-        {
-            (onOff, opt) =>
+      val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                          "Total iterations")
+      val verbose = parser.flag[Int](List("v", "verbose"),
+                                     List("q", "quiet"),
+                                     "Increment (-v, --verbose) or " +
+                                     "decrement (-q, --quiet) the " +
+                                     "verbosity level.") {
+        (onOff, opt) =>
 
-            import scala.math
+        import scala.math
 
-            val currentValue = opt.value.getOrElse(0)
-            val newValue = if (onOff) currentValue + 1 else currentValue - 1
-            math.max(0, newValue)
+        val currentValue = opt.value.getOrElse(0)
+        val newValue = if (onOff) currentValue + 1 else currentValue - 1
+        math.max(0, newValue)
+      }
+
+      val noError = parser.flag[Boolean](List("n", "noerror"),
+                                         "Do not abort on error.")
+      val users = parser.multiOption[String](List("u", "user"), "username",
+                                             "User to receive email. Email " +
+                                             "address is queried from " +
+                                             "database.")
+
+      val email = parser.multiOption[String](List("e", "email"), "emailaddr",
+                                             "Address to receive emailed " +
+                                             "results.") {
+        (s, opt) =>
+
+        val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
+        ValidAddress.findFirstIn(s) match {
+          case None    => parser.usage("Bad email address \"" + s +
+                                       "\" for " + opt.name + " option.")
+          case Some(_) => s
+        }
+      }
+
+      val output = parser.parameter[String]("outputfile",
+                                            "Output file to which to write.",
+                                            false)
+
+      val input = parser.multiParameter[File]("input",
+                                              "Input files to read. If not " +
+                                              "specified, use stdin.",
+                                              true) {
+        (s, opt) =>
+
+        val file = new File(s)
+        if (! file.exists)
+          parser.usage("Input file \"" + s + "\" does not exist.")
+
+        file
+      }
+
+      // The guts of the program (omitted here)
+      def runCoolTool = {
+        ...
+      }
+
+      // Main program
+      def main(args: Array[String]) {
+        try {
+          parser.parse(args)
+          runCoolTool
         }
 
-        val noError = parser.flag[Boolean](List("n", "noerror"),
-                                           "Do not abort on error.")
-        val users = parser.multiOption[String](List("u", "user"), "username",
-                                               "User to receive email. Email " +
-                                               "address is queried from " +
-                                               "database.")
-
-        val email = parser.multiOption[String](List("e", "email"), "emailaddr",
-                                               "Address to receive emailed " +
-                                               "results.")
-        {
-            (s, opt) =>
-
-            val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
-            ValidAddress.findFirstIn(s) match
-            {
-                case None    => parser.usage("Bad email address \"" + s +
-                                             "\" for " + opt.name + " option.")
-                case Some(_) => s
-            }
+        catch {
+          case e: ArgotUsageException => println(e.message)
         }
-
-        val output = parser.parameter[String]("outputfile",
-                                              "Output file to which to write.",
-                                              false)
-
-        val input = parser.multiParameter[File]("input",
-                                                "Input files to read. If not " +
-                                                "specified, use stdin.",
-                                                true)
-        {
-            (s, opt) =>
-
-            val file = new File(s)
-            if (! file.exists)
-                parser.usage("Input file \"" + s + "\" does not exist.")
-
-            file
-        }
-
-        // The guts of the program (omitted here)
-        def runCoolTool =
-        {
-            ...
-        }
-
-        // Main program
-        def main(args: Array[String])
-        {
-            try
-            {
-                parser.parse(args)
-                runCoolTool
-            }
-
-            catch
-            {
-                case e: ArgotUsageException => println(e.message)
-            }
-        }
+      }
     }
 
 ## Resetting the Parser
