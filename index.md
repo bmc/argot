@@ -30,9 +30,6 @@ those tools do the job for you.
 If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
-If you're using [Maven][], you can simply tell Maven to get Argot from the
-[Scala Tools Maven repository][]. The relevant pieces of information are:
-
 * Group ID: `clapper.org`
 * Artifact ID: `argot_2.9.1`
 * Version: `0.3.6`
