@@ -1,0 +1,6 @@
+* Converted to use SBT 0.11.2.
+* Updated ScalaTest versions.
+* Added _ls.implicit.ly_ metadata.
+* Now publishes to `oss.sonatype.org` (and, thence, to the Maven central repo).
+
+[Scala]: http://www.scala-lang.org/
