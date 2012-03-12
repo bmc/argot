@@ -13,5 +13,5 @@ Argot is a command-line parser library for [Scala][], supporting:
 For more information, see the [Argot home page][].
 
 [Scala]: http://www.scala-lang.org/
-[Argot home page]: http://bmc.github.com/argot/
+[Argot home page]: http://software.clapper.org/argot/
 
