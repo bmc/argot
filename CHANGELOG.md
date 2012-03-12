@@ -3,6 +3,15 @@ title: "Change Log: Argot, a command-line parser for Scala"
 layout: default
 ---
 
+Version 0.3.6:
+
+* Converted to use SBT 0.11.2.
+* Updated ScalaTest versions.
+* Added _ls.implicit.ly_ metadata.
+* Now publishes to `oss.sonatype.org` (and, thence, to the Maven central repo).
+
+[Scala]: http://www.scala-lang.org/
+
 Version 0.3.5:
 
 * Now builds for [Scala][] 2.9.1, as well as 2.9.0-1, 2.9.0, 2.8.1, and 2.8.0.

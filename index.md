@@ -19,38 +19,34 @@ Argot is a command-line parser library for [Scala][], supporting:
 
 # Installation
 
-The easiest way to install the Argot library is to download a pre-compiled
-jar from the [Scala Tools Maven repository][]. However, you can also get
-certain build tools to download it for you automatically.
+Argot is published to the `oss.sonatype.org` repository;  Sonatype
+automatically pushes the artifacts to the  [Maven central repository][]. You
+can get download the Grizzled Scala library jar directly from the Maven
+repository. However, if you're using [Maven][] or [SBT][], you can just have
+those tools do the job for you.
 
 ## Installing for Maven
+
+If you're using [Maven][], just specify the artifact, and Maven will do the
+rest for you:
 
 If you're using [Maven][], you can simply tell Maven to get Argot from the
 [Scala Tools Maven repository][]. The relevant pieces of information are:
 
 * Group ID: `clapper.org`
 * Artifact ID: `argot_2.9.1`
-* Version: `0.3.5`
+* Version: `0.3.6`
 * Type: `jar`
-* Repository: `http://scala-tools.org/repo-releases`
 
 Here's a sample Maven POM "dependency" snippet:
 
-    <repositories>
-      <repository>
-        <id>scala-tools.org</id>
-          <name>Scala-tools Maven2 Repository</name>
-          <url>http://scala-tools.org/repo-releases</url>
-      </repository>
-    </repositories>
-
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>argot_2.9.0</artifactId>
-      <version>0.3.5</version>
+      <artifactId>argot_2.9.1</artifactId>
+      <version>0.3.6</version>
     </dependency>
 
-Version 0.3.5 is available for Scala 2.9.1, 2.9.0-1,2.9.0, 2.8.1 and 2.8.0.
+Version 0.3.6 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -63,7 +59,7 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val argot = "org.clapper" %% "argot" % "0.3.5"
+    val argot = "org.clapper" %% "argot" % "0.3.6"
 
 #### 0.10.x
 
@@ -72,7 +68,12 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.10.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "0.3.5"
+    libraryDependencies += "org.clapper" %% "argot" % "0.3.6"
+
+Argot is also registered with [Doug Tangren][]'s excellent [ls.implicit.ly][]
+catalog. If you use the `ls` SBT plugin, you can install Argot with
+
+    sbt> ls-install argot
 
 # Building from Source
 
@@ -638,3 +639,4 @@ request. Along with any patch you send:
 [changelog]: CHANGELOG.html
 [Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [bmc@clapper.org]: mailto:bmc@clapper.org
+[Maven central repository]: http://search.maven.org/
