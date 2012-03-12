@@ -252,10 +252,12 @@ For *cooltool*, there is one single-value option:
 
 To create this option, use the following code fragment:
 
-    import ArgotConverters._
+{% highlight scala %}
+import ArgotConverters._
 
-    val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                        "total iterations")
+val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                    "total iterations")
+{% endhighlight %}
 
 There are several things to note here:
 
@@ -270,9 +272,11 @@ There are several things to note here:
 
 The actual definition of the `option` method is:
 
-    def option[T](names: List[String], valueName: String, description: String)
-                 (implicit convert: (String, SingleValueOption[T]) => T):
-        SingleValueOption[T] =
+{% highlight scala %}
+def option[T](names: List[String], valueName: String, description: String)
+             (implicit convert: (String, SingleValueOption[T]) => T):
+    SingleValueOption[T] =
+{% endhighlight %}
 
 Note the second parameter list, with the implicit `convert` parameter. This
 parameter specifies a conversion function that will convert the string
@@ -282,46 +286,50 @@ conversion functions for common types, in the
 that module into your namespace, then you don't have to specify a conversion
 function for common types. This import:
 
-    import ArgotConverters._
+{% highlight scala %}
+import ArgotConverters._
+{% endhighlight %}
     
 makes those built-in implicit conversion functions available.
 
 You *can* supply your own function, however. We could just as easily have
 defined `iterations` like this:
 
-    val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                        "total iterations") {
-      (sValue, opt) =>
-        
-      try {
-        sValue.toInt
-      }
-
-      catch {
-        case _: NumberFormatException =>
-          throw new ArgotConversionException(
-            "Option " + opt.name + ": \"" + sValue + "\" isn't a number."
-          )
-      }
-    }
+{% highlight scala %}
+val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                    "total iterations") {
+  (sValue, opt) =>
     
+  try {
+    sValue.toInt
+  }
+
+  catch {
+    case _: NumberFormatException =>
+      throw new ArgotConversionException(
+        "Option " + opt.name + ": \"" + sValue + "\" isn't a number."
+      )
+  }
+}
+{% endhighlight %}
+
 We could also have used an implicit function:
 
-    implicit def convertIterations(sValue: String, opt: CommandLineArgument[File]): Int = {
-      try {
-        sValue.toInt
-      }
-
-      catch {
-        case _: NumberFormatException =>
-          throw new ArgotConversionException(
-            "Option " + opt.name + ": \"" + sValue + "\" isn't a number"
-          )
-      }
-    }
-
-    val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                        "total iterations")
+{% highlight scala %}
+implicit def convertIterations(sValue: String, opt: CommandLineArgument[]): Int = {
+  try {
+    sValue.toInt
+  }
+  catch {
+    case _: NumberFormatException =>
+      throw new ArgotConversionException(
+        "Option " + opt.name + ": \"" + sValue + "\" isn't a number"
+      )
+  }
+}
+val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                    "total iterations")
+{% endhighlight %}
 
 Defining the conversion function as an `implicit` is useful if you want to
 use the same conversion function with multiple parameters.
@@ -361,24 +369,25 @@ One takes a string and can use the default conversion function. The other
 takes an email address and supplies its own conversion function, to check
 the validity of the supplied parameter. The code for each is shown below:
 
-    val users = parser.multiOption[String](
-        List("u", "user"), "username",
-        "User to receive email. Email"address is queried from database."
-    )
+{% highlight scala %}
+val users = parser.multiOption[String](
+    List("u", "user"), "username",
+    "User to receive email. Email"address is queried from database."
+)
 
-    val emails = parser.multiOption[String](
-        List("e", "email"), "emailaddr", "Address to receive emailed results."
-    ) {
-      (s, opt) =>
+val emails = parser.multiOption[String](
+    List("e", "email"), "emailaddr", "Address to receive emailed results."
+) {
+  (s, opt) =>
 
-       val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
-       ValidAddress.findFirstIn(s) match {
-        case None    => parser.usage("Bad email address \"" + s +
-                                     "\" for " + opt.name + " option.")
-        case Some(_) => s
-      }
-    }
-
+   val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
+   ValidAddress.findFirstIn(s) match {
+    case None    => parser.usage("Bad email address \"" + s +
+                                 "\" for " + opt.name + " option.")
+    case Some(_) => s
+  }
+}
+{% endhighlight %}
 
 ### Flag Options
 
@@ -399,22 +408,24 @@ or `--quiet`, and the verbosity level gets decremented.
 
 The code for both options follows:
 
-    val noError = parser.flag[Boolean](List("n", "noerror"),
-                                       "Do not abort on error.")
+{% highlight scala %}
+val noError = parser.flag[Boolean](List("n", "noerror"),
+                                   "Do not abort on error.")
 
-    val verbose = parser.flag[Int](List("v", "verbose"),
-                                   List("q", "quiet"),
-                                   "Increment (-v, --verbose) or " +
-                                   "decrement (-q, --quiet) the " +
-                                   "verbosity level.") {
-      (onOff, opt) =>
+val verbose = parser.flag[Int](List("v", "verbose"),
+                               List("q", "quiet"),
+                               "Increment (-v, --verbose) or " +
+                               "decrement (-q, --quiet) the " +
+                               "verbosity level.") {
+  (onOff, opt) =>
 
-      import scala.math
+  import scala.math
 
-      val currentValue = opt.value.getOrElse(0)
-      val newValue = if (onOff) currentValue + 1 else currentValue - 1
-      math.max(0, newValue)
-    }
+  val currentValue = opt.value.getOrElse(0)
+  val newValue = if (onOff) currentValue + 1 else currentValue - 1
+  math.max(0, newValue)
+}
+{% endhighlight %}
 
 ## Positional Parameters
 
@@ -440,112 +451,116 @@ following characteristics.
 
 Here's the code for each parameter:
 
-    val output = parser.parameter[String]("outputfile",
-                                          "Output file to which to write.",
-                                          false)
+{% highlight scala %}
+val output = parser.parameter[String]("outputfile",
+                                      "Output file to which to write.",
+                                      false)
 
-    val input = parser.multiParameter[File]("input",
-                                            "Input files to read. If not " +
-                                            "specified, use stdin.",
-                                            true) {
-      (s, opt) =>
+val input = parser.multiParameter[File]("input",
+                                        "Input files to read. If not " +
+                                        "specified, use stdin.",
+                                        true) {
+  (s, opt) =>
 
-      val file = new File(s)
-      if (! file.exists)
-          parser.usage("Input file \"" + s + "\" does not exist.")
+  val file = new File(s)
+  if (! file.exists)
+      parser.usage("Input file \"" + s + "\" does not exist.")
 
-      file
-    }
+  file
+}
+{% endhighlight %}
 
 ## Putting It All Together
 
 The entire main program for *cooltool* looks like this:
 
-    package org.clapper.argot
-    import java.io.File
+{% highlight scala %}
+package org.clapper.argot
+import java.io.File
+import scala.math
+
+object CoolTool {
+  // Argument specifications
+
+  import ArgotConverters._
+
+  val parser = new ArgotParser(
+    "test",
+    preUsage=Some("ArgotTest: Version 0.1. Copyright (c) " +
+                  "2012, Brian M. Clapper. Pithy quotes go here.")
+  )
+
+  val iterations = parser.option[Int](List("i", "iterations"), "n",
+                                      "Total iterations")
+  val verbose = parser.flag[Int](List("v", "verbose"),
+                                 List("q", "quiet"),
+                                 "Increment (-v, --verbose) or " +
+                                 "decrement (-q, --quiet) the " +
+                                 "verbosity level.") {
+    (onOff, opt) =>
+
     import scala.math
 
-    object CoolTool {
-      // Argument specifications
+    val currentValue = opt.value.getOrElse(0)
+    val newValue = if (onOff) currentValue + 1 else currentValue - 1
+    math.max(0, newValue)
+  }
 
-      import ArgotConverters._
+  val noError = parser.flag[Boolean](List("n", "noerror"),
+                                     "Do not abort on error.")
+  val users = parser.multiOption[String](List("u", "user"), "username",
+                                         "User to receive email. Email " +
+                                         "address is queried from " +
+                                         "database.")
 
-      val parser = new ArgotParser(
-          "test",
-          preUsage=Some("ArgotTest: Version 0.1. Copyright (c) " +
-                        "2010, Brian M. Clapper. Pithy quotes go here.")
-      )
+  val email = parser.multiOption[String](List("e", "email"), "emailaddr",
+                                         "Address to receive emailed " +
+                                         "results.") {
+    (s, opt) =>
 
-      val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                          "Total iterations")
-      val verbose = parser.flag[Int](List("v", "verbose"),
-                                     List("q", "quiet"),
-                                     "Increment (-v, --verbose) or " +
-                                     "decrement (-q, --quiet) the " +
-                                     "verbosity level.") {
-        (onOff, opt) =>
-
-        import scala.math
-
-        val currentValue = opt.value.getOrElse(0)
-        val newValue = if (onOff) currentValue + 1 else currentValue - 1
-        math.max(0, newValue)
-      }
-
-      val noError = parser.flag[Boolean](List("n", "noerror"),
-                                         "Do not abort on error.")
-      val users = parser.multiOption[String](List("u", "user"), "username",
-                                             "User to receive email. Email " +
-                                             "address is queried from " +
-                                             "database.")
-
-      val email = parser.multiOption[String](List("e", "email"), "emailaddr",
-                                             "Address to receive emailed " +
-                                             "results.") {
-        (s, opt) =>
-
-        val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
-        ValidAddress.findFirstIn(s) match {
-          case None    => parser.usage("Bad email address \"" + s +
-                                       "\" for " + opt.name + " option.")
-          case Some(_) => s
-        }
-      }
-
-      val output = parser.parameter[String]("outputfile",
-                                            "Output file to which to write.",
-                                            false)
-
-      val input = parser.multiParameter[File]("input",
-                                              "Input files to read. If not " +
-                                              "specified, use stdin.",
-                                              true) {
-        (s, opt) =>
-
-        val file = new File(s)
-        if (! file.exists)
-          parser.usage("Input file \"" + s + "\" does not exist.")
-
-        file
-      }
-
-      // The guts of the program (omitted here)
-      def runCoolTool = {
-        ...
-      }
-
-      // Main program
-      def main(args: Array[String]) {
-        try {
-          parser.parse(args)
-          runCoolTool
-        }
-
-        catch {
-          case e: ArgotUsageException => println(e.message)
-        }
-      }
+    val ValidAddress = """^[^@]+@[^@]+\.[a-zA-Z]+$""".r
+    ValidAddress.findFirstIn(s) match {
+      case None    => parser.usage("Bad email address \"" + s +
+                                   "\" for " + opt.name + " option.")
+      case Some(_) => s
     }
+  }
+
+  val output = parser.parameter[String]("outputfile",
+                                        "Output file to which to write.",
+                                        false)
+
+  val input = parser.multiParameter[File]("input",
+                                          "Input files to read. If not " +
+                                          "specified, use stdin.",
+                                          true) {
+    (s, opt) =>
+
+    val file = new File(s)
+    if (! file.exists)
+      parser.usage("Input file \"" + s + "\" does not exist.")
+
+    file
+  }
+
+  // The guts of the program (omitted here)
+  def runCoolTool = {
+    ...
+  }
+
+  // Main program
+  def main(args: Array[String]) {
+    try {
+      parser.parse(args)
+      runCoolTool
+    }
+
+    catch {
+      case e: ArgotUsageException => println(e.message)
+    }
+  }
+}
+{% endhighlight %}
 
 ## Resetting the Parser
 
@@ -554,15 +569,17 @@ and option values, clearing them; otherwise, they will retain the parsed
 values from the previous parse. The `ArgotParser` class provides a
 convenient way to reset everything:
 
-    val p = new ArgotParser(...)
+{% highlight scala %}
+val p = new ArgotParser(...)
 
-    ...
+...
 
-    p.parse(args)
+p.parse(args)
 
-    ...
+...
 
-    p.reset()  // resets all internal state
+p.reset()  // resets all internal state
+{% endhighlight %}
 
 ## API Documentation
 
