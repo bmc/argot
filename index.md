@@ -640,3 +640,4 @@ request. Along with any patch you send:
 [Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [bmc@clapper.org]: mailto:bmc@clapper.org
 [Maven central repository]: http://search.maven.org/
+[ls.implicit.ly]: http://ls.implicit.ly
