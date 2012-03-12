@@ -43,7 +43,8 @@ Here's a sample Maven POM "dependency" snippet:
       <version>0.3.7</version>
     </dependency>
 
-Version 0.3.7 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.1 and 2.8.0.
+Version 0.3.7 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
+2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
