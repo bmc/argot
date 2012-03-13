@@ -3,6 +3,10 @@ title: "Change Log: Argot, a command-line parser for Scala"
 layout: default
 ---
 
+Version 0.3.8:
+
+* Added Scala 2.9.1-1 to the set of cross-built versions.
+
 Version 0.3.7:
 
 * Built for Scala 2.8.2, in addition to 2.8.0, 2.8.1, 2.9.0, 2.9.0-1 and 2.9.1
