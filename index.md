@@ -297,8 +297,7 @@ You *can* supply your own function, however. We could just as easily have
 defined `iterations` like this:
 
 {% highlight scala %}
-val iterations = parser.option[Int](List("i", "iterations"), "n",
-                                    "total iterations") {
+val iterations = parser.option[Int](List("i", "iterations"), "n", "total iterations") {
   (sValue, opt) =>
     
   try {
