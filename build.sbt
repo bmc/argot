@@ -5,7 +5,7 @@ name := "argot"
 
 organization := "org.clapper"
 
-version := "0.3.8"
+version := "0.4"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/argot/license.html"))
 
