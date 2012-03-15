@@ -40,9 +40,7 @@
 package org.clapper.argot
 
 import scala.reflect.Manifest
-import scala.collection.mutable.{Map => MutableMap,
-                                 LinkedHashMap,
-                                 LinkedHashSet}
+import scala.collection.mutable.{Map => MutableMap, LinkedHashMap, LinkedHashSet}
 import scala.util.matching.Regex
 import scala.annotation.tailrec
 
@@ -568,7 +566,7 @@ private object Conversions {
  *
  * @see <a href="http://software.clapper.org/argot/" target="argot">the Argot web site</a>
  */
-class ArgotParser(programName: String,
+class ArgotParserOld(programName: String,
                   compactUsage: Boolean = false,
                   outputWidth: Int = 79,
                   preUsage: Option[String] = None,
@@ -583,358 +581,6 @@ class ArgotParser(programName: String,
   protected val flags = new LinkedHashSet[FlagOption[_]]
   protected val parameters = new LinkedHashSet[Parameter[_]]
 
-  /** Resets the internal state of all contained options and parameters,
-   * undoing the effects of any parse operation.
-   */
-  def reset() = {
-    allOptions.values.foreach(_.reset())
-    parameters.foreach(_.reset())
-  }
-
-  /** Define an option that takes a single value of type `T`.
-   *
-   * @tparam T  the type of the option's value, which will be stored in
-   *            the `SingleValueOption` object's `value` field.
-   *
-   * @param names       the list of names for the option. Each name can be
-   *                    a single character (thus, "v" corresponds to "-v") or
-   *                    multiple characters ("verbose" for "--verbose").
-   * @param valueName   a name to use for the associated value in the
-   *                    generated usage message
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a string value into
-   *                    type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For common types, the implicit functions in the
-   *                    `ArgotConverters` module are often suitable.
-   *
-   * @return the `SingleValueOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
-   */
-  def option[T](names: List[String], valueName: String, description: String)
-               (implicit convert: (String, SingleValueOption[T]) => T):
-  SingleValueOption[T] = {
-    names.foreach(checkOptionName)
-
-    val opt = new SingleValueOption[T](this, names, valueName, description,
-                                       convert)
-    replaceOption(opt)
-    nonFlags += opt
-    opt
-  }
-
-  /** Define an option that takes a single value of type `T`. This short-hand
-   * method provides only one option name, as opposed to a list of option
-   * names.
-   *
-   * @tparam T  the type of the option's value, which will be stored in
-   *            the `SingleValueOption` object's `value` field.
-   *
-   * @param name        the name for the option. The name can be a single
-   *                    character (thus, "v" corresponds to "-v") or
-   *                    multiple characters ("verbose" for "--verbose").
-   * @param valueName   a name to use for the associated value in the
-   *                    generated usage message
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a string value into
-   *                    type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For common types, the implicit functions in the
-   *                    `ArgotConverters` module are often suitable.
-   *
-   * @return the `SingleValueOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
-   */
-  def option[T](name: String, valueName: String, description: String)
-               (implicit convert: (String, SingleValueOption[T]) => T):
-  SingleValueOption[T] = {
-    option[T](List(name), valueName, description)(convert)
-  }
-
-  /** Define an option that takes a sequence of values of type `T`. Each
-   * invocation of the option on the command line contributes a new value
-   * to the sequence.
-   *
-   * @tparam T  the type of the option's value, which added to the
-   *            the `MultiValueOption` object's `value` sequence field.
-   *
-   * @param names       the list of names for the option. Each name can be
-   *                    a single character (thus, "v" corresponds to "-v") or
-   *                    multiple characters ("verbose" for "--verbose").
-   * @param valueName   a name to use for the associated value in the
-   *                    generated usage message
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a string value into
-   *                    type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For common types, the implicit functions in the
-   *                    `ArgotConverters` module are often suitable.
-   *
-   * @return the `MultiValueOption` object that will contain the
-   *         parsed value(s), as a `Seq[T]` in the `value` field.
-   */
-  def multiOption[T](names: List[String],
-                     valueName: String,
-                     description: String)
-                    (implicit convert: (String, MultiValueOption[T]) => T):
-  MultiValueOption[T] = {
-    names.foreach(checkOptionName)
-
-    val opt = new MultiValueOption[T](this, names,
-                                      valueName, description, convert)
-    replaceOption(opt)
-    nonFlags += opt
-    opt
-  }
-
-  /** Define an option that takes a sequence of values of type `T`. Each
-   * invocation of the option on the command line contributes a new value
-   * to the sequence. This short-hand method provides only one option
-   * name, as opposed to a list of option names.
-   *
-   * @tparam T  the type of the option's value, which added to the
-   *            the `MultiValueOption` object's `value` sequence field.
-   *
-   * @param name        the name for the option. The name can be a single
-   *                    character (thus, "v" corresponds to "-v") or
-   *                    multiple characters ("verbose" for "--verbose").
-   * @param valueName   a name to use for the associated value in the
-   *                    generated usage message
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a string value into
-   *                    type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For common types, the implicit functions in the
-   *                    `ArgotConverters` module are often suitable.
-   *
-   * @return the `MultiValueOption` object that will contain the
-   *         parsed value(s), as a `Seq[T]` in the `value` field.
-   */
-  def multiOption[T](name: String, valueName: String, description: String)
-                    (implicit convert: (String, MultiValueOption[T]) => T):
-  MultiValueOption[T] = {
-    multiOption[T](List(name), valueName, description)(convert)
-  }
-
-  /** Define a flag option. Flag options take no value parameters.
-   * Instead, a flag option is simply present or absent. Typically, flag
-   * options are associated with boolean value, though Argot will permit
-   * you to associate them with any type you choose.
-   *
-   * Flag options permit you to segregate the option names into ''on''
-   * names and ''off'' names. With boolean flag options, the ''on'' names
-   * set the value to `true`, and the ''off'' names set the value to
-   * values. With typed flag options, what happens depends on the
-   * conversion function. Whatever the conversion function returns gets
-   * stored as the option's value.
-   *
-   * Flag conversion functions receive a boolean parameter, indicating
-   * whether an ''on'' option was seen (`true`) or an ''off'' option was
-   * seen (`false`). The built-in conversion functions for boolean flags
-   * simply return the value of the boolean, which is then stored in the
-   * (Boolean) flag option's value. However, it's perfectly reasonable
-   * to have flag options with other types. For instance, one could easily
-   * define a "Verbosity" flag option of type `Int`, where each ''on''
-   * option increments the verbosity level and each ''off'' option decrements
-   * the value.
-   *
-   * @tparam T  the type of the option's value, which will be stored in
-   *            the `FlagOption` object's `value` field.
-   *
-   * @param namesOn     the names for the option that enable (turn on) the
-   *                    option. Each name can be a single
-   *                    character (thus, "v" corresponds to "-v") or
-   *                    multiple characters ("verbose" for "--verbose").
-   * @param namesOff    the names for the option that disable (turn off) the
-   *                    option. Each name can be a single
-   *                    character (thus, "v" corresponds to "-v") or
-   *                    multiple characters ("verbose" for "--verbose").
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a boolean on/off value
-   *                    to type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For a boolean flag option , the implicit functions in
-   *                    the `ArgotConverters` module are often suitable.
-   *
-   * @return the `FlagOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
-   */
-  def flag[T](namesOn: List[String],
-              namesOff: List[String],
-              description: String)
-             (implicit convert: (Boolean, FlagOption[T]) => T):
-  FlagOption[T] = {
-    namesOn.foreach(checkOptionName)
-    namesOff.foreach(checkOptionName)
-
-    val opt = new FlagOption[T](this, namesOn, namesOff,
-                                description, convert)
-    replaceOption(opt)
-    flags += opt
-    opt
-  }
-
-  /** Define a flag option. Flag options take no value parameters.
-   * Instead, a flag option is simply present or absent. Typically, flag
-   * options are associated with boolean value, though Argot will permit
-   * you to associate them with any type you choose.
-   *
-   * Flag options permit you to segregate the option names into ''on''
-   * names and ''off'' names. With boolean flag options, the ''on'' names
-   * set the value to `true`, and the ''off'' names set the value to
-   * values. With typed flag options, what happens depends on the
-   * conversion function. Whatever the conversion function returns gets
-   * stored as the option's value.
-   *
-   * Flag conversion functions receive a boolean parameter, indicating
-   * whether an ''on'' option was seen (`true`) or an ''off'' option was
-   * seen (`false`). The built-in conversion functions for boolean flags
-   * simply return the value of the boolean, which is then stored in the
-   * (Boolean) flag option's value. However, it's perfectly reasonable
-   * to have flag options with other types. For instance, one could easily
-   * define a "Verbosity" flag option of type `Int`, where each ''on''
-   * option increments the verbosity level and each ''off'' option decrements
-   * the value.
-   *
-   * @tparam T  the type of the option's value, which will be stored in
-   *            the `FlagOption` object's `value` field.
-   *
-   * @param namesOn     the names for the option that enable (turn on) the
-   *                    option. Each name can be a single character (thus,
-   *                    "v" corresponds to "-v") or multiple characters
-   *                    ("verbose" for "--verbose").
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a boolean on/off value
-   *                    to type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For a boolean flag option , the implicit functions in
-   *                    the `ArgotConverters` module are often suitable.
-   *
-   * @return the `FlagOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
-   */
-  def flag[T](namesOn: List[String], description: String)
-            (implicit convert: (Boolean, FlagOption[T]) => T):
-  FlagOption[T] = {
-    flag(namesOn, Nil, description)(convert)
-  }
-
-  /** Define a flag option. Flag options take no value parameters.
-   * Instead, a flag option is simply present or absent. Typically, flag
-   * options are associated with boolean value, though Argot will permit
-   * you to associate them with any type you choose.
-   *
-   * Flag options permit you to segregate the option names into ''on''
-   * names and ''off'' names. With boolean flag options, the ''on'' names
-   * set the value to `true`, and the ''off'' names set the value to
-   * values. With typed flag options, what happens depends on the
-   * conversion function. Whatever the conversion function returns gets
-   * stored as the option's value.
-   *
-   * Flag conversion functions receive a boolean parameter, indicating
-   * whether an ''on'' option was seen (`true`) or an ''off'' option was
-   * seen (`false`). The built-in conversion functions for boolean flags
-   * simply return the value of the boolean, which is then stored in the
-   * (Boolean) flag option's value. However, it's perfectly reasonable
-   * to have flag options with other types. For instance, one could easily
-   * define a "Verbosity" flag option of type `Int`, where each ''on''
-   * option increments the verbosity level and each ''off'' option decrements
-   * the value.
-   *
-   * @tparam T  the type of the option's value, which will be stored in
-   *            the `FlagOption` object's `value` field.
-   *
-   * @param name        the name for the option that enables (turns on) the
-   *                    option. The name can be a single character (thus,
-   *                    "v" corresponds to "-v") or multiple characters
-   *                    ("verbose" for "--verbose").
-   * @param description a description for the option, for the usage message
-   * @param convert     a function that will convert a boolean on/off value
-   *                    to type `T`. The function should throw
-   *                    `ArgotConversionException` on conversion error.
-   *                    For a boolean flag option , the implicit functions in
-   *                    the `ArgotConverters` module are often suitable.
-   *
-   * @return the `FlagOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
-   */
-  def flag[T](name: String, default: T, description: String)
-             (implicit convert: (Boolean, FlagOption[T]) => T):
-  FlagOption[T] = {
-    flag[T](List(name), description)(convert)
-  }
-
-  /** Define a positional parameter that has a single value. Positional
-   * parameters are parsed from the command line in the order they are
-   * added to the `ArgotParser`. See the class documentation for complete
-   * details.
-   *
-   * @tparam  the type of the converted parameter value
-   *
-   * @param valueName    the placeholder name for the parameter's value,
-   *                     for the usage message
-   * @param description  textual description of the parameter
-   * @param optional     whether or not the parameter is optional. Only one
-   *                     parameter may be optional, and it must be the last
-   *                     one.
-   * @param convert      a function that will convert a string value for
-     *                     the parameter to an appropriate value of type `T`.
-   *                     The function should throw `ArgotConversionException`
-   *                     on conversion error.
-   *
-   * @return the `SingleValueParameter` object will contain the parsed
-   *         value (as an `Option[T]` in the `value` field).
-   */
-  def parameter[T](valueName: String, description: String, optional: Boolean)
-                  (implicit convert: (String, Parameter[T]) => T):
-  SingleValueParameter[T] = {
-    val param = new SingleValueParameter[T](this,
-                                            valueName,
-                                            description,
-                                            optional,
-                                            convert)
-    checkOptionalStatus(param, optional)
-    checkForMultiParam(param)
-    replaceParameter(param)
-    param
-  }
-
-  /** Define a positional parameter that can occur multiple times. Only
-   * one such parameter can exist, and it must be the last parameter
-   * in the command line. See the class documentation for complete
-   * details.
-   *
-   * @tparam  the type of the converted parameter value
-   *
-   * @param valueName    the placeholder name for the parameter's value,
-   *                     for the usage message
-   * @param description  textual description of the parameter
-   * @param optional     whether or not the parameter is optional. Only one
-   *                     parameter may be optional, and it must be the last
-   *                     one.
-   * @param convert      a function that will convert a string value for
-     *                     the parameter to an appropriate value of type `T`.
-   *                     The function should throw `ArgotConversionException`
-   *                     on conversion error.
-   *
-   * @return the `MultiValueParameter` object will contain the parsed
-   *         values (as a `Seq[T]` in the `value` field).
-   */
-  def multiParameter[T](valueName: String,
-                        description: String,
-                        optional: Boolean)
-                       (implicit convert: (String, Parameter[T]) => T):
-  MultiValueParameter[T] = {
-    val param = new MultiValueParameter[T](this,
-                                           valueName,
-                                           description,
-                                           optional,
-                                           convert)
-    checkOptionalStatus(param, optional)
-    checkForMultiParam(param)
-    replaceParameter(param)
-    param
-  }
 
   /** Parse the specified array of command-line arguments, according to the
    * parser's specification. A successful parse sets the various value
@@ -1352,6 +998,448 @@ class ArgotParser(programName: String,
   }
 }
 
+/** Mutable class used to build an immutable ArgotParser.
+  */
+class ArgotParser (
+  val         programName:  String,
+  private val shortNameMap: Map[Char, CommandLineOption[_]],
+  private val longNameMap:  Map[String, CommandLineOption[_]],
+  private val allOptions:   LinkedHashMap[String, CommandLineOption[_]],
+  private val nonFlags:     LinkedHashSet[HasValue[_]],
+  private val flags:        LinkedHashSet[FlagOption[_]],
+  private val parameters:   LinkedHashSet[Parameter[_]]
+) {
+
+  def this(programName: String) = {
+    this(
+      programName,
+      Map.empty[Char, CommandLineOption[_]],             // shortNameMap
+      Map.empty[String, CommandLineOption[_]],           // longNameMap
+      LinkedHashMap.empty[String, CommandLineOption[_]], // allOptions
+      LinkedHashSet.empty[HasValue[_]],                  // nonFlags
+      LinkedHashSet.empty[FlagOption[_]],                // flags
+      LinkedHashSet.empty[Parameter[_]]                  // parameters
+    )
+  }
+
+  private def copy[T](opt: CommandLineOption[T] with HasValue[T]): ArgotParser = {
+    val newShort: Map[Char, CommandLineOption[_]] = (
+      shortNameMap ++ 
+      opt.names.filter(_.length == 1).map((n: String) => n(0) -> opt).toMap
+    )
+
+    val newLong: Map[String, CommandLineOption[_]] = (
+      longNameMap ++
+      opt.names.filter(_.length > 1).map(n => n -> opt).toMap
+    )
+
+    val newAll: LinkedHashMap[String, CommandLineOption[_]] = (
+      allOptions ++ Seq(opt.name -> opt)
+    )
+
+    val newNonFlags = nonFlags + opt
+
+    new ArgotParser(
+      programName, newShort, newLong, newAll, newNonFlags, flags, parameters
+    )
+  }
+
+  private def copy[T](flag: FlagOption[T]): ArgotParser = {
+    val newShort: Map[Char, CommandLineOption[_]] = (
+      shortNameMap ++ 
+      flag.names.filter(_.length == 1).map((n: String) => n(0) -> flag).toMap
+    )
+
+    val newLong: Map[String, CommandLineOption[_]] = (
+      longNameMap ++
+      flag.names.filter(_.length > 1).map(n => n -> flag).toMap
+    )
+
+    val newAll: LinkedHashMap[String, CommandLineOption[_]] = (
+      allOptions ++ Seq(flag.name -> flag)
+    )
+
+    val newFlags = flags + flag
+
+    new ArgotParser(
+      programName, newShort, newLong, newAll, nonFlags, newFlags, parameters
+    )
+  }
+ 
+  def copy(param: Parameter[_]): ArgotParser = {
+    new ArgotParser(
+      programName, shortNameMap, longNameMap, allOptions, nonFlags, flags,
+      parameters + param
+    )
+  }
+ 
+  /** Define an option that takes a single value of type `T`.
+   *
+   * @tparam T  the type of the option's value, which will be stored in
+   *            the `SingleValueOption` object's `value` field.
+   *
+   * @param names       the list of names for the option. Each name can be
+   *                    a single character (thus, "v" corresponds to "-v") or
+   *                    multiple characters ("verbose" for "--verbose").
+   * @param valueName   a name to use for the associated value in the
+   *                    generated usage message
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a string value into
+   *                    type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For common types, the implicit functions in the
+   *                    `ArgotConverters` module are often suitable.
+   *
+   * @return the `SingleValueOption` object that will contain the
+   *         parsed value, as an `Option[T]` in the `value` field.
+   */
+  def option[T](names: List[String], valueName: String, description: String)
+               (implicit convert: (String, SingleValueOption[T]) => T):
+    ArgotParser = {
+    names.foreach(checkOptionName)
+    copy(new SingleValueOption[T](this, names, valueName, description, convert))
+  }
+
+  /** Define an option that takes a single value of type `T`. This short-hand
+   * method provides only one option name, as opposed to a list of option
+   * names.
+   *
+   * @tparam T  the type of the option's value, which will be stored in
+   *            the `SingleValueOption` object's `value` field.
+   *
+   * @param name        the name for the option. The name can be a single
+   *                    character (thus, "v" corresponds to "-v") or
+   *                    multiple characters ("verbose" for "--verbose").
+   * @param valueName   a name to use for the associated value in the
+   *                    generated usage message
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a string value into
+   *                    type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For common types, the implicit functions in the
+   *                    `ArgotConverters` module are often suitable.
+   *
+   * @return the `SingleValueOption` object that will contain the
+   *         parsed value, as an `Option[T]` in the `value` field.
+   */
+  def option[T](name: String, valueName: String, description: String)
+               (implicit convert: (String, SingleValueOption[T]) => T):
+    ArgotParser = {
+    option[T](List(name), valueName, description)(convert)
+  }
+
+  /** Define an option that takes a sequence of values of type `T`. Each
+   * invocation of the option on the command line contributes a new value
+   * to the sequence.
+   *
+   * @tparam T  the type of the option's value, which added to the
+   *            the `MultiValueOption` object's `value` sequence field.
+   *
+   * @param names       the list of names for the option. Each name can be
+   *                    a single character (thus, "v" corresponds to "-v") or
+   *                    multiple characters ("verbose" for "--verbose").
+   * @param valueName   a name to use for the associated value in the
+   *                    generated usage message
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a string value into
+   *                    type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For common types, the implicit functions in the
+   *                    `ArgotConverters` module are often suitable.
+   *
+   * @return the `MultiValueOption` object that will contain the
+   *         parsed value(s), as a `Seq[T]` in the `value` field.
+   */
+  def multiOption[T](names: List[String],
+                     valueName: String,
+                     description: String)
+                    (implicit convert: (String, MultiValueOption[T]) => T):
+    ArgotParser = {
+    names.foreach(checkOptionName)
+    copy(new MultiValueOption[T](this, names, valueName, description, convert))
+  }
+
+  /** Define an option that takes a sequence of values of type `T`. Each
+   * invocation of the option on the command line contributes a new value
+   * to the sequence. This short-hand method provides only one option
+   * name, as opposed to a list of option names.
+   *
+   * @tparam T  the type of the option's value, which added to the
+   *            the `MultiValueOption` object's `value` sequence field.
+   *
+   * @param name        the name for the option. The name can be a single
+   *                    character (thus, "v" corresponds to "-v") or
+   *                    multiple characters ("verbose" for "--verbose").
+   * @param valueName   a name to use for the associated value in the
+   *                    generated usage message
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a string value into
+   *                    type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For common types, the implicit functions in the
+   *                    `ArgotConverters` module are often suitable.
+   *
+   * @return the `MultiValueOption` object that will contain the
+   *         parsed value(s), as a `Seq[T]` in the `value` field.
+   */
+  def multiOption[T](name: String, valueName: String, description: String)
+                    (implicit convert: (String, MultiValueOption[T]) => T):
+    ArgotParser = {
+    multiOption[T](List(name), valueName, description)(convert)
+  }
+
+  /** Define a flag option. Flag options take no value parameters.
+   * Instead, a flag option is simply present or absent. Typically, flag
+   * options are associated with boolean value, though Argot will permit
+   * you to associate them with any type you choose.
+   *
+   * Flag options permit you to segregate the option names into ''on''
+   * names and ''off'' names. With boolean flag options, the ''on'' names
+   * set the value to `true`, and the ''off'' names set the value to
+   * values. With typed flag options, what happens depends on the
+   * conversion function. Whatever the conversion function returns gets
+   * stored as the option's value.
+   *
+   * Flag conversion functions receive a boolean parameter, indicating
+   * whether an ''on'' option was seen (`true`) or an ''off'' option was
+   * seen (`false`). The built-in conversion functions for boolean flags
+   * simply return the value of the boolean, which is then stored in the
+   * (Boolean) flag option's value. However, it's perfectly reasonable
+   * to have flag options with other types. For instance, one could easily
+   * define a "Verbosity" flag option of type `Int`, where each ''on''
+   * option increments the verbosity level and each ''off'' option decrements
+   * the value.
+   *
+   * @tparam T  the type of the option's value, which will be stored in
+   *            the `FlagOption` object's `value` field.
+   *
+   * @param namesOn     the names for the option that enable (turn on) the
+   *                    option. Each name can be a single
+   *                    character (thus, "v" corresponds to "-v") or
+   *                    multiple characters ("verbose" for "--verbose").
+   * @param namesOff    the names for the option that disable (turn off) the
+   *                    option. Each name can be a single
+   *                    character (thus, "v" corresponds to "-v") or
+   *                    multiple characters ("verbose" for "--verbose").
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a boolean on/off value
+   *                    to type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For a boolean flag option , the implicit functions in
+   *                    the `ArgotConverters` module are often suitable.
+   *
+   * @return the `FlagOption` object that will contain the
+   *         parsed value, as an `Option[T]` in the `value` field.
+   */
+  def flag[T](namesOn: List[String], namesOff: List[String], description: String)
+             (implicit convert: (Boolean, FlagOption[T]) => T):
+    ArgotParser = {
+    namesOn.foreach(checkOptionName)
+    namesOff.foreach(checkOptionName)
+    copy(new FlagOption[T](this, namesOn, namesOff, description, convert))
+  }
+
+  /** Define a flag option. Flag options take no value parameters.
+   * Instead, a flag option is simply present or absent. Typically, flag
+   * options are associated with boolean value, though Argot will permit
+   * you to associate them with any type you choose.
+   *
+   * Flag options permit you to segregate the option names into ''on''
+   * names and ''off'' names. With boolean flag options, the ''on'' names
+   * set the value to `true`, and the ''off'' names set the value to
+   * values. With typed flag options, what happens depends on the
+   * conversion function. Whatever the conversion function returns gets
+   * stored as the option's value.
+   *
+   * Flag conversion functions receive a boolean parameter, indicating
+   * whether an ''on'' option was seen (`true`) or an ''off'' option was
+   * seen (`false`). The built-in conversion functions for boolean flags
+   * simply return the value of the boolean, which is then stored in the
+   * (Boolean) flag option's value. However, it's perfectly reasonable
+   * to have flag options with other types. For instance, one could easily
+   * define a "Verbosity" flag option of type `Int`, where each ''on''
+   * option increments the verbosity level and each ''off'' option decrements
+   * the value.
+   *
+   * @tparam T  the type of the option's value, which will be stored in
+   *            the `FlagOption` object's `value` field.
+   *
+   * @param namesOn     the names for the option that enable (turn on) the
+   *                    option. Each name can be a single character (thus,
+   *                    "v" corresponds to "-v") or multiple characters
+   *                    ("verbose" for "--verbose").
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a boolean on/off value
+   *                    to type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For a boolean flag option , the implicit functions in
+   *                    the `ArgotConverters` module are often suitable.
+   *
+   * @return the `FlagOption` object that will contain the
+   *         parsed value, as an `Option[T]` in the `value` field.
+   */
+  def flag[T](namesOn: List[String], description: String)
+            (implicit convert: (Boolean, FlagOption[T]) => T):
+    ArgotParser = {
+    flag(namesOn, Nil, description)(convert)
+  }
+
+  /** Define a flag option. Flag options take no value parameters.
+   * Instead, a flag option is simply present or absent. Typically, flag
+   * options are associated with boolean value, though Argot will permit
+   * you to associate them with any type you choose.
+   *
+   * Flag options permit you to segregate the option names into ''on''
+   * names and ''off'' names. With boolean flag options, the ''on'' names
+   * set the value to `true`, and the ''off'' names set the value to
+   * values. With typed flag options, what happens depends on the
+   * conversion function. Whatever the conversion function returns gets
+   * stored as the option's value.
+   *
+   * Flag conversion functions receive a boolean parameter, indicating
+   * whether an ''on'' option was seen (`true`) or an ''off'' option was
+   * seen (`false`). The built-in conversion functions for boolean flags
+   * simply return the value of the boolean, which is then stored in the
+   * (Boolean) flag option's value. However, it's perfectly reasonable
+   * to have flag options with other types. For instance, one could easily
+   * define a "Verbosity" flag option of type `Int`, where each ''on''
+   * option increments the verbosity level and each ''off'' option decrements
+   * the value.
+   *
+   * @tparam T  the type of the option's value, which will be stored in
+   *            the `FlagOption` object's `value` field.
+   *
+   * @param name        the name for the option that enables (turns on) the
+   *                    option. The name can be a single character (thus,
+   *                    "v" corresponds to "-v") or multiple characters
+   *                    ("verbose" for "--verbose").
+   * @param description a description for the option, for the usage message
+   * @param convert     a function that will convert a boolean on/off value
+   *                    to type `T`. The function should throw
+   *                    `ArgotConversionException` on conversion error.
+   *                    For a boolean flag option , the implicit functions in
+   *                    the `ArgotConverters` module are often suitable.
+   *
+   * @return the `FlagOption` object that will contain the
+   *         parsed value, as an `Option[T]` in the `value` field.
+   */
+  def flag[T](name: String, default: T, description: String)
+             (implicit convert: (Boolean, FlagOption[T]) => T):
+    ArgotParser = {
+    flag[T](List(name), description)(convert)
+  }
+
+  /** Define a positional parameter that has a single value. Positional
+   * parameters are parsed from the command line in the order they are
+   * added to the `ArgotParser`. See the class documentation for complete
+   * details.
+   *
+   * @tparam  the type of the converted parameter value
+   *
+   * @param valueName    the placeholder name for the parameter's value,
+   *                     for the usage message
+   * @param description  textual description of the parameter
+   * @param optional     whether or not the parameter is optional. Only one
+   *                     parameter may be optional, and it must be the last
+   *                     one.
+   * @param convert      a function that will convert a string value for
+     *                     the parameter to an appropriate value of type `T`.
+   *                     The function should throw `ArgotConversionException`
+   *                     on conversion error.
+   *
+   * @return the `SingleValueParameter` object will contain the parsed
+   *         value (as an `Option[T]` in the `value` field).
+   */
+  def parameter[T](valueName: String, description: String, optional: Boolean)
+                  (implicit convert: (String, Parameter[T]) => T):
+    ArgotParser = {
+    val param = new SingleValueParameter[T](this,
+                                            valueName,
+                                            description,
+                                            optional,
+                                            convert)
+    checkOptionalStatus(param, optional)
+    checkForMultiParam(param)
+    copy(param)
+  }
+
+  /** Define a positional parameter that can occur multiple times. Only
+   * one such parameter can exist, and it must be the last parameter
+   * in the command line. See the class documentation for complete
+   * details.
+   *
+   * @tparam  the type of the converted parameter value
+   *
+   * @param valueName    the placeholder name for the parameter's value,
+   *                     for the usage message
+   * @param description  textual description of the parameter
+   * @param optional     whether or not the parameter is optional. Only one
+   *                     parameter may be optional, and it must be the last
+   *                     one.
+   * @param convert      a function that will convert a string value for
+     *                     the parameter to an appropriate value of type `T`.
+   *                     The function should throw `ArgotConversionException`
+   *                     on conversion error.
+   *
+   * @return the `MultiValueParameter` object will contain the parsed
+   *         values (as a `Seq[T]` in the `value` field).
+   */
+  def multiParameter[T](valueName: String,
+                        description: String,
+                        optional: Boolean)
+                       (implicit convert: (String, Parameter[T]) => T):
+    ArgotParser = {
+    val param = new MultiValueParameter[T](this,
+                                           valueName,
+                                           description,
+                                           optional,
+                                           convert)
+    checkOptionalStatus(param, optional)
+    checkForMultiParam(param)
+    copy(param)
+  }
+
+  private def checkOptionName(name: String) = {
+    name.toList match {
+      case '-' :: tail =>
+        throw new ArgotSpecificationError(
+          "Option name \"" + name + "\" must not start with \"-\"."
+        )
+      case Nil =>
+        throw new ArgotSpecificationError("Empty option name.")
+
+      case _ =>
+    }
+  }
+
+  private def checkForMultiParam(param: Parameter[_]) = {
+    if (parameters.size > 0) {
+      parameters last match {
+        case p: MultiValueParameter[_] =>
+          throw new ArgotSpecificationError(
+            "Multi-parameter \"" + p.name + "\" must be the last " +
+            "parameter in the specification."
+          )
+
+        case _ =>
+      }
+    }
+  }
+
+  private def checkOptionalStatus(param: Parameter[_],
+                                  optionalSpec: Boolean) = {
+    if (parameters.size > 0) {
+      if (parameters.last.optional && (! optionalSpec))
+        throw new ArgotSpecificationError(
+          "Optional parameter \"" + parameters.last.name +
+          "\" cannot be followed by required parameter \"" +
+          param.valueName + "\"")
+    }
+  }
+}
+
 object ArgotParser {
-  def apply() {}
+  def apply() {
+
+  }
 }
