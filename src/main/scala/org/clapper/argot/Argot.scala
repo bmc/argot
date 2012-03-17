@@ -40,7 +40,6 @@
 package org.clapper.argot
 
 import scala.reflect.Manifest
-import scala.collection.mutable.{Map => MutableMap, LinkedHashMap, LinkedHashSet}
 import scala.util.matching.Regex
 import scala.annotation.tailrec
 
@@ -218,14 +217,14 @@ trait MultiValueArg[T] extends HasValue[T] {
 }
 
 /**
- * `CommandLineOption` is the base trait for all option classes.
+ * `ArgotOption` is the base trait for all option classes.
  *
  * @tparam T  the value type
  *
  * @see SingleValueOption
  * @see MultiValueOption
  */
-trait CommandLineOption[T] extends CommandLineArgument[T] {
+trait ArgotOption[T] extends CommandLineArgument[T] {
   /** List of option names, both long (multi-character) and short
    * (single-character).
    */
@@ -275,7 +274,7 @@ class SingleValueOption[T](val parent: ArgotParser,
                            val valueName: String,
                            val description: String,
                            val convert: (String, SingleValueOption[T]) => T)
-extends CommandLineOption[T] with SingleValueArg[T] {
+extends ArgotOption[T] with SingleValueArg[T] {
   require ((names != Nil) && (! names.exists(_.length == 0)))
 
   def convertString(s: String): T = convert(s, this)
@@ -301,7 +300,7 @@ class MultiValueOption[T](val parent: ArgotParser,
                           val valueName: String,
                           val description: String,
                           val convert: (String, MultiValueOption[T]) => T)
-extends CommandLineOption[T] with MultiValueArg[T] {
+extends ArgotOption[T] with MultiValueArg[T] {
   require ((names != Nil) && (! names.exists(_.length == 0)))
 
   def convertString(s: String): T = convert(s, this)
@@ -328,7 +327,7 @@ class FlagOption[T](val parent: ArgotParser,
                     namesOff: List[String],
                     val description: String,
                     val convert: (Boolean, FlagOption[T]) => T)
-extends CommandLineOption[T] {
+extends ArgotOption[T] {
   val supportsMultipleValues = false
   val hasValue: Boolean = true
 
@@ -574,9 +573,10 @@ class ArgotParserOld(programName: String,
                   sortUsage: Boolean = true) {
   require(outputWidth > 0)
 
-  protected val shortNameMap = MutableMap.empty[Char, CommandLineOption[_]]
-  protected val longNameMap = MutableMap.empty[String, CommandLineOption[_]]
-  protected val allOptions = new LinkedHashMap[String, CommandLineOption[_]]
+  import scala.collection.mutable.{Map => MutableMap, LinkedHashSet, LinkedHashMap}
+  protected val shortNameMap = MutableMap.empty[Char, ArgotOption[_]]
+  protected val longNameMap = MutableMap.empty[String, ArgotOption[_]]
+  protected val allOptions = new LinkedHashMap[String, ArgotOption[_]]
   protected val nonFlags = new LinkedHashSet[HasValue[_]]
   protected val flags = new LinkedHashSet[FlagOption[_]]
   protected val parameters = new LinkedHashSet[Parameter[_]]
@@ -630,7 +630,7 @@ class ArgotParserOld(programName: String,
     def paramString(p: Parameter[_]): String =
       if (p.optional) "[" + p.name + "]" else p.name
 
-    def optString(name: String, opt: CommandLineOption[_]) = {
+    def optString(name: String, opt: ArgotOption[_]) = {
       val hyphen = if (name.length == 1) "-" else "--"
 
       opt match {
@@ -775,7 +775,7 @@ class ArgotParserOld(programName: String,
   // Private Methods
   // -----------------------------------------------------------------------
 
-  private def replaceOption(opt: CommandLineOption[_]) {
+  private def replaceOption(opt: ArgotOption[_]) {
     opt.names.filter(_.length == 1).
     foreach(s => shortNameMap += s(0) -> opt)
     opt.names.filter(_.length > 1).foreach(s => longNameMap += s -> opt)
@@ -998,79 +998,66 @@ class ArgotParserOld(programName: String,
   }
 }
 
+import scala.collection.immutable.ListMap
+
 /** Mutable class used to build an immutable ArgotParser.
   */
 class ArgotParser (
   val         programName:  String,
-  private val shortNameMap: Map[Char, CommandLineOption[_]],
-  private val longNameMap:  Map[String, CommandLineOption[_]],
-  private val allOptions:   LinkedHashMap[String, CommandLineOption[_]],
-  private val nonFlags:     LinkedHashSet[HasValue[_]],
-  private val flags:        LinkedHashSet[FlagOption[_]],
-  private val parameters:   LinkedHashSet[Parameter[_]]
+  private val shortNameMap: Map[Char, ArgotOption[_]] = Map.empty[Char, ArgotOption[_]],
+  private val longNameMap:  Map[String, ArgotOption[_]]= Map.empty[String, ArgotOption[_]],
+  private val allOptions:   ListMap[String, ArgotOption[_]] = ListMap.empty[String, ArgotOption[_]],
+  private val nonFlags:     ListMap[String, HasValue[_]] = ListMap.empty[String, HasValue[_]],
+  private val flags:        ListMap[String, FlagOption[_]] = ListMap.empty[String, FlagOption[_]],
+  private val parameters:   ListMap[String, Parameter[_]] = ListMap.empty[String, Parameter[_]],
+  private val preUsage:     Option[String] = None,
+  private val postUsage:    Option[String] = None
 ) {
 
-  def this(programName: String) = {
-    this(
-      programName,
-      Map.empty[Char, CommandLineOption[_]],             // shortNameMap
-      Map.empty[String, CommandLineOption[_]],           // longNameMap
-      LinkedHashMap.empty[String, CommandLineOption[_]], // allOptions
-      LinkedHashSet.empty[HasValue[_]],                  // nonFlags
-      LinkedHashSet.empty[FlagOption[_]],                // flags
-      LinkedHashSet.empty[Parameter[_]]                  // parameters
-    )
-  }
-
-  private def copy[T](opt: CommandLineOption[T] with HasValue[T]): ArgotParser = {
-    val newShort: Map[Char, CommandLineOption[_]] = (
+  private def newOption[T](opt: ArgotOption[T]): (Map[Char, ArgotOption[_]], 
+                                                  Map[String, ArgotOption[_]], 
+                                                  ListMap[String, ArgotOption[_]]) = {
+    val newShort: Map[Char, ArgotOption[_]] = (
       shortNameMap ++ 
       opt.names.filter(_.length == 1).map((n: String) => n(0) -> opt).toMap
     )
 
-    val newLong: Map[String, CommandLineOption[_]] = (
+    val newLong: Map[String, ArgotOption[_]] = (
       longNameMap ++
       opt.names.filter(_.length > 1).map(n => n -> opt).toMap
     )
 
-    val newAll: LinkedHashMap[String, CommandLineOption[_]] = (
+    val newAll: ListMap[String, ArgotOption[_]] = (
       allOptions ++ Seq(opt.name -> opt)
     )
 
-    val newNonFlags = nonFlags + opt
+    (newShort, newLong, newAll)
+  }
 
+  private def copy[T](opt: ArgotOption[T] with HasValue[T]): ArgotParser = {
+    val newNonFlags = nonFlags + (opt.name -> opt)
+    val (newShort, newLong, newAll) = newOption(opt)
     new ArgotParser(
       programName, newShort, newLong, newAll, newNonFlags, flags, parameters
     )
   }
 
   private def copy[T](flag: FlagOption[T]): ArgotParser = {
-    val newShort: Map[Char, CommandLineOption[_]] = (
-      shortNameMap ++ 
-      flag.names.filter(_.length == 1).map((n: String) => n(0) -> flag).toMap
-    )
 
-    val newLong: Map[String, CommandLineOption[_]] = (
-      longNameMap ++
-      flag.names.filter(_.length > 1).map(n => n -> flag).toMap
-    )
-
-    val newAll: LinkedHashMap[String, CommandLineOption[_]] = (
-      allOptions ++ Seq(flag.name -> flag)
-    )
-
-    val newFlags = flags + flag
+    val (newShort, newLong, newAll) = newOption(flag)
+    val newFlags = flags + (flag.name -> flag)
 
     new ArgotParser(
-      programName, newShort, newLong, newAll, nonFlags, newFlags, parameters
+      programName,
+      shortNameMap = newShort,
+      longNameMap = newLong,
+      allOptions = newAll,
+      flags = newFlags
     )
   }
  
   def copy(param: Parameter[_]): ArgotParser = {
-    new ArgotParser(
-      programName, shortNameMap, longNameMap, allOptions, nonFlags, flags,
-      parameters + param
-    )
+    new ArgotParser(programName, parameters = parameters + (param.name -> param))
   }
  
   /** Define an option that takes a single value of type `T`.
@@ -1090,8 +1077,8 @@ class ArgotParser (
    *                    For common types, the implicit functions in the
    *                    `ArgotConverters` module are often suitable.
    *
-   * @return the `SingleValueOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def option[T](names: List[String], valueName: String, description: String)
                (implicit convert: (String, SingleValueOption[T]) => T):
@@ -1119,8 +1106,8 @@ class ArgotParser (
    *                    For common types, the implicit functions in the
    *                    `ArgotConverters` module are often suitable.
    *
-   * @return the `SingleValueOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def option[T](name: String, valueName: String, description: String)
                (implicit convert: (String, SingleValueOption[T]) => T):
@@ -1147,8 +1134,8 @@ class ArgotParser (
    *                    For common types, the implicit functions in the
    *                    `ArgotConverters` module are often suitable.
    *
-   * @return the `MultiValueOption` object that will contain the
-   *         parsed value(s), as a `Seq[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def multiOption[T](names: List[String],
                      valueName: String,
@@ -1179,8 +1166,8 @@ class ArgotParser (
    *                    For common types, the implicit functions in the
    *                    `ArgotConverters` module are often suitable.
    *
-   * @return the `MultiValueOption` object that will contain the
-   *         parsed value(s), as a `Seq[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def multiOption[T](name: String, valueName: String, description: String)
                     (implicit convert: (String, MultiValueOption[T]) => T):
@@ -1228,8 +1215,8 @@ class ArgotParser (
    *                    For a boolean flag option , the implicit functions in
    *                    the `ArgotConverters` module are often suitable.
    *
-   * @return the `FlagOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def flag[T](namesOn: List[String], namesOff: List[String], description: String)
              (implicit convert: (Boolean, FlagOption[T]) => T):
@@ -1275,8 +1262,8 @@ class ArgotParser (
    *                    For a boolean flag option , the implicit functions in
    *                    the `ArgotConverters` module are often suitable.
    *
-   * @return the `FlagOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def flag[T](namesOn: List[String], description: String)
             (implicit convert: (Boolean, FlagOption[T]) => T):
@@ -1320,8 +1307,8 @@ class ArgotParser (
    *                    For a boolean flag option , the implicit functions in
    *                    the `ArgotConverters` module are often suitable.
    *
-   * @return the `FlagOption` object that will contain the
-   *         parsed value, as an `Option[T]` in the `value` field.
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified option
    */
   def flag[T](name: String, default: T, description: String)
              (implicit convert: (Boolean, FlagOption[T]) => T):
@@ -1343,12 +1330,13 @@ class ArgotParser (
    *                     parameter may be optional, and it must be the last
    *                     one.
    * @param convert      a function that will convert a string value for
-     *                     the parameter to an appropriate value of type `T`.
+   *                     the parameter to an appropriate value of type `T`.
    *                     The function should throw `ArgotConversionException`
    *                     on conversion error.
    *
-   * @return the `SingleValueParameter` object will contain the parsed
-   *         value (as an `Option[T]` in the `value` field).
+   *
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified parameter
    */
   def parameter[T](valueName: String, description: String, optional: Boolean)
                   (implicit convert: (String, Parameter[T]) => T):
@@ -1377,12 +1365,12 @@ class ArgotParser (
    *                     parameter may be optional, and it must be the last
    *                     one.
    * @param convert      a function that will convert a string value for
-     *                     the parameter to an appropriate value of type `T`.
+   *                     the parameter to an appropriate value of type `T`.
    *                     The function should throw `ArgotConversionException`
    *                     on conversion error.
    *
-   * @return the `MultiValueParameter` object will contain the parsed
-   *         values (as a `Seq[T]` in the `value` field).
+   * @return a new copy of the `ArgotParser` object, incorporating the
+   *         specified parameter
    */
   def multiParameter[T](valueName: String,
                         description: String,
@@ -1429,11 +1417,12 @@ class ArgotParser (
   private def checkOptionalStatus(param: Parameter[_],
                                   optionalSpec: Boolean) = {
     if (parameters.size > 0) {
-      if (parameters.last.optional && (! optionalSpec))
+      val last = parameters.last._2
+      if (last.optional && (! optionalSpec)) {
         throw new ArgotSpecificationError(
-          "Optional parameter \"" + parameters.last.name +
-          "\" cannot be followed by required parameter \"" +
-          param.valueName + "\"")
+          ("You can't follow optional parameter \"%s\" with " +
+           "required parameter \"%s\"").format(last.name, param.valueName))
+      }
     }
   }
 }
