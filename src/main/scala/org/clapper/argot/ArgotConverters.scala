@@ -57,7 +57,7 @@ object ArgotConverters {
     * @return `Right(integer)` or `Left(error message)`
     */
   implicit def convertInt(s: String): Either[String, Int] = {
-    Conversions.parseInt(s, opt.name)
+    Conversions.parseInt(s)
   }
 
   /** Convert a string value into a long. A non-numeric string value
@@ -68,7 +68,7 @@ object ArgotConverters {
     * @return `Right(long)` or `Left(error message)`
     */
   implicit def convertLong(s: String): Either[String, Long] = {
-    Conversions.parseLong(s, opt.name)
+    Conversions.parseLong(s)
   }
 
   /** Convert a string value into a short. A non-numeric string value
@@ -79,7 +79,7 @@ object ArgotConverters {
     * @return `Right(short)` or `Left(error message)`
     */
   implicit def convertShort(s: String): Either[String, Short] = {
-    Conversions.parseShort(s, opt.name)
+    Conversions.parseShort(s)
   }
 
   /** Convert a string value into a float. A non-numeric string value
@@ -90,7 +90,7 @@ object ArgotConverters {
     * @return `Right(float)` or `Left(error message)`
     */
   implicit def convertFloat(s: String): Either[String, Float] = {
-    Conversions.parseFloat(s, opt.name)
+    Conversions.parseFloat(s)
   }
 
   /** Convert a string value into an double. A non-numeric string value
@@ -101,7 +101,7 @@ object ArgotConverters {
     * @return `Right(double)` or `Left(error message)`
     */
   implicit def convertDouble(s: String): Either[String, Double] = {
-    Conversions.parseDouble(s, opt.name)
+    Conversions.parseDouble(s)
   }
 
   /** Convert a string value into a character. A string that is empty or
@@ -112,7 +112,7 @@ object ArgotConverters {
     * @return `Right(double)` or `Left(error message)`
     */
   implicit def convertChar(s: String): Either[String, Char] = {
-    Conversions.parseChar(s, opt.name)
+    Conversions.parseChar(s)
   }
 
   /** Convert a string value into a byte value. A non-numeric string value
@@ -124,7 +124,7 @@ object ArgotConverters {
     * @return `Right(byte)` or `Left(error message)`
     */
   implicit def convertByte(s: String): Either[String, Byte] = {
-    Conversions.parseByte(s, opt.name)
+    Conversions.parseByte(s)
   }
 
   /** Convert a string value into a string. This function is a no-op.

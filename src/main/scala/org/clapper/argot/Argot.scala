@@ -195,6 +195,21 @@ trait ArgotOption[T] extends Argument[T] {
     case s: String if s.length == 1 => "-" + s
   }
 
+  /** Retrieve a parsed value of the option.
+    *
+    * @param parsed  The parsed argument object
+    *
+    * @return `None`, if the parameter doesn't exist at all.
+    *         `Some(Left(error))` if there was an error parsing the parameter.
+    *         `Some(Right(value))` if a legal value was parsed
+    */
+  def get(p: ParsedParameters): Option[Either[String, T]] = {
+    p.options.get(this).map(e => e match {
+      case Right(value)  => Right[String, T](value.asInstanceOf[T])
+      case Left(message) => Left[String, T](message)
+    })
+  }
+
   /** Get a printable name for this object.
    *
    * @return the printable name
@@ -366,6 +381,23 @@ extends Argument[T] with HasValue[T] {
   require (valueName.length > 0)
 
   def name = valueName
+
+
+  /** Retrieve a parsed value of the parameter.
+    *
+    * @param parsed  The parsed argument object
+    *
+    * @return `None`, if the parameter doesn't exist at all.
+    *         `Some(Left(error))` if there was an error parsing the parameter.
+    *         `Some(Right(value))` if a legal value was parsed
+    */
+  def get(p: ParsedParameters): Option[Either[String, T]] = {
+    p.parameters.get(this).map(e => e match {
+      case Right(value)  => Right[String, T](value.asInstanceOf[T])
+      case Left(message) => Left[String, T](message)
+    })
+  }
+
   override def toString = "parameter " + valueName
   protected def key = valueName
 }
@@ -486,6 +518,20 @@ import scala.collection.immutable.ListMap
 case class ParsedParameters(options: Map[ArgotOption[_], Either[String, _]],
                             parameters: Map[Parameter[_], Either[String, _]])
 
+/** Specification for an argument parser.
+  */
+class ArgotSpecification(val programName: String,
+                         val options: Seq[ArgotOption[_]],
+                         val parameters: Seq[Parameter[_]]) {
+  private val optionMap = Map(options.map(o => o.name -> o): _*)
+  private val paramMap  = ListMap(parameters.map(p => p.name -> p): _*)
+
+  override def toString = {
+    "ArgotSpecification<programName=%s, options=%s, parameters=%s>".format(
+      programName, options.toString, parameters.toString
+    )
+  }
+}
 
 /** Mutable class used to build an immutable ArgotParser.
   */
