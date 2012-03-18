@@ -43,12 +43,12 @@ import scala.reflect.Manifest
 import scala.util.matching.Regex
 import scala.annotation.tailrec
 
-/** Base trait for all option and parameter classes, `ArgotArgument`
-  * contains comment methods and values.
+/** Base trait for all option and parameter classes, `Argument`
+  * contains common methods and values.
   *
   * @tparam T  the type associated with the argument
   */
-trait ArgotArgument[T] {
+trait Argument[T] {
 
   /** The argument's description, displayed in the usage message.
     */
@@ -75,7 +75,7 @@ trait ArgotArgument[T] {
    */
   override def equals(o: Any): Boolean = {
     o match {
-      case that: ArgotArgument[_] =>
+      case that: Argument[_] =>
         (this.getClass == that.getClass) && (this.key == that.key)
       case _ =>
         false
@@ -101,14 +101,14 @@ trait ArgotArgument[T] {
 
 /**
  * The `HasValue` trait is mixed into option and parameter classes that
- * support one or mor associated values of type `T`.
+ * support one or more associated values of type `T`.
  *
  * @tparam T  the value type
  *
  * @see SingleValueArg
  * @see MultiValueArg
  */
-trait HasValue[T] extends ArgotArgument[T] {
+trait HasValue[T] extends Argument[T] {
   /** Always `true`, indicating that `HasValue` classes always have an
    * associated value.
    */
@@ -189,7 +189,7 @@ trait MultiValueArg[T] extends HasValue[T] {
  * @see SingleValueOption
  * @see MultiValueOption
  */
-trait ArgotOption[T] extends ArgotArgument[T] {
+trait ArgotOption[T] extends Argument[T] {
   /** List of option names, both long (multi-character) and short
    * (single-character).
    */
@@ -324,7 +324,7 @@ extends ArgotOption[T] {
     namesOn.mkString("|") + "!" + namesOff.mkString("|")
 
   private def wellDefined: Boolean = {
-    def inBoth(s: String) = {}
+    def inBoth(s: String) = {
       (((shortNamesOnSet | longNamesOnSet) contains s) &&
        ((shortNamesOffSet | longNamesOffSet) contains s))
     }
@@ -348,7 +348,7 @@ extends ArgotOption[T] {
  * Base trait for parameter classes
  */
 private[argot] trait Parameter[T]
-extends ArgotArgument[T] with HasValue[T] {
+extends Argument[T] with HasValue[T] {
   val convert: (String, Parameter[T]) => T
   val description: String
   val optional: Boolean
@@ -469,465 +469,13 @@ private object Conversions {
   }
 }
 
-/**
- * `ArgotParser` is a command-line parser, with support for single-value and
- * multi-value options, single-value and multi-value parameters, typed value,
- * custom conversions (with suitable defaults), and extensibility.
- *
- * An `ArgotParser` embodies a representation of the command line: its
- * expected options and their value types, the expected positional
- * parameters and their value types, the name of the program, and other
- * values.
- *
- * For complete details, see the Argot web site (linked below).
- *
- * @param programName  the name of the program, for the usage message
- * @param compactUsage force a more compact usage message
- * @param outputWidth  width of the output; used when wrapping the usage
- *                     message
- * @param preUsage     optional message to issue before the usage message
- *                     (e.g., a copyright and/or version string)
- * @param postUsage    optional message to issue after the usage message
- * @param sortUsage    If `true` (the default), the options are sorted
- *                     alphabetically in the usage output. If `false`, they
- *                     are displayed in the order they were created.
- *
- * @see <a href="http://software.clapper.org/argot/" target="argot">the Argot web site</a>
- */
-class ArgotParserOld(programName: String,
-                  compactUsage: Boolean = false,
-                  outputWidth: Int = 79,
-                  preUsage: Option[String] = None,
-                  postUsage: Option[String] = None,
-                  sortUsage: Boolean = true) {
-  require(outputWidth > 0)
-
-  import scala.collection.mutable.{Map => MutableMap, LinkedHashSet, LinkedHashMap}
-  protected val shortNameMap = MutableMap.empty[Char, ArgotOption[_]]
-  protected val longNameMap = MutableMap.empty[String, ArgotOption[_]]
-  protected val allOptions = new LinkedHashMap[String, ArgotOption[_]]
-  protected val nonFlags = new LinkedHashSet[HasValue[_]]
-  protected val flags = new LinkedHashSet[FlagOption[_]]
-  protected val parameters = new LinkedHashSet[Parameter[_]]
-
-
-  /** Parse the specified array of command-line arguments, according to the
-   * parser's specification. A successful parse sets the various value
-   * objects returned by the specification methods.
-   *
-   * @param args the command line parameters
-   *
-   * @throws ArgotUsageException  user error on the command line; the
-   *                              exception contains the usage message
-   * @throws ArgotException       some other kind of fatal error
-   */
-  def parse(args: Array[String]): Unit = parse(args.toList)
-
-  /** Parse the specified array of command-line arguments, according to the
-   * parser's specification. A successful parse sets the various value
-   * objects returned by the specification methods.
-   *
-   * @param args the command line parameters
-   *
-   * @throws ArgotUsageException  user error on the command line; the
-   *                              exception contains the usage message
-   * @throws ArgotException       some other kind of fatal error
-   */
-  def parse(args: List[String]): Unit = {
-    try {
-      parseArgList(args)
-    }
-
-    catch {
-      case e: ArgotConversionException => usage(e.message)
-    }
-  }
-
-  /** Generate the usage string. This string is automatically included in
-   * any thrown `ArgotUsageException`.
-   *
-   * @param message  optional message to prefix the usage string.
-   *
-   * @return the usage string, wrapped appropriately.
-   */
-  def usageString(message: Option[String] = None): String = {
-    import grizzled.math.{util => MathUtil}
-    import grizzled.string.WordWrapper
-
-    val SPACES_BETWEEN = 2  // spaces between arg name and description
-
-    def paramString(p: Parameter[_]): String =
-      if (p.optional) "[" + p.name + "]" else p.name
-
-    def optString(name: String, opt: ArgotOption[_]) = {
-      val hyphen = if (name.length == 1) "-" else "--"
-
-      opt match {
-        case ov: HasValue[_] => hyphen + name + " " + ov.valueName
-        case _               => hyphen + name
-      }
-    }
-
-    val mmax = MathUtil.max _
-
-    // Calculate the maximum length of all the option strings.
-
-    val maxOptLen = mmax( {
-      for {opt <- allOptions.values
-           name <- opt.names}
-        yield optString(name, opt).length
-    }.toSeq: _*)
-
-    // Create the output buffer.
-
-    val buf = new StringBuilder
-
-    // Build the usage line.
-    val wrapper = new WordWrapper(wrapWidth=outputWidth)
-
-    message.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
-    preUsage.foreach(s => buf.append(wrapper.wrap(s) + "\n\n"))
-    buf.append("Usage: " + programName)
-    if (allOptions.size > 0)
-      buf.append(" [OPTIONS]")
-
-    for (p <- parameters) {
-      buf.append(" ")
-      buf.append(
-        p match {
-          case _: SingleValueParameter[_] => paramString(p)
-          case _: MultiValueParameter[_]  => paramString(p) + " ..."
-        }
-      )
-    }
-    
-    buf.append('\n')
-
-    // Build the option summary.
-
-    def handleOneOption(key: String) = {
-      if (! compactUsage)
-        buf.append("\n")
-
-      val opt = allOptions(key)
-
-      // Ensure that the short names always appear before the long
-      // names.
-
-      val sorted = opt.names.filter(_.length == 1).sortWith(_ < _) :::
-      opt.names.filter(_.length > 1).sortWith(_ < _)
-
-      for (name <- sorted.take(sorted.length - 1))
-        buf.append(optString(name, opt) + "\n")
-
-      val name = sorted.takeRight(1)(0)
-      val os = optString(name, opt)
-      val padding = (maxOptLen - os.length) + SPACES_BETWEEN
-      val prefix = os + (" " * padding)
-      val wrapper = new WordWrapper(prefix=prefix,
-                                    wrapWidth=outputWidth)
-      val desc = opt match {
-        case o: HasValue[_] =>
-          if (o.supportsMultipleValues)
-            o.description + " (May be specified multiple times.)"
-          else
-            o.description
-
-        case _ =>
-          opt.description
-        
-      }
-
-      buf.append(wrapper.wrap(desc))
-      buf.append("\n")
-    }
-
-    def handleOneParameter(p: Parameter[_], maxNameLen: Int) = {
-      if (! compactUsage)
-        buf.append('\n')
-
-      val padding = (maxNameLen - p.name.length) + SPACES_BETWEEN
-      val prefix = p.name + (" " * padding)
-      val wrapper = new WordWrapper(prefix=prefix, wrapWidth=outputWidth)
-      val desc = p match {
-        case o: HasValue[_] =>
-          if (o.supportsMultipleValues)
-            o.description + " (May be specified multiple times.)"
-          else
-            o.description
-
-        case _ =>
-          p.description
-      }
-
-      buf.append(wrapper.wrap(desc))
-      buf.append('\n')
-    }
-
-    if (allOptions.size > 0) {
-      buf.append("\nOPTIONS\n")
-      val optionKeys =
-        if (sortUsage)
-          allOptions.keySet.toList.sortWith(_ < _)
-        else
-          allOptions.keySet.toList
-
-      optionKeys.foreach(handleOneOption)
-    }
-
-    if (parameters.size > 0) {
-      buf.append("\nPARAMETERS\n")
-      val maxNameLen = mmax(parameters.map(_.name.length).toList: _*)
-      parameters.toList.foreach(handleOneParameter(_, maxNameLen))
-    }
-
-    postUsage.foreach(s => buf.append(wrapper.wrap(s) + "\n"))
-    buf.toString
-  }
-
-  /** Throws an `ArgotUsageException` containing the usage string.
-   *
-   * @throws ArgotUsageException  unconditionally
-   */
-  def usage() = throw new ArgotUsageException(usageString())
-
-  /** Throws an `ArgotUsageException` containing the usage string.
-   *
-   * @param message  optional message to prefix the usage string.
-   *
-   * @throws ArgotUsageException  unconditionally
-   */
-  def usage(message: String) =
-    throw new ArgotUsageException(usageString(Some(message)))
-
-  // -----------------------------------------------------------------------
-  // Private Methods
-  // -----------------------------------------------------------------------
-
-  private def replaceOption(opt: ArgotOption[_]) {
-    opt.names.filter(_.length == 1).
-    foreach(s => shortNameMap += s(0) -> opt)
-    opt.names.filter(_.length > 1).foreach(s => longNameMap += s -> opt)
-    allOptions += opt.name -> opt
-  }
-
-  private def replaceParameter(param: Parameter[_]) {
-    parameters += param
-  }
-
-  private def parseParams(a: List[String]): Unit = {
-    def parseNext(a: List[String], paramSpecs: List[Parameter[_]]):
-    List[String] = {
-      def checkMissing(paramSpecs: List[Parameter[_]]): List[String] = {
-        if (paramSpecs.count(! _.optional) > 0)
-          usage("Missing parameter(s): " +
-                paramSpecs.filter(! _.optional).
-                map(_.name).
-                mkString(", ")
-              )
-        Nil
-      }
-
-      paramSpecs match {
-        case Nil if (a.length > 0) =>
-          usage("Too many parameters.")
-        Nil
-
-        case Nil =>
-          Nil
-
-        case (p: MultiValueParameter[_]) :: tail => {
-          if (a.length == 0)
-            checkMissing(paramSpecs)
-          else
-            a.foreach(s => p.setFromString(s))
-
-          parseNext(Nil, tail)
-        }
-
-        case (p: SingleValueParameter[_]) :: tail => {
-          if (a.length == 0)
-            checkMissing(paramSpecs)
-          else
-            p.setFromString(a.take(1)(0))
-
-          parseNext(a drop 1, tail)
-        }
-      }
-    }
-
-    parseNext(a, parameters.toList)
-  }
-
-  private def paddedList(l: List[String], total: Int): List[String] = {
-    if (l.length >= total)
-      l
-    else
-      l ::: (1 to (total - l.length)).map(i => "").toList
-  }
-
-  private def parseCompressedShortOpt(optString: String,
-                                      optName: String,
-                                      a: List[String]):
-  List[String] = {
-    assert(optName.length > 1)
-    val (name, rest) = (optName take 1, optName drop 1)
-      assert(rest.length > 0)
-    val opt = shortNameMap.getOrElse(
-      name(0), usage("Unknown option: " + optString)
-    )
-
-    val result = opt match {
-      case o: HasValue[_] =>
-        if (rest.length == 0)
-          usage("Option -" + name + " requires a value.")
-      o.setFromString(rest)
-      a drop 1
-
-      case o: FlagOption[_] =>
-        // It's a flag. thus, the remainder of the option string
-        // consists of the next set of options (e.g., -cvf)
-        o.setByName(name)
-      List("-" + rest) ::: (a drop 1)
-
-      case _ =>
-        throw new ArgotException("(BUG) Found " + opt.getClass +
-                                 " in shortNameMap")
-    }
-
-    result
-  }
-
-  private def parseRegularShortOpt(optString: String,
-                                   optName: String,
-                                   a: List[String]):
-  List[String] = {
-    assert(optName.length == 1)
-    val opt = shortNameMap.getOrElse(
-      optName(0), usage("Unknown option: " + optString)
-    )
-
-    val a2 = a drop 1
-
-    val result = opt match {
-      case o: HasValue[_] =>
-        if (a2.length == 0)
-          usage("Option " + optString + " requires a value.")
-      o.setFromString(a2(0))
-      a2 drop 1
-
-      case o: FlagOption[_] =>
-        o.setByName(optName)
-      a2
-
-      case _ =>
-        throw new ArgotException("(BUG) Found " + opt.getClass +
-                                 " in longNameMap")
-    }
-
-    result
-  }
-
-  private def parseShortOpt(a: List[String]): List[String] = {
-    val optString = a.take(1)(0)
-    assert(optString startsWith "-")
-    val optName = optString drop 1
-
-    optName.length match {
-      case 0 => usage("Missing option name in \"" + optString + "\"")
-      case 1 => parseRegularShortOpt(optString, optName, a)
-      case _ => parseCompressedShortOpt(optString, optName, a)
-    }
-  }
-
-  def parseLongOpt(a: List[String]): List[String] = {
-    val optString = a.take(1)(0)
-    assert(optString startsWith "--")
-    val optName = optString drop 2
-    val opt = longNameMap.getOrElse(
-      optName, usage("Unknown option: " + optString)
-    )
-
-    val a2 = a drop 1
-
-    val result = opt match {
-      case o: HasValue[_] =>
-        if (a2.length == 0)
-          usage("Option " + optString + " requires a value.")
-      o.setFromString(a2(0))
-      a2 drop 1
-
-      case o: FlagOption[_] =>
-        o.setByName(optName)
-      a2
-
-      case _ =>
-        throw new ArgotException("(BUG) Found " + opt.getClass +
-                                 " in longNameMap")
-    }
-
-    result
-  }
-
-  @tailrec private def parseArgList(a: List[String]): Unit = {
-    a match {
-      case Nil =>
-        parseParams(Nil)
-
-      case "--" :: tail =>
-        parseParams(tail)
-
-      case opt :: tail if (opt.startsWith("--")) =>
-        parseArgList(parseLongOpt(a))
-
-      case opt :: tail if (opt(0) == '-') =>
-        parseArgList(parseShortOpt(a))
-
-      case _ =>
-        parseParams(a)
-    }
-  }
-
-  private def checkOptionName(name: String) = {
-    name.toList match {
-      case '-' :: tail =>
-        throw new ArgotSpecificationError(
-          "Option name \"" + name + "\" must not start with \"-\"."
-        )
-      case Nil =>
-        throw new ArgotSpecificationError("Empty option name.")
-
-      case _ =>
-    }
-  }
-
-  private def checkForMultiParam(param: Parameter[_]) = {
-    if (parameters.size > 0) {
-      parameters last match {
-        case p: MultiValueParameter[_] =>
-          throw new ArgotSpecificationError(
-            "Multi-parameter \"" + p.name + "\" must be the last " +
-            "parameter in the specification."
-          )
-
-        case _ =>
-      }
-    }
-  }
-
-  private def checkOptionalStatus(param: Parameter[_],
-                                  optionalSpec: Boolean) = {
-    if (parameters.size > 0) {
-      if (parameters.last.optional && (! optionalSpec))
-        throw new ArgotSpecificationError(
-          "Optional parameter \"" + parameters.last.name +
-          "\" cannot be followed by required parameter \"" +
-          param.valueName + "\"")
-    }
-  }
-}
-
 import scala.collection.immutable.ListMap
+
+/** A container for parsed arguments.
+  */
+case class ParsedParameters(options: Map[ArgotOption[_], Either[String, _]],
+                            parameters: Map[Parameter[_], Either[String, _]])
+
 
 /** Mutable class used to build an immutable ArgotParser.
   */
