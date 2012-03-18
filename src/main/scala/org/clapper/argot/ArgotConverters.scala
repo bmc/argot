@@ -44,7 +44,7 @@ package org.clapper.argot
  * functions that the Scala compiler will automatically use, for the
  * various definition functions in `ArgotParser`.
  *
- * The conversion functions all take the `CommandLineArgument` for which the
+ * The conversion functions all take the `ArgotArgument` for which the
  * value applies. This serves two purposes. First, it provides more information
  * for error messages. Second, it makes the conversion functions less ambiguous.
  */
@@ -59,7 +59,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertInt(s: String, opt: CommandLineArgument[Int]): Int = {
+  implicit def convertInt(s: String, opt: ArgotArgument[Int]): Int = {
     Conversions.parseInt(s, opt.name)
   }
 
@@ -73,7 +73,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertLong(s: String, opt: CommandLineArgument[Long]): Long = {
+  implicit def convertLong(s: String, opt: ArgotArgument[Long]): Long = {
     Conversions.parseLong(s, opt.name)
   }
 
@@ -87,7 +87,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertShort(s: String, opt: CommandLineArgument[Short]):
+  implicit def convertShort(s: String, opt: ArgotArgument[Short]):
   Short = {
     Conversions.parseShort(s, opt.name)
   }
@@ -102,7 +102,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertFloat(s: String, opt: CommandLineArgument[Float]):
+  implicit def convertFloat(s: String, opt: ArgotArgument[Float]):
   Float = {
     Conversions.parseFloat(s, opt.name)
   }
@@ -117,7 +117,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertDouble(s: String, opt: CommandLineArgument[Double]):
+  implicit def convertDouble(s: String, opt: ArgotArgument[Double]):
   Double = {
     Conversions.parseDouble(s, opt.name)
   }
@@ -132,7 +132,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertChar(s: String, opt: CommandLineArgument[Char]): Char = {
+  implicit def convertChar(s: String, opt: ArgotArgument[Char]): Char = {
     Conversions.parseChar(s, opt.name)
   }
 
@@ -147,7 +147,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertByte(s: String, opt: CommandLineArgument[Byte]): Byte = {
+  implicit def convertByte(s: String, opt: ArgotArgument[Byte]): Byte = {
     Conversions.parseByte(s, opt.name)
   }
 
@@ -160,7 +160,7 @@ object ArgotConverters {
    *
    * @throws ArgotConversionException conversion error
    */
-  implicit def convertString(s: String, opt: CommandLineArgument[String]):
+  implicit def convertString(s: String, opt: ArgotArgument[String]):
   String = {
     s
   }

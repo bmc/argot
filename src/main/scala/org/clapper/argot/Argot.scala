@@ -43,16 +43,12 @@ import scala.reflect.Manifest
 import scala.util.matching.Regex
 import scala.annotation.tailrec
 
-/** Base trait for all option and parameter classes, `CommandLineArgument`
+/** Base trait for all option and parameter classes, `ArgotArgument`
   * contains comment methods and values.
   *
   * @tparam T  the type associated with the argument
   */
-trait CommandLineArgument[T] {
-
-  /** The `ArgotParser` instance that owns this object.
-    */
-  val parent: ArgotParser
+trait ArgotArgument[T] {
 
   /** The argument's description, displayed in the usage message.
     */
@@ -70,11 +66,6 @@ trait CommandLineArgument[T] {
    */
   def name: String
 
-  /** Resets the internal state of the argument to what it was right
-   * after construction, undoing the effects of any parse operation.
-   */
-  def reset(): Unit
-
   /** The standard `equals()` method.
    *
    * @param o  some other object
@@ -84,7 +75,7 @@ trait CommandLineArgument[T] {
    */
   override def equals(o: Any): Boolean = {
     o match {
-      case that: CommandLineArgument[_] =>
+      case that: ArgotArgument[_] =>
         (this.getClass == that.getClass) && (this.key == that.key)
       case _ =>
         false
@@ -117,7 +108,7 @@ trait CommandLineArgument[T] {
  * @see SingleValueArg
  * @see MultiValueArg
  */
-trait HasValue[T] extends CommandLineArgument[T] {
+trait HasValue[T] extends ArgotArgument[T] {
   /** Always `true`, indicating that `HasValue` classes always have an
    * associated value.
    */
@@ -143,21 +134,6 @@ trait HasValue[T] extends CommandLineArgument[T] {
    * @throws ArgotConversionException  conversion error
    */
   def convertString(s: String): T
-
-  /** Store the value.
-   *
-   * @param v  the value, of type `T`
-   */
-  private[argot] def storeValue(v: T): Unit
-
-  /** Given a string value, convert the value to type `T` by calling
-   * `convert()`, then store it by calling `storeValue()`.
-   *
-   * @param s  the string to convert
-   *
-   * @throws ArgotConversionException  conversion error
-   */
-  def setFromString(s: String) = storeValue(convertString(s))
 }
 
 /**
@@ -203,17 +179,6 @@ trait SingleValueArg[T] extends HasValue[T] {
  */
 trait MultiValueArg[T] extends HasValue[T] {
   val supportsMultipleValues = true
-  var optValue: Seq[T] = Seq.empty[T]
-
-  def reset() = optValue = Seq.empty[T]
-
-  /** Get the option's value(s).
-   *
-   * @return a sequence of option values, or `Nil` if none were present.
-   */
-  def value: Seq[T] = optValue
-
-  private[argot] def storeValue(v: T) = optValue = optValue.toList ::: List(v)
 }
 
 /**
@@ -224,7 +189,7 @@ trait MultiValueArg[T] extends HasValue[T] {
  * @see SingleValueOption
  * @see MultiValueOption
  */
-trait ArgotOption[T] extends CommandLineArgument[T] {
+trait ArgotOption[T] extends ArgotArgument[T] {
   /** List of option names, both long (multi-character) and short
    * (single-character).
    */
@@ -331,7 +296,6 @@ extends ArgotOption[T] {
   val supportsMultipleValues = false
   val hasValue: Boolean = true
 
-  private var flagValue: Option[T] = None
   private val shortNamesOnSet = namesOn.filter(_.length == 1).toSet
   private val shortNamesOffSet = namesOff.filter(_.length == 1).toSet
   private val longNamesOnSet = namesOn.filter(_.length > 1).toSet
@@ -340,42 +304,6 @@ extends ArgotOption[T] {
   require (wellDefined)
 
   val names = namesOn ::: namesOff
-
-  def reset() = flagValue = None
-
-  def value = flagValue
-
-  private[argot] def value_(v: Option[T]): Unit = flagValue = v
-
-  /** Called when the option is set (i.e., when one of the "on" names is
-   * seen on the command line). Subclasses may override this method.
-   * The default version calls `convert()` with a `true`, and stores the
-   * result in `value`.
-   */
-  def set: Unit = flagValue = Some(convert(true, this))
-
-  /** Called when the option to unset (i.e., when one of the "off" names is
-   * seen on the command line). Subclasses may override this method.
-   * The default version calls `convert()` with a `false` and stores the
-   * result in `value`.
-   */
-  def clear: Unit = flagValue = Some(convert(false, this))
-
-  /** Set the value, based on whether the specified option name is an
-   * "on" or an "off" name.
-   *
-   * @param name  the name, without any leading "-" or "--"
-   */
-  def setByName(name: String): Unit = {
-    assert(name.length > 0)
-
-    checkValidity(name)
-
-    name.length match {
-      case 1 => if (shortNamesOnSet contains name) set else clear
-      case _ => if (longNamesOnSet contains name) set else clear
-    }
-  }
 
   /** Displayable name for the argument, used in the usage message.
    *
@@ -396,11 +324,12 @@ extends ArgotOption[T] {
     namesOn.mkString("|") + "!" + namesOff.mkString("|")
 
   private def wellDefined: Boolean = {
-    def inBoth(s: String) =
+    def inBoth(s: String) = {}
       (((shortNamesOnSet | longNamesOnSet) contains s) &&
        ((shortNamesOffSet | longNamesOffSet) contains s))
+    }
 
-      val l = namesOn ::: namesOff
+    val l = namesOn ::: namesOff
     (l != Nil) && (! l.exists(_.length == 0)) && (! l.exists(inBoth _))
   }
 
@@ -419,7 +348,7 @@ extends ArgotOption[T] {
  * Base trait for parameter classes
  */
 private[argot] trait Parameter[T]
-extends CommandLineArgument[T] with HasValue[T] {
+extends ArgotArgument[T] with HasValue[T] {
   val convert: (String, Parameter[T]) => T
   val description: String
   val optional: Boolean
