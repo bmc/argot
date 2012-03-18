@@ -43,6 +43,16 @@ import scala.reflect.Manifest
 import scala.util.matching.Regex
 import scala.annotation.tailrec
 
+/**
+  * Container for shared types.
+  */
+object Types {
+  type Converter[T] = (String) => Either[String, T]
+  type FlagConverter[T] = (Boolean, String) => Either[String, T]
+}
+
+import Types._
+
 /** Base trait for all option and parameter classes, `Argument`
   * contains common methods and values.
   *
@@ -123,17 +133,6 @@ trait HasValue[T] extends Argument[T] {
    * or just one.
    */
   val supportsMultipleValues: Boolean
-
-  /** Method that converts a string value to type `T`. Should throw
-   * `ArgotConversionException` on error.
-   *
-   * @param s  the string to convert
-   *
-   * @return the converted result
-   *
-   * @throws ArgotConversionException  conversion error
-   */
-  def convertString(s: String): T
 }
 
 /**
@@ -151,16 +150,6 @@ trait SingleValueArg[T] extends HasValue[T] {
   private var optValue: Option[T] = None
 
   val supportsMultipleValues = false
-
-  def reset() = optValue = None
-
-  /** Get the option's value.
-   *
-   * @return `Some(value)` if the value is set; `None` if not.
-   */
-  def value: Option[T] = optValue
-
-  private[argot] def storeValue(v: T) = optValue = Some(v)
 }
 
 /**
@@ -193,7 +182,7 @@ trait ArgotOption[T] extends Argument[T] {
   /** List of option names, both long (multi-character) and short
    * (single-character).
    */
-  val names: List[String]
+  val names: Seq[String]
 
   /** Return a suitable name for the option. The returned name will
    * have a "-" or "--" prefix, depending on whether it's long or short.
@@ -226,23 +215,31 @@ trait ArgotOption[T] extends Argument[T] {
  *
  * @tparam  the type of the converted option value
  *
- * @param parent      the parent parser instance that owns the option
- * @param names       the list of names the option is known by
+ * @param names       sequence of names the option is known by
  * @param valueName   the placeholder name for the option's value, for the
  *                    usage message
  * @param description textual description of the option
  * @param convert     a function that will convert a string value for the
  *                    option to an appropriate value of type `T`.
  */
-class SingleValueOption[T](val parent: ArgotParser,
-                           val names: List[String],
+class SingleValueOption[T](val names: Seq[String],
                            val valueName: String,
                            val description: String,
-                           val convert: (String, SingleValueOption[T]) => T)
+                           val convert: Converter[T])
 extends ArgotOption[T] with SingleValueArg[T] {
   require ((names != Nil) && (! names.exists(_.length == 0)))
+}
 
-  def convertString(s: String): T = convert(s, this)
+object SingleValueOption {
+  def apply[T](names: Seq[String], valueName: String, description: String)
+              (implicit convert: Converter[T]): SingleValueOption[T] = {
+    new SingleValueOption[T](names, valueName, description, convert)
+  }
+
+  def apply[T](name: String, valueName: String, description: String)
+              (implicit convert: Converter[T]): SingleValueOption[T] = {
+    apply(Seq(name), valueName, description)(convert)
+  }
 }
 
 /**
@@ -252,7 +249,6 @@ extends ArgotOption[T] with SingleValueArg[T] {
  *
  * @tparam  the type of the converted option value
  *
- * @param parent      the parent parser instance that owns the option
  * @param names       the list of names the option is known by
  * @param valueName   the placeholder name for the option's value, for the
  *                    usage message
@@ -260,15 +256,24 @@ extends ArgotOption[T] with SingleValueArg[T] {
  * @param convert     a function that will convert a string value for the
  *                    option to an appropriate value of type `T`.
  */
-class MultiValueOption[T](val parent: ArgotParser,
-                          val names: List[String],
+class MultiValueOption[T](val names: Seq[String],
                           val valueName: String,
                           val description: String,
-                          val convert: (String, MultiValueOption[T]) => T)
+                          val convert: Converter[T])
 extends ArgotOption[T] with MultiValueArg[T] {
   require ((names != Nil) && (! names.exists(_.length == 0)))
+}
 
-  def convertString(s: String): T = convert(s, this)
+object MultiValueOption {
+  def apply[T](names: Seq[String], valueName: String, description: String)
+              (implicit convert: Converter[T]): MultiValueOption[T] = {
+    new MultiValueOption[T](names, valueName, description, convert)
+  }
+
+  def apply[T](name: String, valueName: String, description: String)
+              (implicit convert: Converter[T]): MultiValueOption[T] = {
+    apply(Seq(name), valueName, description)(convert)
+  }
 }
 
 /**
@@ -280,18 +285,17 @@ extends ArgotOption[T] with MultiValueArg[T] {
  *
  * @tparam  the underlying value type
  *
- * @param parent      the parent parser instance that owns the option
  * @param namesOn     list of names (short or long) that toggle the value on
  * @param namesOff    list of names (short or long) that toggle the value off
  * @param description textual description of the option
  * @param convert     a function that takes a boolean value and maps it to
  *                    the appropriate value to store as the option's value.
+ *                    Takes the boolean value and the option string.
  */
-class FlagOption[T](val parent: ArgotParser,
-                    namesOn: List[String],
-                    namesOff: List[String],
+class FlagOption[T](namesOn: Seq[String],
+                    namesOff: Seq[String],
                     val description: String,
-                    val convert: (Boolean, FlagOption[T]) => T)
+                    val convert: FlagConverter[T])
 extends ArgotOption[T] {
   val supportsMultipleValues = false
   val hasValue: Boolean = true
@@ -303,7 +307,7 @@ extends ArgotOption[T] {
 
   require (wellDefined)
 
-  val names = namesOn ::: namesOff
+  val names = namesOn.toList ::: namesOff.toList
 
   /** Displayable name for the argument, used in the usage message.
    *
@@ -329,18 +333,24 @@ extends ArgotOption[T] {
        ((shortNamesOffSet | longNamesOffSet) contains s))
     }
 
-    val l = namesOn ::: namesOff
-    (l != Nil) && (! l.exists(_.length == 0)) && (! l.exists(inBoth _))
+    (names != Nil) && (! names.exists(_.length == 0)) && (! names.exists(inBoth _))
+  }
+}
+
+object FlagOption {
+  def apply[T](namesOn: Seq[String], namesOff: Seq[String], description: String)
+              (implicit convert: FlagConverter[T]): FlagOption[T] = {
+    new FlagOption[T](namesOn, namesOff, description, convert)
   }
 
-  private def checkValidity(optName: String) = {
-    if (! ((shortNamesOnSet contains optName) ||
-           (shortNamesOffSet contains optName) ||
-           (longNamesOnSet contains optName) ||
-           (longNamesOffSet contains optName)) )
-      throw new ArgotException("(BUG) Flag name \"" + optName +
-                               "\" is neither a short nor a long name " +
-                               "for option \"" + this.name + "\"")
+  def apply[T](nameOn: String, nameOff: String, description: String)
+              (implicit convert: FlagConverter[T]): FlagOption[T] = {
+    apply(Seq(nameOn), Seq(nameOff), description)(convert)
+  }
+
+  def apply[T](nameOn: String, description: String)
+              (implicit convert: FlagConverter[T]): FlagOption[T] = {
+    apply(Seq(nameOn), Seq.empty[String], description)(convert)
   }
 }
 
@@ -349,14 +359,13 @@ extends ArgotOption[T] {
  */
 private[argot] trait Parameter[T]
 extends Argument[T] with HasValue[T] {
-  val convert: (String, Parameter[T]) => T
+  val convert: Converter[T]
   val description: String
   val optional: Boolean
 
   require (valueName.length > 0)
 
   def name = valueName
-  def convertString(s: String): T = convert(s, this)
   override def toString = "parameter " + valueName
   protected def key = valueName
 }
@@ -366,7 +375,6 @@ extends Argument[T] with HasValue[T] {
  *
  * @tparam  the type of the converted parameter value
  *
- * @param parent       the parent parser instance that owns the parameter
  * @param valueName    the placeholder name for the parameter's value,
  *                     for the usage message
  * @param description  textual description of the parameter
@@ -375,13 +383,18 @@ extends Argument[T] with HasValue[T] {
  * @param convert      a function that will convert a string value for
    *                     the parameter to an appropriate value of type `T`.
  */
-class SingleValueParameter[T](
-  val parent: ArgotParser,
-  val valueName: String,
-  val description: String,
-  val optional: Boolean,
-  val convert: (String, Parameter[T]) => T)
+class SingleValueParameter[T](val valueName: String,
+                              val description: String,
+                              val optional: Boolean,
+                              val convert: Converter[T])
 extends Parameter[T] with SingleValueArg[T]
+
+object SingleValueParameter {
+  def apply[T](valueName: String, description: String, optional: Boolean)
+              (implicit convert: Converter[T]): SingleValueParameter[T] = {
+    new SingleValueParameter[T](valueName, description, optional, convert)
+  }
+}
 
 /**
  * Class for a non-option parameter that takes a multiple values. Each
@@ -390,81 +403,78 @@ extends Parameter[T] with SingleValueArg[T]
  *
  * @tparam  the type of the converted parameter value
  *
- * @param parent       the parent parser instance that owns the parameter
  * @param valueName    the placeholder name for the parameter's value,
  *                     for the usage message
  * @param description  textual description of the parameter
  * @param optional     whether or not the parameter is optional. Only one
  *                     parameter may be optional, and it must be the last one.
  * @param convert      a function that will convert a string value for
-   *                     the parameter to an appropriate value of type `T`.
+   *                   the parameter to an appropriate value of type `T`.
  */
-class MultiValueParameter[T](
-  val parent: ArgotParser,
-  val valueName: String,
-  val description: String,
-  val optional: Boolean,
-  val convert: (String, Parameter[T]) => T)
+class MultiValueParameter[T](val valueName: String,
+                             val description: String,
+                             val optional: Boolean,
+                             val convert: Converter[T])
 extends Parameter[T] with MultiValueArg[T]
+
+object MultiValueParameter {
+  def apply[T](valueName: String, description: String, optional: Boolean)
+              (implicit convert: Converter[T]): MultiValueParameter[T] = {
+    new MultiValueParameter[T](valueName, description, optional, convert)
+  }
+}
 
 /**
  * Internally used common conversion functions
  */
 private object Conversions {
-  implicit def parseInt(s: String, opt: String): Int = {
+  implicit def parseInt(s: String): Either[String, Int] = {
     parseNum[Int](s, s.toInt)
   }
 
-  implicit def parseLong(s: String, opt: String): Long = {
+  implicit def parseLong(s: String): Either[String, Long] = {
     parseNum[Long](s, s.toLong)
   }
 
-  implicit def parseShort(s: String, opt: String): Short = {
+  implicit def parseShort(s: String): Either[String, Short] = {
     parseNum[Short](s, s.toShort)
   }
 
-  implicit def parseFloat(s: String, opt: String): Float = {
+  implicit def parseFloat(s: String): Either[String, Float] = {
     parseNum[Float](s, s.toFloat)
   }
 
-  implicit def parseDouble(s: String, opt: String): Double = {
+  implicit def parseDouble(s: String): Either[String, Double] = {
     parseNum[Double](s, s.toDouble)
   }
 
-  implicit def parseChar(s: String, opt: String): Char = {
+  implicit def parseChar(s: String): Either[String, Char] = {
     if (s.length != 1)
-      throw new ArgotConversionException(
-        "Option \"" + opt + "\": " +
-        "Cannot parse \"" + s + "\" to a character."
-      )
-    s(0)
+      Left("Cannot parse \"" + s + "\" to a character.")
+    else
+      Right(s(0))
   }
 
-  implicit def parseByte(s: String, opt: String): Byte = {
+  implicit def parseByte(s: String): Either[String, Byte] = {
     val num = s.toInt
     if ((num < 0) || (num > 255))
-      throw new ArgotConversionException(
-        "Option \"" + opt + "\": " + "\"" + s +
-        "\" results in a number that is too large for a byte."
-      )
-
-    num.toByte
+      Left("\"%s\" results in a number that is too large for a byte".format(s))
+    else
+      Right(num.toByte)
   }
 
-  implicit def parseString(s: String, opt: String): String = {
-    s
+  implicit def parseString(s: String, opt: String): Either[String, String] = {
+    Right(s)
   }
 
-  private def parseNum[T](s: String, parse: => T): T = {
+  private def parseNum[T](s: String, parse: => T): Either[String, T] = {
     try {
-      parse
+      Right(parse)
     }
 
     catch {
       case e: NumberFormatException =>
-        throw new ArgotConversionException(
-          "Cannot convert argument \"" + s + "\" to a number."
-        )
+        Left("Cannot convert argument \"" + s + "\" to a number.")
     }
   }
 }
@@ -557,7 +567,7 @@ class ArgotParser (
    * @return a new copy of the `ArgotParser` object, incorporating the
    *         specified option
    */
-  def option[T](names: List[String], valueName: String, description: String)
+  def option[T](names: Seq[String], valueName: String, description: String)
                (implicit convert: (String, SingleValueOption[T]) => T):
     ArgotParser = {
     names.foreach(checkOptionName)
@@ -614,7 +624,7 @@ class ArgotParser (
    * @return a new copy of the `ArgotParser` object, incorporating the
    *         specified option
    */
-  def multiOption[T](names: List[String],
+  def multiOption[T](names: Seq[String],
                      valueName: String,
                      description: String)
                     (implicit convert: (String, MultiValueOption[T]) => T):
@@ -695,7 +705,7 @@ class ArgotParser (
    * @return a new copy of the `ArgotParser` object, incorporating the
    *         specified option
    */
-  def flag[T](namesOn: List[String], namesOff: List[String], description: String)
+  def flag[T](namesOn: Seq[String], namesOff: Seq[String], description: String)
              (implicit convert: (Boolean, FlagOption[T]) => T):
     ArgotParser = {
     namesOn.foreach(checkOptionName)
@@ -742,7 +752,7 @@ class ArgotParser (
    * @return a new copy of the `ArgotParser` object, incorporating the
    *         specified option
    */
-  def flag[T](namesOn: List[String], description: String)
+  def flag[T](namesOn: Seq[String], description: String)
             (implicit convert: (Boolean, FlagOption[T]) => T):
     ArgotParser = {
     flag(namesOn, Nil, description)(convert)

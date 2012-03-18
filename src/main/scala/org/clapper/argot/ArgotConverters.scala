@@ -53,13 +53,10 @@ object ArgotConverters {
     * will cause an error.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the integer
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(integer)` or `Left(error message)`
     */
-  implicit def convertInt(s: String, opt: Argument[Int]): Int = {
+  implicit def convertInt(s: String): Either[String, Int] = {
     Conversions.parseInt(s, opt.name)
   }
 
@@ -67,13 +64,10 @@ object ArgotConverters {
     * will cause an error.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the long integer
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(long)` or `Left(error message)`
     */
-  implicit def convertLong(s: String, opt: Argument[Long]): Long = {
+  implicit def convertLong(s: String): Either[String, Long] = {
     Conversions.parseLong(s, opt.name)
   }
 
@@ -81,13 +75,10 @@ object ArgotConverters {
     * will cause an error.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the short
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(short)` or `Left(error message)`
     */
-  implicit def convertShort(s: String, opt: Argument[Short]): Short = {
+  implicit def convertShort(s: String): Either[String, Short] = {
     Conversions.parseShort(s, opt.name)
   }
 
@@ -95,13 +86,10 @@ object ArgotConverters {
     * will cause an error.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the float.
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(float)` or `Left(error message)`
     */
-  implicit def convertFloat(s: String, opt: Argument[Float]): Float = {
+  implicit def convertFloat(s: String): Either[String, Float] = {
     Conversions.parseFloat(s, opt.name)
   }
 
@@ -109,13 +97,10 @@ object ArgotConverters {
     * will cause an error.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the double.
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(double)` or `Left(error message)`
     */
-  implicit def convertDouble(s: String, opt: Argument[Double]): Double = {
+  implicit def convertDouble(s: String): Either[String, Double] = {
     Conversions.parseDouble(s, opt.name)
   }
 
@@ -123,13 +108,10 @@ object ArgotConverters {
     * is longer than one character in length will cause an error.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the character
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(double)` or `Left(error message)`
     */
-  implicit def convertChar(s: String, opt: Argument[Char]): Char = {
+  implicit def convertChar(s: String): Either[String, Char] = {
     Conversions.parseChar(s, opt.name)
   }
 
@@ -138,41 +120,21 @@ object ArgotConverters {
     * [0, 255].
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the integer
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(byte)` or `Left(error message)`
     */
-  implicit def convertByte(s: String, opt: Argument[Byte]): Byte = {
+  implicit def convertByte(s: String): Either[String, Byte] = {
     Conversions.parseByte(s, opt.name)
   }
 
   /** Convert a string value into a string. This function is a no-op.
     *
     * @param s   the string value to convert
-    * @param opt the command line argument to which the value applies
     *
-    * @return the integer
-    *
-    * @throws ArgotConversionException conversion error
+    * @return `Right(s)`
     */
-  implicit def convertString(s: String, opt: Argument[String]): String = {
-    s
-  }
-
-  /** Convert a value for a flag option. This function is primarily a
-    * no-op that exists to satisfy the implicit parameter for the
-    * `ArgotParser.flag()` methods.
-    *
-    * @param onOff  the value to be returned
-    * @param opt    the command line argument to which the value applies
-    *
-    * @return the value of `onOff`
-    */
-  implicit def convertFlag[Boolean](onOff: Boolean,
-                                    opt: FlagOption[Boolean]): Boolean = {
-    onOff
+  implicit def convertString(s: String): Either[String, String] = {
+    Right(s)
   }
 
   /** Convert a string value into a sequence, adding the result to the
