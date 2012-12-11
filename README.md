@@ -1,3 +1,6 @@
+**NOTE:** This branch (`pre-scala-2.10`) exists to support Scala versions
+prior to 2.10. Scala 2.10 and later are supported on the `master` branch.
+
 Argot is a command-line parser library for [Scala][], supporting:
 
 * single-value and multi-value options
