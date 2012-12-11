@@ -44,7 +44,7 @@ class ArgotParameterTest extends FunSuite {
 
   test("one required argument") {
     val parser = new ArgotParser("test")
-    val opt = parser.option[String](List("s", "something"), 
+    val opt = parser.option[String](List("s", "something"),
                                     "something", "Some value")
     val req = parser.parameter[String]("foo", "some param", optional=false)
 
@@ -59,7 +59,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         req.value
       }
     }
@@ -104,7 +104,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         req.value
       }
     }
@@ -127,8 +127,8 @@ class ArgotParameterTest extends FunSuite {
     for ((expected_foo, expected_bar, args) <- data) {
       parser.reset()
       parser.parse(args)
-      val prefix = 
-        expect((expected_foo, expected_bar),
+      val prefix =
+        expectResult((expected_foo, expected_bar),
 
                args.mkString("[", ", ", "]") + " -> " +
                "(" + expected_foo + ", " + expected_bar + ")") {
@@ -174,7 +174,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         param.value
       }
     }
@@ -202,7 +202,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         param.value.map(_.i)
       }
     }

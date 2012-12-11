@@ -58,7 +58,7 @@ class ArgotMultiOptionTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         opt.value
       }
     }
@@ -94,7 +94,7 @@ class ArgotMultiOptionTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         opt.value
       }
     }
@@ -120,7 +120,7 @@ class ArgotMultiOptionTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expect(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         opt.value.map(_.i)
       }
     }

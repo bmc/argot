@@ -20,9 +20,7 @@ scalaVersion := "2.10.0-RC3"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq(
-  "2.10.0-RC1", "2.10.0-RC3"
-)
+crossScalaVersions := Seq("2.10.0-RC3", "2.10.0-RC1")
 
 seq(lsSettings :_*)
 

@@ -1,0 +1,6 @@
+* Built for the Scala 2.10.0 series _only_ (2.10.0-RC1 and -RC3, initially).
+  **This version, and later versions, are 2.10-only. 2.9.x and earlier will be
+  supported via the `pre-scala-2.10` GitHub branch.** This is due to changes
+  in the Scala library between 2.9 and 2.10.
+* Added `-feature` to `scalac` options, and removed all feature warnings.
+* Upgraded build to SBT 0.12.
