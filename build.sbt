@@ -5,7 +5,7 @@ name := "argot"
 
 organization := "org.clapper"
 
-version := "0.4"
+version := "1.0.0"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/argot/license.html"))
 
@@ -13,15 +13,15 @@ homepage := Some(url("http://software.clapper.org/argot/"))
 
 description := "A command-line option and parameter parser"
 
-scalaVersion := "2.9.1"
+scalaVersion := "2.10.0-RC3"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
-scalacOptions ++= Seq("-deprecation", "-unchecked")
+scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
 crossScalaVersions := Seq(
-  "2.9.1-1", "2.9.1", "2.9.0", "2.9.0-1", "2.8.2", "2.8.1", "2.8.0"
+  "2.10.0-RC1", "2.10.0-RC3"
 )
 
 seq(lsSettings :_*)
@@ -35,24 +35,26 @@ seq(lsSettings :_*)
 
 libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
     // Select ScalaTest version based on Scala version
-    val scalatestVersionMap = Map("2.8.0"   -> ("scalatest_2.8.0", "1.3.1.RC2"),
-                                  "2.8.1"   -> ("scalatest_2.8.1", "1.7.1"),
-                                  "2.8.2"   -> ("scalatest_2.8.1", "1.7.1"),
-                                  "2.9.0"   -> ("scalatest_2.9.0", "1.7.1"),
-                                  "2.9.0-1" -> ("scalatest_2.9.0-1", "1.7.1"),
-                                  "2.9.1"   -> ("scalatest_2.9.1", "1.7.1"),
-                                  "2.9.1-1" -> ("scalatest_2.9.0-1", "1.7.1"))
+    val scalatestVersionMap = Map(
+      "2.10.0-RC1" -> ("scalatest_2.10.0-RC1", "2.0.M4-2.10.0-RC1-B1"),
+      "2.10.0-RC3" -> ("scalatest_2.10.0-RC1", "2.0.M4-2.10.0-RC1-B1")
+    )
     val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
-        sv, error("Unsupported Scala version: " + scalaVersion)
+        sv, error("Unsupported Scala version for ScalaTest: " + scalaVersion)
     )
     deps :+ "org.scalatest" % scalatestArtifact % scalatestVersion % "test"
+}
+
+libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
+  // ScalaTest still uses the (deprecated) scala.actors API.
+  deps :+ "org.scala-lang" % "scala-actors" % sv % "test"
 }
 
 // ---------------------------------------------------------------------------
 // Other dependendencies
 
 libraryDependencies ++= Seq(
-    "org.clapper" %% "grizzled-scala" % "1.0.12"
+    "org.clapper" %% "grizzled-scala" % "1.1.2"
 )
 
 // ---------------------------------------------------------------------------

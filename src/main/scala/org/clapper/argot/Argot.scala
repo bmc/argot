@@ -467,6 +467,8 @@ case class ParsedParameters(options: Map[ArgotOption[_], Either[String, _]],
   */
 class ArgotSpecification(val options: Seq[ArgotOption[_]],
                          val parameters: Seq[Parameter[_]]) {
+  import scala.language.existentials
+
   private val optionMap = Map(options.map(o => o.name -> o): _*)
   private val paramMap  = ListMap(parameters.map(p => p.name -> p): _*)
 
@@ -494,7 +496,7 @@ class ArgotSpecification(val options: Seq[ArgotOption[_]],
   }
 
   private def checkMultiParams() {
-    val total = parameters.count { 
+    val total = parameters.count {
       _ match {
         case p: MultiValueParameter[_] => true
         case _ => false

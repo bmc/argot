@@ -48,6 +48,7 @@ package org.clapper.argot
   * for error messages. Second, it makes the conversion functions less ambiguous.
   */
 object ArgotConverters {
+  import scala.language.implicitConversions
 
   /** Convert a string value into an integer. A non-numeric string value
     * will cause an error.
