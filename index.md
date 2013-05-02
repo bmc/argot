@@ -22,8 +22,10 @@ Argot is a command-line parser library for [Scala][], supporting:
 Argot is published to the `oss.sonatype.org` repository and automatically
 sync'd with the [Maven Central Repository][].
 
-Version 0.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0, 2.8.2,
-2.8.1 and 2.8.0.
+- Version 1.0.1 supports Scala 2.10.0 and 2.10.1
+- Version 1.0.0 supports Scala 2.10.0-RC1 and 2.10.0-RC3.
+- Version 0.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
+  2.8.2, 2.8.1 and 2.8.0.
 
 ## Installing for Maven
 
@@ -31,16 +33,16 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `clapper.org`
-* Artifact ID: `argot_2.9.2`
-* Version: `0.4`
+* Artifact ID: `argot_2.9.2` or `argot_2.10`
+* Version: `0.4` (for Scala 2.9.2 or earlier), `1.0.0` (for Scala 2.10)
 * Type: `jar`
 
 Here's a sample Maven POM "dependency" snippet:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>argot_2.9.2</artifactId>
-      <version>0.4</version>
+      <artifactId>argot_2.10</artifactId>
+      <version>1.0.0</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -63,7 +65,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "0.4"
+    libraryDependencies += "org.clapper" %% "argot" % "1.0.0"
 
 Argot is also registered with [Doug Tangren][]'s excellent [ls.implicit.ly][]
 catalog. If you use the `ls` SBT plugin, you can install Argot with
@@ -97,7 +99,7 @@ The resulting jar file will be in the top-level `target` directory.
 
 Argot requires the following libraries to be available at runtime, for
 some, or all, of its methods.
- 
+
 * The [Grizzled Scala][] library
 
 Maven and [SBT][] should automatically download these libraries for you.
@@ -193,7 +195,7 @@ which are optional:
 * `postUsage`: An `Option[String]`, specifying a message to follow the
   usage block in the generated usage string. The string is wrapped on word
   boundaries, just like the usage message. Default: `None`
-  
+
 For *cooltool*, our `ArgotParser` looks like this:
 
     import org.clapper.argot._
@@ -287,7 +289,7 @@ function for common types. This import:
 {% highlight scala %}
 import ArgotConverters._
 {% endhighlight %}
-    
+
 makes those built-in implicit conversion functions available.
 
 You *can* supply your own function, however. We could just as easily have
@@ -296,7 +298,7 @@ defined `iterations` like this:
 {% highlight scala %}
 val iterations = parser.option[Int](List("i", "iterations"), "n", "total iterations") {
   (sValue, opt) =>
-    
+
   try {
     sValue.toInt
   }
@@ -647,7 +649,7 @@ request. Along with any patch you send:
 [Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
 [Maven]: http://maven.apache.org/
-[changelog]: CHANGELOG.html
+[changelog]: https://github.com/bmc/argot/blob/master/CHANGELOG.md
 [Grizzled Scala]: http://software.clapper.org/grizzled-scala/
 [bmc@clapper.org]: mailto:bmc@clapper.org
 [Maven central repository]: http://search.maven.org/
