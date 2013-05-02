@@ -1,8 +1,3 @@
----
-title: "Change Log: Argot, a command-line parser for Scala"
-layout: default
----
-
 Version 1.0.1
 
 * Built for Scala 2.10.0 and 2.10.1
