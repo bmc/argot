@@ -65,7 +65,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "1.0.0"
+    libraryDependencies += "org.clapper" %% "argot" % "1.0.1"
 
 Argot is also registered with [Doug Tangren][]'s excellent [ls.implicit.ly][]
 catalog. If you use the `ls` SBT plugin, you can install Argot with
