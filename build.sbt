@@ -5,7 +5,7 @@ name := "argot"
 
 organization := "org.clapper"
 
-version := "1.0.0"
+version := "1.0.1"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/argot/license.html"))
 
@@ -13,14 +13,14 @@ homepage := Some(url("http://software.clapper.org/argot/"))
 
 description := "A command-line option and parameter parser"
 
-scalaVersion := "2.10.0-RC3"
+scalaVersion := "2.10.0"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.0-RC3", "2.10.0-RC1")
+crossScalaVersions := Seq("2.10.0", "2.10.1")
 
 seq(lsSettings :_*)
 
@@ -34,8 +34,8 @@ seq(lsSettings :_*)
 libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
     // Select ScalaTest version based on Scala version
     val scalatestVersionMap = Map(
-      "2.10.0-RC1" -> ("scalatest_2.10.0-RC1", "2.0.M4-2.10.0-RC1-B1"),
-      "2.10.0-RC3" -> ("scalatest_2.10.0-RC1", "2.0.M4-2.10.0-RC1-B1")
+      "2.10.0" -> ("scalatest_2.10.0", "2.0.M5"),
+      "2.10.1" -> ("scalatest_2.10.0", "2.0.M5")
     )
     val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
         sv, error("Unsupported Scala version for ScalaTest: " + scalaVersion)
