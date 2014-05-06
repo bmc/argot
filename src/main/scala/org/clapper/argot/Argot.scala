@@ -44,6 +44,7 @@ import scala.collection.mutable.{Map => MutableMap,
                                  LinkedHashMap,
                                  LinkedHashSet}
 import scala.util.matching.Regex
+import scala.util.Try
 import scala.annotation.tailrec
 
 /** Base trait for all option and parameter classes, `CommandLineArgument`
@@ -1169,7 +1170,7 @@ class ArgotParser(programName: String,
     val lengths: Iterable[Int] = for {opt  <- allOptions.values
                                       name <- opt.names}
                                    yield optString(name, opt).length
-    val maxOptLen = lengths.max
+    val maxOptLen = Try(lengths.max).getOrElse(0)
 
     // Create the output buffer.
 

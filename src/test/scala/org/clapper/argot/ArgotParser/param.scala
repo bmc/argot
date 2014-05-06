@@ -67,15 +67,22 @@ class ArgotParameterTest extends FunSuite {
 
   test("required argument failure") {
     val parser = new ArgotParser("test")
-    val opt = parser.option[String](
-      List("s", "something"), "something", "Some value"
-    )
     val req = parser.parameter[String]("foo", "some param", optional=false)
 
     val data = List(Array("-f"),
                     Array("-s"),
                     Array("-s", "something"),
                     Array.empty[String])
+
+    for (args <- data) {
+      intercept[ArgotUsageException] {
+        parser.parse(args)
+      }
+    }
+
+    val opt = parser.option[String](
+      List("s", "something"), "something", "Some value"
+    )
 
     for (args <- data) {
       intercept[ArgotUsageException] {
