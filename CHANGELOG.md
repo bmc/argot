@@ -1,3 +1,7 @@
+Version 1.0.2
+
+* Built for Scala 2.11.0 and 2.11.1
+
 Version 1.0.1
 
 * Built for Scala 2.10.0 and 2.10.1
