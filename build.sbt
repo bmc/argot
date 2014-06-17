@@ -13,14 +13,14 @@ homepage := Some(url("http://software.clapper.org/argot/"))
 
 description := "A command-line option and parameter parser"
 
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.4"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.0", "2.10.1")
+crossScalaVersions := Seq("2.10.4", "2.11.1")
 
 seq(lsSettings :_*)
 
