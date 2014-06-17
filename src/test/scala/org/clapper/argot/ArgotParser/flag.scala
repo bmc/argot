@@ -58,7 +58,7 @@ class ArgotFlagTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         flag.value.get
       }
     }
@@ -96,7 +96,7 @@ class ArgotFlagTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         flag.value
       }
     }
@@ -127,7 +127,7 @@ class ArgotFlagTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         flag.value.map(_.counter)
       }
     }

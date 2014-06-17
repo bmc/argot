@@ -59,7 +59,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         req.value
       }
     }
@@ -104,7 +104,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         req.value
       }
     }
@@ -128,7 +128,7 @@ class ArgotParameterTest extends FunSuite {
       parser.reset()
       parser.parse(args)
       val prefix =
-        expectResult((expected_foo, expected_bar),
+        assertResult((expected_foo, expected_bar),
 
                args.mkString("[", ", ", "]") + " -> " +
                "(" + expected_foo + ", " + expected_bar + ")") {
@@ -174,7 +174,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         param.value
       }
     }
@@ -202,7 +202,7 @@ class ArgotParameterTest extends FunSuite {
     for ((expected, args) <- data) {
       parser.reset()
       parser.parse(args)
-      expectResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
+      assertResult(expected, args.mkString("[", ", ", "]") + " -> " + expected) {
         param.value.map(_.i)
       }
     }
