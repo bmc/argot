@@ -13,14 +13,14 @@ homepage := Some(url("http://software.clapper.org/argot/"))
 
 description := "A command-line option and parameter parser"
 
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.4"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.0", "2.10.1")
+crossScalaVersions := Seq("2.10.4", "2.11.1")
 
 seq(lsSettings :_*)
 
@@ -29,30 +29,11 @@ seq(lsSettings :_*)
 (description in LsKeys.lsync) <<= description(d => d)
 
 // ---------------------------------------------------------------------------
-// ScalaTest dependendency
-
-libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
-    // Select ScalaTest version based on Scala version
-    val scalatestVersionMap = Map(
-      "2.10.0" -> ("scalatest_2.10.0", "2.0.M5"),
-      "2.10.1" -> ("scalatest_2.10.0", "2.0.M5")
-    )
-    val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
-        sv, error("Unsupported Scala version for ScalaTest: " + scalaVersion)
-    )
-    deps :+ "org.scalatest" % scalatestArtifact % scalatestVersion % "test"
-}
-
-libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
-  // ScalaTest still uses the (deprecated) scala.actors API.
-  deps :+ "org.scala-lang" % "scala-actors" % sv % "test"
-}
-
-// ---------------------------------------------------------------------------
-// Other dependendencies
+// Dependendencies
 
 libraryDependencies ++= Seq(
-    "org.clapper" %% "grizzled-scala" % "1.1.2"
+  "org.clapper" %% "grizzled-scala" % "1.2",
+  "org.scalatest" %% "scalatest" % "2.2.0" % "test"
 )
 
 // ---------------------------------------------------------------------------
