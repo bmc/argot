@@ -19,9 +19,13 @@ Argot is a command-line parser library for [Scala][], supporting:
 
 # Installation
 
-Argot is published to the `oss.sonatype.org` repository and automatically
-sync'd with the [Maven Central Repository][].
+Argot is published to the
+[Bintray Maven repository](https://bintray.com/bmc/maven), which is
+automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
+repository. (From JCenter, it's eventually pushed to the
+automatically sync'd with the [Maven Central Repository][].
 
+- Version 1.0.2 supports Scala 2.10 and Scala 2.11.
 - Version 1.0.1 supports Scala 2.10.0 and 2.10.1
 - Version 1.0.0 supports Scala 2.10.0-RC1 and 2.10.0-RC3.
 - Version 0.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
@@ -45,6 +49,20 @@ Here's a sample Maven POM "dependency" snippet:
       <version>1.0.0</version>
     </dependency>
 
+If you cannot resolve the artifact, then add the JCenter repository:
+
+    <repositories>
+      <repository>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+      </repository>
+      ...
+    </repositories>
+
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
 
@@ -65,7 +83,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "1.0.1"
+    libraryDependencies += "org.clapper" %% "argot" % "1.0.2"
 
 Argot is also registered with [Doug Tangren][]'s excellent [ls.implicit.ly][]
 catalog. If you use the `ls` SBT plugin, you can install Argot with
