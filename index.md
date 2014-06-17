@@ -63,6 +63,21 @@ If you cannot resolve the artifact, then add the JCenter repository:
       ...
     </repositories>
 
+If the version you want has not (yet) been pushed to either Maven Central
+or JCenter, then you can pull it directly from my Bintray repo, by adding
+this repository:
+
+    <repositories>
+      <repository>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://dl.bintray.com/bmc/maven</url>
+      </repository>
+    </repositories>
+
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
 
@@ -84,6 +99,11 @@ you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
     libraryDependencies += "org.clapper" %% "argot" % "1.0.2"
+
+If the version you want can't be found (i.e., it hasn't yet been pushed to
+Bintray's JCenter or to Maven Central), simply add my Bintray repo:
+
+    resolvers += "Brian Clapper's Bintray" at "http://dl.bintray.com/bmc/maven"
 
 Argot is also registered with [Doug Tangren][]'s excellent [ls.implicit.ly][]
 catalog. If you use the `ls` SBT plugin, you can install Argot with
