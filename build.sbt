@@ -28,6 +28,12 @@ seq(lsSettings :_*)
 
 (description in LsKeys.lsync) <<= description(d => d)
 
+bintraySettings
+
+bintray.Keys.packageLabels in bintray.Keys.bintray := (
+  LsKeys.tags in LsKeys.lsync
+).value
+
 // ---------------------------------------------------------------------------
 // Dependendencies
 
@@ -39,13 +45,7 @@ libraryDependencies ++= Seq(
 // ---------------------------------------------------------------------------
 // Publishing criteria
 
-publishTo <<= version { v: String =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+// Don't set publishTo. The Bintray plugin does that automatically.
 
 publishMavenStyle := true
 
