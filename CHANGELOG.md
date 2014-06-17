@@ -1,3 +1,9 @@
+Version 1.0.2
+
+* Added cross-compilation for Scala 2.11, courtesy of
+  Martin Grotzke (martin.grotzke _at_ googlemail.com)
+* Publish to Bintray.
+
 Version 1.0.1
 
 * Built for Scala 2.10.0 and 2.10.1

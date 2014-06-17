@@ -1,0 +1,21 @@
+{
+  "organization" : "org.clapper",
+  "name" : "argot",
+  "version" : "1.0.2",
+  "description" : "A command-line option and parameter parser",
+  "site" : "http://software.clapper.org/argot/",
+  "tags" : [ "argument parser", "command line", "parameters" ],
+  "docs" : "",
+  "resolvers" : [ "https://oss.sonatype.org/content/repositories/releases" ],
+  "dependencies" : [ {
+    "organization" : "org.clapper",
+    "name" : "grizzled-scala",
+    "version" : "1.2"
+  } ],
+  "scalas" : [ "2.10.4", "2.11.1" ],
+  "licenses" : [ {
+    "name" : "BSD",
+    "url" : "http://software.clapper.org/argot/license.html"
+  } ],
+  "sbt" : false
+}
