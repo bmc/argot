@@ -1,3 +1,8 @@
+Version 1.0.3
+
+Various tweaks to try to get Bintray to shove this thing into Maven
+Central.
+
 Version 1.0.2
 
 * Added cross-compilation for Scala 2.11, courtesy of

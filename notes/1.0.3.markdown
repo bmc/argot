@@ -1,0 +1,1 @@
+Various tweaks to try to get Bintray to shove this thing into Maven Central.
