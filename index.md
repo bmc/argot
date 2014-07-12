@@ -25,7 +25,7 @@ automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
 automatically sync'd with the [Maven Central Repository][].
 
-- Version 1.0.2 supports Scala 2.10 and Scala 2.11.
+- Version 1.0.3 supports Scala 2.10 and Scala 2.11.
 - Version 1.0.1 supports Scala 2.10.0 and 2.10.1
 - Version 1.0.0 supports Scala 2.10.0-RC1 and 2.10.0-RC3.
 - Version 0.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
@@ -46,7 +46,7 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>argot_2.10</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.3</version>
     </dependency>
 
 If you cannot resolve the artifact, then add the JCenter repository:
@@ -83,22 +83,14 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 ## Using with SBT
 
-#### 0.7.x
+#### 0.12.x or 0.13.x
 
-If you're using [SBT][] 0.7.x to compile your code, you can place the
-following line in your project file (i.e., the Scala file in your
-`project/build/` directory):
-
-    val argot = "org.clapper" %% "argot" % "0.4"
-
-#### 0.11.x
-
-If you're using [SBT][] 0.11.x to compile your code, you can use the
+If you're using [SBT][] 0.12.x or better to compile your code, use the
 following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "1.0.2"
+    libraryDependencies += "org.clapper" %% "argot" % "1.0.3"
 
 If the version you want can't be found (i.e., it hasn't yet been pushed to
 Bintray's JCenter or to Maven Central), simply add my Bintray repo:
