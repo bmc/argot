@@ -37,7 +37,7 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `clapper.org`
-* Artifact ID: `argot_2.9.2` or `argot_2.10`
+* Artifact ID: `argot_2.9.2`, `argot_2.10` or `argot_2.11`
 * Version: `0.4` (for Scala 2.9.2 or earlier), `1.0.0` (for Scala 2.10)
 * Type: `jar`
 
