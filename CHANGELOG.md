@@ -1,5 +1,7 @@
 Version 1.0.3
 
+Fixed Issue #8.
+
 Various tweaks to try to get Bintray to shove this thing into Maven
 Central.
 
