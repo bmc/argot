@@ -51,7 +51,8 @@ class ArgotOptionTest extends FunSuite {
       (Some("something"),  Array("-s", "something")),
       (Some("foo"),        Array("--something", "foo")),
       (None,               Array.empty[String]),
-      (Some("bar"),        Array("-s", "foo", "-s", "bar"))
+      (Some("bar"),        Array("-s", "foo", "-s", "bar")),
+      (Some("baz"),        Array("--something=baz"))
     )
 
     for ((expected, args) <- data) {
