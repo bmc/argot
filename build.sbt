@@ -20,25 +20,13 @@ scalaVersion := "2.10.4"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.4", "2.11.1")
-
-seq(lsSettings :_*)
-
-(LsKeys.tags in LsKeys.lsync) := Seq("argument parser", "command line", "parameters")
-
-(description in LsKeys.lsync) <<= description(d => d)
-
-bintraySettings
-
-bintray.Keys.packageLabels in bintray.Keys.bintray := (
-  LsKeys.tags in LsKeys.lsync
-).value
+crossScalaVersions := Seq("2.10.4", "2.11.5")
 
 // ---------------------------------------------------------------------------
 // Dependendencies
 
 libraryDependencies ++= Seq(
-  "org.clapper" %% "grizzled-scala" % "1.2",
+  "org.clapper" %% "grizzled-scala" % "1.3",
   "org.scalatest" %% "scalatest" % "2.2.0" % "test"
 )
 
