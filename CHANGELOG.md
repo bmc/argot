@@ -1,3 +1,8 @@
+Version 1.0.4
+
+Merged in support for GNU-style "--long=value" option syntax, from 
+Matthew Neeley (maffoo _at_ google.com)
+
 Version 1.0.3
 
 Fixed Issue #8.
