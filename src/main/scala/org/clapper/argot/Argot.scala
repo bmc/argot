@@ -1437,32 +1437,49 @@ class ArgotParser(programName: String,
   }
 
   def parseLongOpt(a: List[String]): List[String] = {
-    val optString = a.take(1)(0)
+    val optString :: rest = a
     assert(optString startsWith "--")
-    val optName = optString drop 2
+    val optName = optString drop 2 takeWhile (_ != '=')
     val opt = longNameMap.getOrElse(
       optName, usage("Unknown option: " + optString)
     )
 
-    val a2 = a drop 1
+    val gnuPrefix = "--" + optName + "="
 
-    val result = opt match {
-      case o: HasValue[_] =>
-        if (a2.length == 0)
-          usage("Option " + optString + " requires a value.")
-      o.setFromString(a2(0))
-      a2 drop 1
-
-      case o: FlagOption[_] =>
-        o.setByName(optName)
-      a2
-
-      case _ =>
-        throw new ArgotException("(BUG) Found " + opt.getClass +
-                                 " in longNameMap")
+    def fail() = {
+      throw new ArgotException("(BUG) Found " + opt.getClass +
+                               " in longNameMap")
     }
 
-    result
+    if (optString.startsWith(gnuPrefix)) {
+      opt match {
+        case o: HasValue[_] =>
+          o.setFromString(optString.stripPrefix(gnuPrefix))
+          rest
+
+        case o: FlagOption[_] =>
+          usage("Option " + optString + " does not take a value.")
+
+        case _ =>
+          fail()
+      }
+
+    } else {
+      opt match {
+        case o: HasValue[_] =>
+          if (rest.length == 0)
+            usage("Option " + optString + " requires a value.")
+          o.setFromString(rest(0))
+          rest drop 1
+
+        case o: FlagOption[_] =>
+          o.setByName(optName)
+          rest
+
+        case _ =>
+          fail()
+      }
+    }
   }
 
   @tailrec private def parseArgList(a: List[String]): Unit = {
