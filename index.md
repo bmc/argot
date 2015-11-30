@@ -26,9 +26,13 @@ Argot is a command-line parser library for [Scala][], supporting:
 
 # Installation
 
-Argot is published to the `oss.sonatype.org` repository and automatically
-sync'd with the [Maven Central Repository][].
+Argot is published to the
+[Bintray Maven repository](https://bintray.com/bmc/maven), which is
+automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
+repository. (From JCenter, it's eventually pushed to the
+automatically sync'd with the [Maven Central Repository][].
 
+- Version 1.0.3 supports Scala 2.10 and Scala 2.11.
 - Version 1.0.1 supports Scala 2.10.0 and 2.10.1
 - Version 1.0.0 supports Scala 2.10.0-RC1 and 2.10.0-RC3.
 - Version 0.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
@@ -40,7 +44,7 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `clapper.org`
-* Artifact ID: `argot_2.9.2` or `argot_2.10`
+* Artifact ID: `argot_2.9.2`, `argot_2.10` or `argot_2.11`
 * Version: `0.4` (for Scala 2.9.2 or earlier), `1.0.0` (for Scala 2.10)
 * Type: `jar`
 
@@ -49,30 +53,56 @@ Here's a sample Maven POM "dependency" snippet:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>argot_2.10</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.3</version>
     </dependency>
+
+If you cannot resolve the artifact, then add the JCenter repository:
+
+    <repositories>
+      <repository>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+      </repository>
+      ...
+    </repositories>
+
+If the version you want has not (yet) been pushed to either Maven Central
+or JCenter, then you can pull it directly from my Bintray repo, by adding
+this repository:
+
+    <repositories>
+      <repository>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://dl.bintray.com/bmc/maven</url>
+      </repository>
+    </repositories>
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
 
 ## Using with SBT
 
-#### 0.7.x
+#### 0.12.x or 0.13.x
 
-If you're using [SBT][] 0.7.x to compile your code, you can place the
-following line in your project file (i.e., the Scala file in your
-`project/build/` directory):
-
-    val argot = "org.clapper" %% "argot" % "0.4"
-
-#### 0.11.x
-
-If you're using [SBT][] 0.11.x to compile your code, you can use the
+If you're using [SBT][] 0.12.x or better to compile your code, use the
 following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "argot" % "1.0.1"
+    libraryDependencies += "org.clapper" %% "argot" % "1.0.3"
+
+If the version you want can't be found (i.e., it hasn't yet been pushed to
+Bintray's JCenter or to Maven Central), simply add my Bintray repo:
+
+    resolvers += "Brian Clapper's Bintray" at "http://dl.bintray.com/bmc/maven"
 
 Argot is also registered with [Doug Tangren][]'s excellent [ls.implicit.ly][]
 catalog. If you use the `ls` SBT plugin, you can install Argot with
