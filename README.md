@@ -1,3 +1,5 @@
+# Abandonware Alert!
+
 **THIS PROJECT IS DEAD. I will no longer be maintaining it.
 [scopt](https://github.com/scopt/scopt) does everything you'd need
 in a command-line options parser, and it's what I'll be using going
