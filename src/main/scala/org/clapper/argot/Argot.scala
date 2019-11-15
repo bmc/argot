@@ -1163,8 +1163,6 @@ class ArgotParser(programName: String,
       }
     }
 
-    val mmax = MathUtil.max _
-
     // Calculate the maximum length of all the option strings.
 
     val lengths: Iterable[Int] = for {opt  <- allOptions.values
@@ -1300,14 +1298,14 @@ class ArgotParser(programName: String,
   -----------------------------------------------------------------------
    */
 
-  private def replaceOption(opt: CommandLineOption[_]) {
+  private def replaceOption(opt: CommandLineOption[_]): Unit = {
     opt.names.filter(_.length == 1).
     foreach(s => shortNameMap += s(0) -> opt)
     opt.names.filter(_.length > 1).foreach(s => longNameMap += s -> opt)
     allOptions += opt.name -> opt
   }
 
-  private def replaceParameter(param: Parameter[_]) {
+  private def replaceParameter(param: Parameter[_]): Unit = {
     parameters += param
   }
 

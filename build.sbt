@@ -13,21 +13,21 @@ homepage := Some(url("http://software.clapper.org/argot/"))
 
 description := "A command-line option and parameter parser"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.13.1"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.4", "2.11.5")
+crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.10")
 
 // ---------------------------------------------------------------------------
 // Dependendencies
 
 libraryDependencies ++= Seq(
-  "org.clapper" %% "grizzled-scala" % "1.3",
-  "org.scalatest" %% "scalatest" % "2.2.0" % "test"
+  "org.clapper" %% "grizzled-scala" % "4.9.3",
+  "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )
 
 // ---------------------------------------------------------------------------

@@ -63,7 +63,7 @@ object ArgotTest {
     file
   }
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
 
     try {
       parser.parse(args)
